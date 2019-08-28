@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- tns:flows xmlns:tns="http://ebee.com/owiz_0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ebee.com/owiz_0.1 owiz.xsd" -->
+<flows>
+	<add-command-tag tag='if' componentName='org.chenile.owiz.impl.ognl.EvaluateRouter' defaultAttachmentTag="true"/>
+	<add-command-tag tag='while' componentName='org.chenile.owiz.impl.ognl.WhileChain' defaultAttachmentTag="order" />
+	<add-command-tag tag='set' componentName='org.chenile.owiz.impl.ognl.SetCommand'/>
+	<add-command-tag tag='set-ft' componentName='org.chenile.owiz.impl.ognl.SetCommand' name='fulfillmentType'
+		valueAttributeName="to"/>
+	<add-command-tag tag="validate-sku-exclusions" componentName="org.chenile.owiz.impl.ognl.ExclusiveRule"/>
+	<add-command-tag tag="assign-ft-by-category" componentName="org.chenile.owiz.impl.ognl.AssignFTByCategory"/>
+	
+	
+	<add-attach-tag tag="true" route='true'/>
+	<add-attach-tag tag="order"/>
+	<add-attach-tag tag="check-if-chain-can-stop" conditionCommand="true"/>
+	
+	<flow id='ft-computation'>
+
+			<while condition="fulfillmentType != null">
+		
+				<validate-sku-exclusions>
+					<check-if-chain-can-stop/>
+				</validate-sku-exclusions>
+				
+				<assign-ft-by-category/>
+				
+				<if expression="category in {'ELECTRONICS', 'COMMUNICATION'}  &amp;&amp; warehouse == 'LONDON'" >
+					<set-ft to='FT1'/>
+				</if>
+				
+				<if  expression="category == 'HOME' &amp;&amp; warehouse == 'LONDON'" >
+					<set-ft to='FT2'/>
+				</if>
+				
+				<if  expression="category in categories &amp;&amp; warehouse == 'MAINLAND'" >
+					<set-ft to='FT4'/>
+				</if>
+	
+				<command componentName="org.chenile.owiz.impl.ognl.InclusiveRule"/>
+				
+				<set-ft to='FT3'/>
+			
+			</while>
+		
+	</flow>
+</flows>

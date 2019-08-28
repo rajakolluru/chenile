@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flows>
+	<flow>
+		<router componentName='moduleRouter' expression="module">
+				<chain componentName='org.chenile.owiz.impl.Chain' route='mod1'>
+					<command componentName='mock11'/>
+					<command componentName='mock12'/>
+					<command componentName='mock13'/>
+				</chain>
+				
+				<chain componentName='org.chenile.owiz.impl.Chain' route='mod2'>
+					<command componentName='mock21'/>
+					<command componentName='mock22'/>
+					<command componentName='mock23'/>
+				</chain>			
+		</router>
+	</flow>
+</flows>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+	<modules>
+		<module>../stm</module>
+		<module>../owiz</module>
+		<module>../chenile-base</module>
+		<module>../chenile-core</module>
+		<module>../chenile-http</module>
+		<module>../chenile-kafka</module>
+	</modules>
+	<parent>
+		<groupId>org.chenile</groupId>
+		<relativePath>../chenile-parent/</relativePath>
+		<version>0.0.1-SNAPSHOT</version>
+		<artifactId>chenile-parent</artifactId>
+	</parent>
+	
+	<artifactId>chenile-modules</artifactId>
+	<name>chenile-modules</name>
+	<description>Modules execution project</description>
+
+
+</project>

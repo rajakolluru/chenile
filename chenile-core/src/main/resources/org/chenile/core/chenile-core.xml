@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<flows>
+	<flow id='flow1' defaultFlow="true">
+		<chain componentName='chenileHighway'>
+			<command componentName='transformationClassSelector'/>
+			<command componentName='transformer'/>
+			<command componentName="chenileInterceptorChain"/>
+		</chain>		
+	</flow>	
+</flows>

@@ -1,0 +1,45 @@
+{
+  "name": "jsonService",
+  "id": "jsonService",
+  "operations":
+  [
+   {
+    "name": "getOne",
+    "auditable": "false",
+    "url": "/system/property/{key}",
+    "httpMethod": "GET",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "input": "",
+    "output": "",
+    "params":
+    [
+      {
+        "name": "key",
+        "type": "HEADER",
+        "description": "System property key."
+      }
+    ]
+  },{
+    "name": "save",
+    "auditable": "false",
+    "url": "/system/property",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "input": "org.chenile.http.test.service.JsonData",
+    "secure":false,
+    "output": "",
+    "params":
+    [
+      {
+        "name": "jsonData",
+        "type": "BODY",
+        "description": "System property multi key value."
+      }
+    ]
+
+  }
+  ]
+}

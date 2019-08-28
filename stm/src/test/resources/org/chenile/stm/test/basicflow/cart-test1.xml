@@ -1,0 +1,12 @@
+<states>
+
+	<flow id='special-flow' default='true'>
+		<entry-action componentName="org.chenile.stm.test.basicflow.EntryAction" />
+		<exit-action componentName="org.chenile.stm.test.basicflow.ExitAction" />
+		<manual-state id='INIT' initialState='true'>
+			<on eventId='end' componentName='org.chenile.stm.test.basicflow.EndAction' newStateId='END'/>
+		</manual-state>
+		<manual-state id='END' />
+	</flow>
+	
+</states>
