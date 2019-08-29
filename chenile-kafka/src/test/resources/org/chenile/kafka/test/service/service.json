@@ -1,0 +1,27 @@
+{
+  "name": "testConsumer",
+  "id": "testConsumer",
+  "operations":
+  [
+   {
+    "name": "consume",
+    "auditable": "false",
+    "url": "/testEvent",
+    "httpMethod": "GET",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "eventSubscribedTo": ["testEvent"],
+    "input": "org.chenile.kafka.test.event.TestEvent",
+    "output": "",
+    "params":
+    [
+      {
+        "name": "event",
+        "type": "BODY",
+        "description": "Body of the event"
+      }
+    ]
+  }
+  ]
+}

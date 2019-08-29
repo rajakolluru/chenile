@@ -10,6 +10,8 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.chenile.core.event.EventProcessor;
 import org.chenile.kafka.entry.KafkaEntryPoint;
+import org.chenile.kafka.init.KafkaModuleBuilder;
+import org.chenile.kafka.producer.EventProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -47,7 +49,7 @@ public class ChenileKafkaConfiguration {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public KafkaEntryPoint kafkaEntryPoint(){
     	EventProcessor eventProcessor = applicationContext.getBean(eventProcessorName,EventProcessor.class);
-        return new KafkaEntryPoint(eventProcessor);
+        return new KafkaEntryPoint(eventProcessor, consumerProps());
     }
     
     @Bean
@@ -63,11 +65,6 @@ public class ChenileKafkaConfiguration {
     	 Map<String, Object> props = new HashMap<>();
     	 props.putAll(genericProperties());
     	 props.putAll(senderProperties());
-    	 props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-    	 props.put(ProducerConfig.RETRIES_CONFIG, 0);
-    	 props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
-    	 props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
-    	 props.put(ProducerConfig.BUFFER_MEMORY_CONFIG, 33554432);
     	 props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     	 props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
     	 return props;
@@ -78,11 +75,9 @@ public class ChenileKafkaConfiguration {
     	 Map<String, Object> props = new HashMap<>();
     	 props.putAll(genericProperties());
     	 props.putAll(consumerProperties());
-    	 props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-    	 // props.put(ConsumerConfig.GROUP_ID_CONFIG, group);
-    	 props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, true);
-    	 props.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, "100");
-    	 props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "15000");
+    	 System.err.println("Consumer props is " + props);
+    	 props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+    	 props.put(JsonDeserializer.TRUSTED_PACKAGES,"*");
     	 props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     	 props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
     	 return props;
@@ -105,4 +100,12 @@ public class ChenileKafkaConfiguration {
 	public Map<String,Object> consumerProperties() {
 		return new HashMap<String, Object>();
 	}
+    
+    @Bean EventProducer eventProducer() {
+    	return new EventProducer();
+    }
+    
+    @Bean KafkaModuleBuilder kafkaModuleBuilder() {
+    	return new KafkaModuleBuilder("kafkaEntryPoint");
+    }
 }

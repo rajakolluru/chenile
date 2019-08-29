@@ -117,9 +117,9 @@ public class ChenileCoreConfiguration {
     	return new TransformationClassSelector();
     }
    
-//    @Bean public EventProcessor chenileEventProcessor() {
-//    	return new EventProcessor();
-//    }
+	@Bean public EventProcessor chenileEventProcessor() {
+		return new EventProcessor();
+	}
 
 	
 }

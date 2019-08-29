@@ -14,9 +14,6 @@ import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileEventDefinition;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.KafkaMessageListenerContainer;
@@ -36,11 +33,12 @@ public class KafkaEntryPoint implements MessageListener<String,Object>, Disposab
 	
 	private ChenileEventDefinition chenileEventDefinition;
 	
-	@Autowired private Map<String, Object> consumerProps;
+	private Map<String, Object> consumerProps;
 	private KafkaMessageListenerContainer<String, Object> kafkaMessageListenerContainer;
 
-	public KafkaEntryPoint(EventProcessor eventProcessor) {
+	public KafkaEntryPoint(EventProcessor eventProcessor, Map<String,Object> consumerProps) {
 		this.eventProcessor = eventProcessor;
+		this.consumerProps = consumerProps;
 	}
 
 	@Override
@@ -52,17 +50,20 @@ public class KafkaEntryPoint implements MessageListener<String,Object>, Disposab
 		if (!chenileEventDefinition.getType().isAssignableFrom(eventPayload.getClass()))
 			throw new ServerException(ErrorCodes.SERVICE_EXCEPTION.getSubError(), 
 				"ProduceEvent: eventPayload is not of type " + chenileEventDefinition.getClass() + "for event ID " + chenileEventDefinition.getId());
+		exchange.setBody(eventPayload);
 		eventProcessor.handleEvent(chenileEventDefinition, exchange);
 	}
 	
 	public void listen(ChenileEventDefinition ced) {
 		String beanName = chenileConfiguration.getModuleName() + "_" + ced.getId();
+		
 		this.chenileEventDefinition = ced;
 		ContainerProperties containerProperties = new ContainerProperties(ced.getTopic());
 		containerProperties.setGroupId(beanName);
-		containerProperties.setMessageListener(this);
+		
 		kafkaMessageListenerContainer = createContainer(containerProperties);
 		kafkaMessageListenerContainer.setBeanName(beanName);
+		kafkaMessageListenerContainer.setupMessageListener(this);
 		kafkaMessageListenerContainer.start();
 	}
 
