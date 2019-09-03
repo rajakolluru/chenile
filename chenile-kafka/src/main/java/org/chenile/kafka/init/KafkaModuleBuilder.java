@@ -21,7 +21,6 @@ public class KafkaModuleBuilder {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void build() throws Exception {
-		System.err.println("Here");
 		for (ChenileEventDefinition ced : chenileConfiguration.getEvents().values()) {
 			if(!ced.getOriginatingModuleName().equals(chenileConfiguration.getModuleName())) continue;
 			configureEntryPoint(ced);

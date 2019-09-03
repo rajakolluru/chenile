@@ -75,7 +75,6 @@ public class ChenileKafkaConfiguration {
     	 Map<String, Object> props = new HashMap<>();
     	 props.putAll(genericProperties());
     	 props.putAll(consumerProperties());
-    	 System.err.println("Consumer props is " + props);
     	 props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     	 props.put(JsonDeserializer.TRUSTED_PACKAGES,"*");
     	 props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
