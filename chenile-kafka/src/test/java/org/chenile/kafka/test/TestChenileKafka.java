@@ -1,5 +1,7 @@
 package org.chenile.kafka.test;
 
+import org.chenile.core.context.EventLog;
+import org.chenile.core.event.EventLogger;
 import org.chenile.kafka.test.service.TestConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +29,18 @@ public class TestChenileKafka extends SpringBootServletInitializer{
 	@Bean
 	public TestConsumer testConsumer() {
 		return new TestConsumer();
+	}
+	
+	@Bean
+	public EventLogger eventLogger() {
+		return new EventLogger() {
+			
+			@Override
+			public void log(EventLog eventLog) {
+				// TODO Auto-generated method stub
+				
+			}
+		};
 	}
 }
 
