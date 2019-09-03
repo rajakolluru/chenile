@@ -17,6 +17,10 @@
 		<if id='valid' condition='orderTotal &lt;= 10000' then='autoApproval'
 			else='requiresApproval'>
 			<on eventId='autoApproval' newStateId='fulfilled' />
+			<on eventId='editItems' />
+			<on eventId='editAddress' />
+			<on eventId='editPaymentDetails' />
+			<on eventId='editCustomerDetails' />
 			<on eventId='requiresApproval' newStateId='pendingApproval' />
 		</if>
 

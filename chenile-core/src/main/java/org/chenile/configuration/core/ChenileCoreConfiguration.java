@@ -4,6 +4,7 @@ package org.chenile.configuration.core;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.entrypoint.ChenileInterceptorChain;
+import org.chenile.core.event.EventLogger;
 import org.chenile.core.event.EventProcessor;
 import org.chenile.core.init.ChenileEventInitializer;
 import org.chenile.core.init.ChenileEventSubscribersInitializer;
@@ -46,6 +47,12 @@ public class ChenileCoreConfiguration {
 	
 	@Value("${chenile.post.processors}")
 	private String postProcessors;
+	
+	/**
+	 * This needs to be installed by a consuming module since there is no default way to 
+	 * log events in Chenile.
+	 */
+	@Autowired EventLogger eventLogger;
 	
 	@Autowired ApplicationContext applicationContext;
 	
@@ -118,8 +125,10 @@ public class ChenileCoreConfiguration {
     }
    
 	@Bean public EventProcessor chenileEventProcessor() {
-		return new EventProcessor();
+		return new EventProcessor(eventLogger);
 	}
+	
+	
 
 	
 }

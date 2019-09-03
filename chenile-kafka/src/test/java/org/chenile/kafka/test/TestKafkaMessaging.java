@@ -1,5 +1,7 @@
 package org.chenile.kafka.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -22,18 +24,18 @@ import org.springframework.test.context.junit4.SpringRunner;
 @ActiveProfiles("unittest")
 @DirtiesContext
 public class TestKafkaMessaging {
-	@Autowired
-    EmbeddedKafkaBroker embeddedKafkaBroker;
+	@Autowired EmbeddedKafkaBroker embeddedKafkaBroker;
 	@Autowired EventProducer eventProducer;
 	
 	public static final CountDownLatch latch = new CountDownLatch(1);
+	public static TestEvent receivedTestEvent;
 	@Test
     public void testReceivingKafkaEvents() throws InterruptedException {
-
         TestEvent testEvent = new TestEvent("foo","bar"); 
         eventProducer.produceEvent(TestEvent.EVENTID, testEvent);
-       
-          latch.await(1,TimeUnit.SECONDS);
+        // wait for the consumer to first receive the event
+        latch.await(1,TimeUnit.SECONDS);
+        assertEquals(testEvent,receivedTestEvent);       
     }
 	 
 }

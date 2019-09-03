@@ -1,8 +1,10 @@
 package org.chenile.core.init;
 
+import java.lang.reflect.Method;
 import java.util.Set;
 
 import org.chenile.base.exception.ServerException;
+import org.chenile.core.context.EventLog;
 import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileEventDefinition;
@@ -49,6 +51,12 @@ public class ChenileEventSubscribersInitializer {
 					operationDefinition.getName() + " misconfigured. Event subscribed to " + eventId +
 					" has a type " + ced.getType() + " that does not match the type of body input "
 					+ operationDefinition.getInput() + " for this operation.");
+		}
+		Method method = operationDefinition.getMethod();
+		if (!EventLog.class.isAssignableFrom(method.getReturnType())) {
+			throw new ServerException(ErrorCodes.MISCONFIGURATION.getSubError(),"Operation " +
+		    s.getId() + "." + operationDefinition.getName() + " misconfigured. Return type of the "
+		    + " method must be Event Log.");
 		}
 		ced.addEventSubscriber(s,operationDefinition);
 	}

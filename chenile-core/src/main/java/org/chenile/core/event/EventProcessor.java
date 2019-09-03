@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.chenile.base.exception.ServerException;
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.context.EventLog;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.model.ChenileConfiguration;
@@ -23,6 +24,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 public class EventProcessor {
 	@Autowired  @Qualifier("chenileServiceConfiguration") ChenileConfiguration chenileServiceConfiguration;
 	@Autowired  ChenileEntryPoint chenileEntryPoint;
+	private EventLogger eventLogger;
+	
+	public EventProcessor(EventLogger eventLogger) {
+		this.eventLogger = eventLogger;
+	}
 	
 	public void handleEvent(String eventId, Object eventPayload) {
 		ChenileEventDefinition ced = chenileServiceConfiguration.getEvents().get(eventId);
@@ -51,6 +57,10 @@ public class EventProcessor {
 			exchange.setOperationDefinition(subscriber.operationDefinition);
 			
 			chenileEntryPoint.execute(exchange);
+			
+			// TODO - must implement CompletableFuture here optionally
+			EventLog eventLog = (EventLog)exchange.getResponse();
+			eventLogger.log(eventLog);
 		}
 	}
 
