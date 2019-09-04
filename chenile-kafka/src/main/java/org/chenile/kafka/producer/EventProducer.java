@@ -23,7 +23,7 @@ public class EventProducer {
 		RecordHeaders headers = new RecordHeaders();
 		populateHeaders(headers);
 		ProducerRecord<String, Object> producerRecord = new ProducerRecord<>(
-				ced.getTopic(), null, null, eventPayload, headers);
+				ced.getTopic(), null, null, null, eventPayload, headers);
 		if (!ced.getType().isAssignableFrom(eventPayload.getClass()))
 			throw new ServerException(ErrorCodes.SERVICE_EXCEPTION.getSubError(), 
 				"ProduceEvent: eventPayload is not of type " + ced.getClass() + "for event ID " + eventId);
