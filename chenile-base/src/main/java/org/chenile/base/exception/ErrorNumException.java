@@ -76,5 +76,11 @@ public class ErrorNumException extends RuntimeException {
 	public int getSubErrorNum() {
 		return subErrorNum;
 	}
+	
+	@Override
+	public String getMessage() {
+		// TODO Auto-generated method stub
+		return super.getMessage();
+	}
 
 }

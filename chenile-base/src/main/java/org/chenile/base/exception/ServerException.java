@@ -41,4 +41,10 @@ public class ServerException extends ErrorNumException{
 	public ServerException(int subErrorNum, String message, Throwable cause) {
 		super(500, subErrorNum, message, cause);
 	}
+	
+	@Override
+	public String getMessage() {
+		// TODO Auto-generated method stub
+		return super.getMessage();
+	}
 }
