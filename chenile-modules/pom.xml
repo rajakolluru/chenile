@@ -10,6 +10,7 @@
 		<module>../chenile-core</module>
 		<module>../chenile-http</module>
 		<module>../chenile-kafka</module>
+		<module>../chenile-filewatch</module>
 	</modules>
 	<parent>
 		<groupId>org.chenile</groupId>

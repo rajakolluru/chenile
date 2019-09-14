@@ -9,7 +9,7 @@ import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileEventDefinition;
-import org.chenile.core.model.ChenileEventDefinition.EventSubscriber;
+import org.chenile.core.model.SubscriberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -35,9 +35,9 @@ public class EventProcessor {
 		if (ced == null) {
 			throw new ServerException(ErrorCodes.UNKNOWN_EVENT.getSubError(), "Unknown event " + eventId);
 		}
-		Set<EventSubscriber> subscribers = ced.getEventSubscribers();
+		Set<SubscriberVO> subscribers = ced.getEventSubscribers();
 		if(subscribers == null || subscribers.size() == 0) return;
-		for(EventSubscriber subscriber: subscribers) {
+		for(SubscriberVO subscriber: subscribers) {
 			ChenileExchange chenileExchange = new ChenileExchange();
 			chenileExchange.setServiceDefinition(subscriber.serviceDefinition);
 			chenileExchange.setOperationDefinition(subscriber.operationDefinition);
@@ -49,9 +49,9 @@ public class EventProcessor {
 	}
 
 	public void handleEvent(ChenileEventDefinition ced, ChenileExchange chenileExchange) {
-		Set<EventSubscriber> subscribers = ced.getEventSubscribers();
+		Set<SubscriberVO> subscribers = ced.getEventSubscribers();
 		if(subscribers == null || subscribers.size() == 0) return;
-		for(EventSubscriber subscriber: subscribers) {
+		for(SubscriberVO subscriber: subscribers) {
 			ChenileExchange exchange = new ChenileExchange(chenileExchange);
 			exchange.setServiceDefinition(subscriber.serviceDefinition);
 			exchange.setOperationDefinition(subscriber.operationDefinition);

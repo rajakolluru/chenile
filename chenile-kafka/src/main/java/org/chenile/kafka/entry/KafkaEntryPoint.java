@@ -77,7 +77,7 @@ public class KafkaEntryPoint implements MessageListener<String,Object>, Disposab
 		 }
 	}
 	
-    public KafkaMessageListenerContainer<String, Object> createContainer(ContainerProperties containerProps) {
+    private KafkaMessageListenerContainer<String, Object> createContainer(ContainerProperties containerProps) {
 		 DefaultKafkaConsumerFactory<String, Object> cf = new DefaultKafkaConsumerFactory<>(consumerProps);
 		 KafkaMessageListenerContainer<String, Object> container = 
 				 new KafkaMessageListenerContainer<>(cf, containerProps);

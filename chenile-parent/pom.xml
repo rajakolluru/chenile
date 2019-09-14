@@ -21,10 +21,16 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tomcat.version>9.0.21</tomcat.version>
 		<zookeeper.version>3.4.13</zookeeper.version>
+		<cucumber.version>4.3.1</cucumber.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.chenile</groupId>
+				<artifactId>chenile-filewatch</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.chenile</groupId>
 				<artifactId>chenile-kafka</artifactId>
@@ -69,7 +75,21 @@
 				<artifactId>commons-lang</artifactId>
 				<version>2.6</version>
 			</dependency>
-			<!-- https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter -->
+			<dependency>
+				<groupId>io.cucumber</groupId>
+				<artifactId>cucumber-java</artifactId>
+				<version>${cucumber.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.cucumber</groupId>
+				<artifactId>cucumber-spring</artifactId>
+				<version>${cucumber.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.cucumber</groupId>
+				<artifactId>cucumber-junit</artifactId>
+				<version>${cucumber.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

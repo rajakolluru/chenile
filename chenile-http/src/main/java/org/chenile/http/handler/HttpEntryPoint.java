@@ -132,6 +132,9 @@ public class HttpEntryPoint implements HttpRequestHandler {
 	private void setBody(HttpServletRequest httpServletRequest, ChenileExchange exchange)
 			throws IOException {
 		String body = httpServletRequest.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+		if (body == null) {
+			
+		}
 		exchange.setBody(body);
 	}
 

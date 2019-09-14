@@ -28,7 +28,15 @@ public class OperationDefinition {
      * The URL to which this operation listens. It is handled at the level of chenile-http
      */
     protected String url;
-    private List<ParamDefinition> params = new ArrayList<>();
+    /**
+     * Attach this operation to a file watch. The file watch can be associated with file watchers
+     * in a designated folder. Whenever a file appears in the folder, it is automatically processed
+     * line by line. Each line is then translated into headers and body. The operation is invoked
+     * for each line.
+     */
+    protected String fileWatchId;
+    
+	private List<ParamDefinition> params = new ArrayList<>();
     /**
      * The service to which this operation is attached. This would be set at the time this operation is attached to a service
      * by {@link ChenileServiceDefinition#setOperations(List)}
@@ -287,6 +295,13 @@ public class OperationDefinition {
 	public void setTimeOutInMilliSeconds(int timeOutInMilliSeconds) {
 		this.timeOutInMilliSeconds = timeOutInMilliSeconds;
 	}
+	
+	public String getFileWatchId() {
+		return fileWatchId;
+	}
 
+	public void setFileWatchId(String fileWatchId) {
+		this.fileWatchId = fileWatchId;
+	}
 
 }

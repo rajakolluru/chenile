@@ -5,14 +5,6 @@ import java.util.Set;
 
 public class ChenileEventDefinition {
 	
-	public class EventSubscriber {
-		public ChenileServiceDefinition serviceDefinition;
-		public OperationDefinition operationDefinition;
-		public EventSubscriber(ChenileServiceDefinition serviceDefinition, OperationDefinition operationDefinition) {
-			this.operationDefinition = operationDefinition;
-			this.serviceDefinition = serviceDefinition;
-		}
-	}
 	/**
 	 * Event ID. All chenile services listen for an event specified by this ID.
 	 */
@@ -23,7 +15,7 @@ public class ChenileEventDefinition {
 	private String topic;
 	private Class<?> type;
 	private String originatingModuleName;
-	private Set<EventSubscriber> eventSubscribers = new HashSet<EventSubscriber>();
+	private Set<SubscriberVO> eventSubscribers = new HashSet<SubscriberVO>();
 	
 	public String getId() {
 		return id;
@@ -43,11 +35,11 @@ public class ChenileEventDefinition {
 	public void setTopic(String eventTopic) {
 		this.topic = eventTopic;
 	}
-	public Set<EventSubscriber> getEventSubscribers() {
+	public Set<SubscriberVO> getEventSubscribers() {
 		return eventSubscribers;
 	}
 	public void addEventSubscriber(ChenileServiceDefinition serviceDefinition,OperationDefinition operationDefinition) {
-		this.eventSubscribers.add(new EventSubscriber(serviceDefinition,operationDefinition));
+		this.eventSubscribers.add(new SubscriberVO(serviceDefinition,operationDefinition));
 	}
 	public String getOriginatingModuleName() {
 		return originatingModuleName;

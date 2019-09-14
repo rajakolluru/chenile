@@ -18,6 +18,10 @@ public class ChenileConfiguration {
 	private String postProcessorNames;
 	private Map<String, ChenileServiceDefinition> services = new HashMap<String, ChenileServiceDefinition>();
 	private Map<String, ChenileEventDefinition> events = new HashMap<String, ChenileEventDefinition>();
+	/**
+	 * Leaving room for other extensions here 
+	 */
+	private Map<String,Map<String,?>> otherExtensions = new HashMap<String,Map<String,?>>();
 	
 	public ChenileConfiguration(String moduleName,ApplicationContext applicationContext) {
 		this.moduleName = moduleName;
@@ -70,5 +74,13 @@ public class ChenileConfiguration {
 
 	public void addEvent(ChenileEventDefinition event) {
 		this.events.put(event.getId(),event);
+	}
+
+	public Map<String,Map<String,?>> getOtherExtensions() {
+		return otherExtensions;
+	}
+
+	public void setOtherExtensions(Map<String,Map<String,?>> otherExtensions) {
+		this.otherExtensions = otherExtensions;
 	}
 }

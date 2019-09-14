@@ -1,5 +1,9 @@
 package org.chenile.core.test;
 
+
+import org.chenile.core.context.EventLog;
+import org.chenile.core.event.EventLogger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -7,10 +11,25 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ActiveProfiles;
 
 @Configuration
-@ComponentScan(basePackages = {"org.chenile.configuration"})
 @PropertySource("classpath:org/chenile/core/test/TestChenileCore.properties")
+@ComponentScan(basePackages = {"org.chenile.configuration"})
 @ActiveProfiles("unittest")
 public class SpringTestConfig {
+	@Value("${chenile.properties}")
+	String chenileProperties;
+	
+	@Bean EventLogger eventLogger() {
+		return new EventLogger() {
+
+			@Override
+			public void log(EventLog eventLog) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		};
+	}
+	
 	@Bean public MockService mockService() {
 		return new MockService();
 	}

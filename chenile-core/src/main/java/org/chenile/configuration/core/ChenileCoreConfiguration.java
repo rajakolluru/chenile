@@ -66,6 +66,7 @@ public class ChenileCoreConfiguration {
     
     @Bean
     public ChenileServiceInitializer chenileServiceInitializer() {
+    	System.out.println("Chenile core services discovered = " + chenileServiceJsonResources);
     	return new ChenileServiceInitializer(chenileServiceJsonResources);
     }
     
