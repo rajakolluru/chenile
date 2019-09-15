@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.chenile.filewatch.handler.FileProcessor;
+import org.chenile.filewatch.handler.FileWatchEventLogger;
 import org.chenile.filewatch.handler.FileWatcherExecutorService;
 import org.chenile.filewatch.init.ChenileFileWatchInitializer;
 import org.chenile.filewatch.init.FileWatchBuilder;
@@ -65,5 +66,8 @@ public class FileWatchConfiguration {
     	return new FileProcessor();
     }
     
+    @Bean FileWatchEventLogger fileWatchEventLogger() {
+    	return new FileWatchEventLogger();
+    }
     
 }

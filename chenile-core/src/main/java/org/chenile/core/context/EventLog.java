@@ -4,9 +4,10 @@ import org.chenile.base.exception.ErrorNumException;
 
 public class EventLog {
 	public enum StatusEnum {
-		SUCCESS, FAIL, EXCEPTION, WARNING
+		SUCCESS, FAIL, WARNING
 	}
 	private String eventId;
+	private int subErrorNum;
 	public String getEventId() {
 		return eventId;
 	}
@@ -42,6 +43,12 @@ public class EventLog {
 	}
 	public void setApp(String app) {
 		this.app = app;
+	}
+	public int getSubErrorNum() {
+		return subErrorNum;
+	}
+	public void setSubErrorNum(int subErrorNum) {
+		this.subErrorNum = subErrorNum;
 	}
 	private StatusEnum status;
 	private String message;

@@ -1,5 +1,6 @@
 package org.chenile.filewatch.init;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.chenile.base.exception.ServerException;
@@ -53,6 +54,14 @@ public class FileWatchSubscribersInitializer {
 					operationDefinition.getName() + " misconfigured. File Watch  subscribed to " + fileWatchId +
 					" does not exist in the file watch configuration.");
 		}
+		// Record class must match the class accepted by the body of the operation
+		if (!fwd.getRecordClass().equals(operationDefinition.getInput())) {
+			throw new ServerException(ErrorCodes.MISCONFIGURATION.getSubError(), "Operation " + s.getId() + "." +
+					operationDefinition.getName() + " misconfigured. Watch ID subscribed to " + fileWatchId +
+					" has a type " + fwd.getRecordClass() + " that does not match the type of body input "
+					+ operationDefinition.getInput() + " for this operation.");
+		}
+		
 		fwd.addSubscriber(new SubscriberVO(s,operationDefinition));
 	}
 

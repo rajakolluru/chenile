@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
+import org.chenile.base.exception.ServerException;
+import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.filewatch.model.FileWatchDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,7 +46,9 @@ public class FileWatcherExecutorService {
 		this.fileSystem = fileSystem;
 		try {
 			this.watcher = fileSystem.newWatchService();
-		} catch (IOException e) {			
+		} catch (IOException e) {
+			throw new ServerException(ErrorCodes.SERVICE_EXCEPTION.getSubError(), 
+					"Cannot instantiate File watcher service for file system " + fileSystem, e);
 		}
 	}
 		
@@ -72,8 +76,9 @@ public class FileWatcherExecutorService {
 			processExisting(fileWatchDefinition,watchDir,processedDir);
 			
 		} catch (IOException e) {
-			// TODO log errors
-			e.printStackTrace();
+			throw new ServerException(ErrorCodes.SERVICE_EXCEPTION.getSubError(),
+					"Cannot register file watch definition with watch ID " + fileWatchDefinition.getFileWatchId() +
+					" and watch directory = " + watchDir + " Have you set up the chenile.properties correctly?",e);
 		}
 	}
 	
@@ -85,7 +90,10 @@ public class FileWatcherExecutorService {
 				fileProcessor.processFile(fileWatchDefinition,path, processedDir); 
 			});
 		} catch (IOException e) {
-			// log the trace
+			throw new ServerException(ErrorCodes.SERVICE_EXCEPTION.getSubError(),
+					"Cannot process existing files in " + watchDir + 
+					" configured in file watch definition with watch ID " + fileWatchDefinition.getFileWatchId() 
+					,e);
 		}
 	}
 	

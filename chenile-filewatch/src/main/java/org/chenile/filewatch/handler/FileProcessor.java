@@ -9,6 +9,7 @@ import java.util.Properties;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.model.SubscriberVO;
+import org.chenile.filewatch.errorcodes.ErrorCodes;
 import org.chenile.filewatch.model.FileWatchDefinition;
 import org.chenile.filewatch.reader.CsvReader;
 import org.chenile.filewatch.reader.JsonReader;
@@ -37,6 +38,7 @@ public class FileProcessor {
 	public static final String LAST_PROPERTY = "last.property";
 	
 	@Autowired private ChenileEntryPoint chenileEntryPoint;
+	@Autowired private FileWatchEventLogger eventLogger;
 	private Path processedDir;
 	
 	public void processFile(FileWatchDefinition fileWatchDefinition, Path fileDiscovered,
@@ -50,7 +52,9 @@ public class FileProcessor {
 		
 		if (headers == null) return;
 		if (!headers.containsKey(ACTUAL_FILE_NAME) || !headers.containsKey(ACTUAL_FILE_ENCODING)) {
-			// TODO log error that it could not find the keys expected
+			eventLogger.logError(ErrorCodes.MISSING_HEADER_PROPERTIES.getSubError(),
+					"Header file " + filename + " does not contain required headers "
+					+ ACTUAL_FILE_NAME + " or " + ACTUAL_FILE_ENCODING);
 			return;
 		}
 		Path recordsFile = fileDiscovered.getParent().resolve(headers.getProperty(ACTUAL_FILE_NAME));	
@@ -69,7 +73,8 @@ public class FileProcessor {
 			Path target = processedDir.resolve(lastPart);
 			Files.move(file, target);
 		} catch (IOException e) {
-			// TODO log
+			eventLogger.logError(ErrorCodes.CANNOT_MOVE_TO_PROCESSED.getSubError(),
+					"Cannot move the file " + file + " to processed directory " + processedDir, e);
 			e.printStackTrace();
 		}
 	}
@@ -81,12 +86,16 @@ public class FileProcessor {
             if (props.containsKey(LAST_PROPERTY)) {
             	props.remove(LAST_PROPERTY);
             }else {
-            	// TODO - log
+            	eventLogger.logWarning(
+            			ErrorCodes.MISSING_HEADER_PROPERTIES.getSubError(),
+            			"Header file " + file + " does not contain the expected property "
+            			+ LAST_PROPERTY + " Ignoring it");
             	return null;
             }
             return props;
         } catch (IOException ex) {
-        	// TODO - log
+        	eventLogger.logError(ErrorCodes.CANNOT_PROCESS_FILE.getSubError(), 
+        			"Cannot read Header file " + file, ex);
         	return null;
         }	
 	}
@@ -98,9 +107,10 @@ public class FileProcessor {
 				invokeServicesPerRecord(fileWatchDefinition,o,headers);
 			}
 		} catch (Exception e) {
-			// TODO  - log
+			eventLogger.logError(ErrorCodes.CANNOT_PROCESS_FILE.getSubError(), 
+					"Error in reading file " + file, e);
 			e.printStackTrace();
-		}		
+		}		 
 	}
 	
 	private Iterable<Object> fileReader(FileWatchDefinition fileWatchDefinition, 
@@ -111,6 +121,8 @@ public class FileProcessor {
 		case "JSON":
 			return new JsonReader(file,fileWatchDefinition.getRecordClass());
 		}
+		eventLogger.logError(ErrorCodes.INVALID_ENCODING_TYPE.getSubError(), 
+				"Header has invalid encoding type " + encodingType);
 		return null;
 	}
 
@@ -125,7 +137,15 @@ public class FileProcessor {
 			exchange.setOperationDefinition(subscriber.operationDefinition);
 			copyHeadersToExchange(exchange,headers);
 			exchange.setBody(record);
-			chenileEntryPoint.execute(exchange);
+			try {
+				chenileEntryPoint.execute(exchange);
+				eventLogger.logSuccess(exchange.getResponse());
+			}catch(Throwable t) {
+				eventLogger.logError(ErrorCodes.ERROR_IN_SERVICE.getSubError(),
+						"Error in invoking the service " + subscriber.serviceDefinition.getId() +"."
+						+ subscriber.operationDefinition.getName(),
+						t);
+			}
 		}
 	}
 
