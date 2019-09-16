@@ -1,5 +1,0 @@
-{
-	"id": "testEvent",
-	"topic": "testTopic",
-	"type": "org.chenile.kafka.test.event.TestEvent"
-}

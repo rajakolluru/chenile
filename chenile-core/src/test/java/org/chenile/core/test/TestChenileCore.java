@@ -39,7 +39,6 @@ public class TestChenileCore {
 	}
 	
 	private ChenileServiceDefinition findService(String serviceName) {
-		System.out.println("services = " + chenileConfiguration.getServices());
 		return chenileConfiguration.getServices().get(serviceName);
 	}
 	

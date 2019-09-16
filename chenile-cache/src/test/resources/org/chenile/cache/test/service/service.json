@@ -1,0 +1,28 @@
+{
+  "name": "fooService",
+  "id": "fooService",
+  "operations":
+  [
+   {
+    "name": "increment",
+    "auditable": "false",
+    "url": "/increment",
+    "httpMethod": "GET",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "input": "org.chenile.cache.test.service.FooModel",
+    "fileWatchId": "foo",
+    "output": "",
+    "cacheId": "cache1",
+    "params":
+    [
+      {
+        "name": "model",
+        "type": "BODY",
+        "description": "saves the model object"
+      }
+    ]
+  }
+  ]
+}
