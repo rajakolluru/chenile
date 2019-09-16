@@ -68,8 +68,7 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
         	if(od.getBodyTypeSelectorComponentName() != null) {
             	od.setBodyTypeSelector((Command<ChenileExchange>)applicationContext.getBean(od.getBodyTypeSelectorComponentName()));
             }
-        }
-        
+        }       
         validate(csd);
         return csd;
     } 

@@ -3,9 +3,10 @@ package org.chenile.filewatch.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.chenile.core.model.ModuleAware;
 import org.chenile.core.model.SubscriberVO;
 
-public class FileWatchDefinition {
+public class FileWatchDefinition implements ModuleAware{
 	@Override
 	public String toString() {
 		return "FileWatchDefinition [fileWatchId=" + fileWatchId + ", originatingModuleName=" + originatingModuleName

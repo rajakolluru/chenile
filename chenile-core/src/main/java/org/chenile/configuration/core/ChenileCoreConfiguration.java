@@ -3,12 +3,13 @@ package org.chenile.configuration.core;
 
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
-import org.chenile.core.entrypoint.ChenileInterceptorChain;
 import org.chenile.core.event.EventLogger;
 import org.chenile.core.event.EventProcessor;
 import org.chenile.core.init.ChenileEventInitializer;
 import org.chenile.core.init.ChenileEventSubscribersInitializer;
 import org.chenile.core.init.ChenileServiceInitializer;
+import org.chenile.core.interceptors.ChenileInterceptorChain;
+import org.chenile.core.interceptors.ConstructApiInvocation;
 import org.chenile.core.interceptors.ServiceInvoker;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.transform.TransformationClassSelector;
@@ -66,7 +67,6 @@ public class ChenileCoreConfiguration {
     
     @Bean
     public ChenileServiceInitializer chenileServiceInitializer() {
-    	System.out.println("Chenile core services discovered = " + chenileServiceJsonResources);
     	return new ChenileServiceInitializer(chenileServiceJsonResources);
     }
     
@@ -83,6 +83,10 @@ public class ChenileCoreConfiguration {
     @Bean 
     public ChenileEntryPoint chenileEntryPoint() {
     	return new ChenileEntryPoint();
+    }
+    
+    @Bean ConstructApiInvocation constructApiInvocation() {
+    	return new ConstructApiInvocation();
     }
     
     @Bean
@@ -109,11 +113,6 @@ public class ChenileCoreConfiguration {
     	return new Chain<ChenileExchange>();
     }
     
-    @Bean
-    public ChenileInterceptorChain chenileInterceptorChain() {
-    	return new ChenileInterceptorChain();
-    }
-    
     /* 
      * The transformation framework
      */
@@ -129,7 +128,9 @@ public class ChenileCoreConfiguration {
 		return new EventProcessor(eventLogger);
 	}
 	
-	
+	@Bean public ChenileInterceptorChain chenileInterceptorChain() {
+		return new ChenileInterceptorChain();
+	}
 
 	
 }

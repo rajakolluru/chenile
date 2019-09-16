@@ -30,8 +30,7 @@ public class Chain<InputType> extends CommandBase<InputType> implements Command<
 		}
 
 	}
-	
-	
+		
 	/**
 	 * AN extension point to allow sub classes to stop a chain if a
 	 * condition is satisfied.

@@ -6,7 +6,7 @@ public class ChenileServiceInitializer extends AbstractServiceInitializer{
 	
 	private Resource[] chenileServiceJsonResources;
 
-	public ChenileServiceInitializer(Resource[] chenileServiceJsonResources) {
+	public ChenileServiceInitializer(Resource[] chenileServiceJsonResources) {	
 		this.chenileServiceJsonResources = chenileServiceJsonResources;
 	}
 

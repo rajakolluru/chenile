@@ -3,7 +3,7 @@ package org.chenile.core.model;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ChenileEventDefinition {
+public class ChenileEventDefinition implements ModuleAware{
 	
 	/**
 	 * Event ID. All chenile services listen for an event specified by this ID.

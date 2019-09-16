@@ -1,8 +1,8 @@
 package org.chenile.core.context;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.chenile.core.model.ChenileServiceDefinition;
@@ -30,6 +30,11 @@ public class ChenileExchange implements Serializable, ChainContextContainer {
 	private Map<String, Object> headers = new HashMap<>();
 	
 	private Object body = null;
+	/**
+	 * An object internally used by Chenile to invoke the API. 
+	 * Touch this at your own risk!
+	 */
+	private List<Object> apiInvocation;
 	/**
 	 * ChenileServiceDefinition & OperationDefinition are expected to be set by the protocol specific end point.
 	 * Example: in chenile-http the URL called will be mapped to the ChenileServiceDefinition and OperationDefinition.
@@ -173,4 +178,13 @@ public class ChenileExchange implements Serializable, ChainContextContainer {
 	public void setBodyType(Class<?> bodyType) {
 		this.bodyType = bodyType;
 	}
+
+	public List<Object> getApiInvocation() {
+		return apiInvocation;
+	}
+
+	public void setApiInvocation(List<Object> apiInvocation) {
+		this.apiInvocation = apiInvocation;
+	}
+
 }

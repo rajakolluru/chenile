@@ -21,6 +21,18 @@ public class OperationDefinition {
      * The actual method in the service that needs to be invoked. 
      */
     protected String methodName;
+    /**
+     * If this service needs to be cached then this is the cache settings ID
+     */
+    protected String cacheId;
+	public String getCacheId() {
+		return cacheId;
+	}
+
+	public void setCacheId(String cacheId) {
+		this.cacheId = cacheId;
+	}
+
 	protected String description;
     protected String componentName;
     protected HTTPMethod httpMethod;

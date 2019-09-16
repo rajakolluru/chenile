@@ -43,6 +43,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.chenile</groupId>
+				<artifactId>chenile-cache</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.chenile</groupId>
 				<artifactId>chenile-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
