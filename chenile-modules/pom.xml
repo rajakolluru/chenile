@@ -9,6 +9,7 @@
 		<module>../chenile-base</module>
 		<module>../chenile-core</module>
 		<module>../chenile-cache</module>
+		<module>../chenile-proxy</module>
 		<module>../chenile-http</module>
 		<module>../chenile-kafka</module>
 		<module>../chenile-filewatch</module>

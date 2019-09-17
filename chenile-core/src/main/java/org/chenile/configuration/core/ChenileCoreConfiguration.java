@@ -2,6 +2,7 @@ package org.chenile.configuration.core;
 
 
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.context.ChenileExchangeBuilder;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.event.EventLogger;
 import org.chenile.core.event.EventProcessor;
@@ -132,5 +133,8 @@ public class ChenileCoreConfiguration {
 		return new ChenileInterceptorChain();
 	}
 
+	@Bean public ChenileExchangeBuilder chenileExchangeBuilder() {
+		return new ChenileExchangeBuilder();
+	}
 	
 }

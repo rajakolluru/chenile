@@ -45,6 +45,10 @@ public class BaseChenileInterceptor implements Command<ChenileExchange>{
 	 */
 	@Override
 	public void execute(ChenileExchange exchange) throws Exception {
+		if (bypassInterception(exchange)) {
+			doContinue(exchange);
+			return;
+		}
 		doPreProcessing(exchange);
 		doContinue(exchange);
 		doPostProcessing(exchange);
@@ -66,6 +70,15 @@ public class BaseChenileInterceptor implements Command<ChenileExchange>{
 	 */
 	protected final void doContinue(ChenileExchange exchange) throws Exception{
 		exchange.getChainContext().doContinue();
+	}
+	
+	/**
+	 * Over-ride this to bypass interception in special circumstances
+	 * @param exchange
+	 * @return
+	 */
+	protected boolean bypassInterception(ChenileExchange exchange) {
+		return false;
 	}
 
 }

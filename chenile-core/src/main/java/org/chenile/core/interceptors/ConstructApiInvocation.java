@@ -20,6 +20,7 @@ public class ConstructApiInvocation extends BaseChenileInterceptor{
 
 	@Override
 	protected void doPreProcessing(ChenileExchange exchange) {
+		if (exchange.getApiInvocation() != null) return;
 		OperationDefinition operationDefinition = exchange.getOperationDefinition();
 		List<Object> invokableParams=new ArrayList<>();
 	      

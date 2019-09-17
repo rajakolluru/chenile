@@ -1,0 +1,34 @@
+{
+  "name": "_fooService_",
+  "id": "_fooService_",
+  "operations":
+  [
+   {
+    "name": "increment",
+    "auditable": "false",
+    "url": "/increment",
+    "httpMethod": "GET",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "input": "org.chenile.proxy.test.service.FooModel",
+    "fileWatchId": "foo",
+    "output": "",
+    "cacheId": "cache1",
+    "params":
+    [
+      {
+        "name": "increment",
+        "type": "HEADER",
+        "paramClass": "int",
+        "description": "Specifies the number that we should increment by"
+      },
+      {
+        "name": "model",
+        "type": "BODY",
+        "description": "saves the model object"
+      }
+    ]
+  }
+  ]
+}

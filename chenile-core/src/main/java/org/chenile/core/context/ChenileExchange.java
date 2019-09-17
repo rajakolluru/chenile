@@ -55,6 +55,7 @@ public class ChenileExchange implements Serializable, ChainContextContainer {
 	 * Instead, they will just call the {@link ChainContext#doContinue()} method if the request needs to proceed beyond.
 	 */
 	private ChainContext chainContext;
+	private boolean localInvocation;
 	
 	public ChenileExchange() {}
 	
@@ -186,5 +187,14 @@ public class ChenileExchange implements Serializable, ChainContextContainer {
 	public void setApiInvocation(List<Object> apiInvocation) {
 		this.apiInvocation = apiInvocation;
 	}
+
+	public void setLocalInvocation(boolean b) {
+		this.localInvocation = b;		
+	}
+	
+	public boolean isLocalInvocation() {
+		return localInvocation;
+	}
+
 
 }

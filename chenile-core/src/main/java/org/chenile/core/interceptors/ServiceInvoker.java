@@ -27,7 +27,8 @@ public class ServiceInvoker implements Command<ChenileExchange>{
 			throw new ServerException(ErrorCodes.CANNOT_INVOKE_TARGET.getSubError(), 
 					ErrorCodes.CANNOT_INVOKE_TARGET.name() + ": " + e.getMessage(),e);
 		} catch (InvocationTargetException e) {
-			ExceptionHandler.handleException(e);
+			e.printStackTrace();
+			ExceptionHandler.handleException(e);			
 		}
 	}
 
