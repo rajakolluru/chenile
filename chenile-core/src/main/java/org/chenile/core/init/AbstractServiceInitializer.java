@@ -92,15 +92,15 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
     	for (ParamDefinition pd: od.getParams()) {
     		if (pd.getType() == HttpBindingType.BODY) {
     			if (od.getInput() == null && od.getBodyTypeSelectorComponentName() == null) {
-    				throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),csd.getName() + "." + od.getName() + "." + pd.getName() + " specifies type as body but operation does not specify input or body type selector"); 
+    				throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),csd.getId() + "." + od.getName() + "." + pd.getName() + " specifies type as body but operation does not specify input or body type selector"); 
     			}
     			if (pd.getParamClass() == null) {
-    				System.err.println("setting the param class for " + csd.getName() + "." + od.getName() + " to " + od.getInput());
+    				System.err.println("setting the param class for " + csd.getId() + "." + od.getName() + " to " + od.getInput());
     				pd.setParamClass(od.getInput());
     			}
     		}
     		if (pd.getParamClass() == null) {
-    			System.err.println("Setting the param class for " + csd.getName() + "." + od.getName() + " to String");
+    			System.err.println("Setting the param class for " + csd.getId() + "." + od.getName() + " to String");
     			pd.setParamClass(String.class); 
     		}
     		paramTypes.add(pd.getParamClass());
@@ -111,7 +111,7 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
     			paramTypes.toArray(parameterTypes));
     		od.setMethod(method);
     	}catch(NoSuchMethodException e) {
-    		throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),"Operation " + csd.getName() + "." + od.getName() + " is not found. Did you define the paramClass properly?",e);
+    		throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),"Operation " + csd.getId() + "." + od.getName() + " is not found. Did you define the paramClass properly?",e);
     	}
     	
     }
