@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Raja Shankar Kolluru
  *
  */
-public class LocalProxyBuilder {
+public class ProxyBuilder {
 
 	public <T> T buildProxy(Class<T> interfaceToProxy, String serviceName, HeaderCopier headerCopier) {
 		@SuppressWarnings("unchecked")

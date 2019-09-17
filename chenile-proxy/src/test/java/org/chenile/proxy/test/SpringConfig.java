@@ -2,7 +2,7 @@ package org.chenile.proxy.test;
 
 import org.chenile.core.context.EventLog;
 import org.chenile.core.event.EventLogger;
-import org.chenile.proxy.builder.LocalProxyBuilder;
+import org.chenile.proxy.builder.ProxyBuilder;
 import org.chenile.proxy.test.service.FooInterceptor;
 import org.chenile.proxy.test.service.FooService;
 import org.chenile.proxy.test.service.FooServiceImpl;
@@ -22,7 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("unittest")
 public class SpringConfig extends SpringBootServletInitializer{
 	
-	@Autowired LocalProxyBuilder localProxyBuilder;
+	@Autowired ProxyBuilder localProxyBuilder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringConfig.class, args);
