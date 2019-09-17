@@ -29,7 +29,7 @@ public class SpringConfig extends SpringBootServletInitializer{
 	}
 	
 	@Bean @Primary public FooService fooService() {
-		return localProxyBuilder.buildProxy(FooService.class, "_fooService_",null);
+		return localProxyBuilder.buildProxy(FooService.class, "fooService",null);
 	}
 	
 	@Bean("_fooService_") public FooService _fooService_() {

@@ -1,6 +1,6 @@
 {
   "name": "_fooService_",
-  "id": "_fooService_",
+  "id": "fooService",
   "operations":
   [
    {

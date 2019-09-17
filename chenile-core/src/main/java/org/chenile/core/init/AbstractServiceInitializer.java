@@ -75,7 +75,7 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
     
     private void validate(ChenileServiceDefinition csd) {
 		try {
-			csd.setServiceReference(applicationContext.getBean(csd.getId()));
+			csd.setServiceReference(applicationContext.getBean(csd.getName()));
 		} catch (Exception e) {
 			throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),"Service " + csd.getName() + " is not configured in spring",e);
 		}
