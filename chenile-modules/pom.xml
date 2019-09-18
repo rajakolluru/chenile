@@ -13,6 +13,7 @@
 		<module>../chenile-http</module>
 		<module>../chenile-kafka</module>
 		<module>../chenile-filewatch</module>
+		<module>../chenile-scheduler</module>
 	</modules>
 	<parent>
 		<groupId>org.chenile</groupId>

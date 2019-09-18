@@ -33,6 +33,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.chenile</groupId>
+				<artifactId>chenile-scheduler</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.chenile</groupId>
 				<artifactId>chenile-kafka</artifactId>
 				<version>${project.version}</version>
 			</dependency>

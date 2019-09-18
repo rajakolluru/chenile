@@ -10,27 +10,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>chenile-cache</artifactId>
+    <artifactId>chenile-scheduler</artifactId>
 
     <dependencies>
     	<dependency>
             <groupId>org.chenile</groupId>
             <artifactId>chenile-core</artifactId>
         </dependency>
-        
-        <dependency>
-            <groupId>org.chenile</groupId>
-            <artifactId>chenile-proxy</artifactId>
-        </dependency>
-        
-        <dependency>
-    		<groupId>com.hazelcast</groupId>
-		    <artifactId>hazelcast</artifactId>
-		</dependency>
-		
+              
 		<dependency>
-    		<groupId>com.hazelcast</groupId>
-		    <artifactId>hazelcast-client</artifactId>
+		    <groupId>org.quartz-scheduler</groupId>
+		    <artifactId>quartz</artifactId>
 		</dependency>
         
         <dependency>

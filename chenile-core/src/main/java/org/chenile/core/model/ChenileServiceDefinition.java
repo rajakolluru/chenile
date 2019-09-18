@@ -97,5 +97,4 @@ public class ChenileServiceDefinition  {
 	public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
 	}
-
 }

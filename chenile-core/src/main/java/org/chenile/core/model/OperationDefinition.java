@@ -28,6 +28,20 @@ public class OperationDefinition {
 	public String getCacheId() {
 		return cacheId;
 	}
+	
+	/**
+	 *  Should this operation be scheduled to run at regular intervals? 
+	 *  If so, the scheduler information is given here
+	 */
+	protected SchedulerInfo schedulerInfo;
+
+	public SchedulerInfo getSchedulerInfo() {
+		return schedulerInfo;
+	}
+
+	public void setSchedulerInfo(SchedulerInfo schedulerInfo) {
+		this.schedulerInfo = schedulerInfo;
+	}
 
 	public void setCacheId(String cacheId) {
 		this.cacheId = cacheId;

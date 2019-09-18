@@ -9,10 +9,8 @@ import java.util.List;
 
 import org.chenile.base.exception.ServerException;
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.context.ChenileExchangeBuilder;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
-import org.chenile.core.model.ChenileConfiguration;
-import org.chenile.core.model.ChenileServiceDefinition;
-import org.chenile.core.model.OperationDefinition;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TestChenileCore {
 
 	@Autowired private ChenileEntryPoint chenileEntryPoint;
-	@Autowired private ChenileConfiguration chenileConfiguration;
+	@Autowired private ChenileExchangeBuilder chenileExchangeBuilder;
+	
+	private ChenileExchange makeExchange(String serviceName,String operationName) {
+		return chenileExchangeBuilder.makeExchange(serviceName, operationName,null);
+	}
 	
 	@Test
 	public void testInterception() throws Exception{
@@ -38,27 +40,6 @@ public class TestChenileCore {
 		assertEquals("interception order calling order does not match expected",expected, exchange.getResponse());
 	}
 	
-	private ChenileServiceDefinition findService(String serviceName) {
-		return chenileConfiguration.getServices().get(serviceName);
-	}
-	
-	private OperationDefinition findOperationInService(ChenileServiceDefinition serviceDefinition, String opName) {
-		for (OperationDefinition od: serviceDefinition.getOperations()) {
-			if (od.getName().equals(opName)){
-				return od;
-			}
-		}
-		return null;
-	}
-	
-	private ChenileExchange makeExchange(String serviceName, String opName) {
-		ChenileServiceDefinition serviceDefinition = findService(serviceName);
-		OperationDefinition operationDefinition = findOperationInService(serviceDefinition, opName);
-		ChenileExchange exchange = new ChenileExchange();
-		exchange.setServiceDefinition(serviceDefinition);
-		exchange.setOperationDefinition(operationDefinition);
-		return exchange;
-	}
 	
 	@Test public void testServiceInvokerWithHeaderStringArgument() throws Exception{
 		ChenileExchange exchange = makeExchange("mockService","s1");
