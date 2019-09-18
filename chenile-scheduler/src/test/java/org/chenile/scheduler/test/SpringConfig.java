@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @Configuration
 @SpringBootApplication(scanBasePackages = { "org.chenile.configuration" })
-@PropertySource("classpath:org/chenile/cache/test/TestChenileCache.properties")
+@PropertySource("classpath:org/chenile/scheduler/test/TestChenileScheduler.properties")
 @ActiveProfiles("unittest")
 public class SpringConfig extends SpringBootServletInitializer{
 	

@@ -1,13 +1,9 @@
 package org.chenile.scheduler.test.service;
 
-import org.chenile.scheduler.test.TestChenileCache;
+import java.util.Date;
 
 public class FooService {
-	public FooModel increment(FooModel foo) {
-		FooModel fooRet = new FooModel();
-		int inc = foo.getIncrement();
-		fooRet.setIncrement(++inc);
-		TestChenileCache.fooServiceInvoked = true;
-		return fooRet;
+	public void schedule() {
+		System.out.println("I am executed at: " + new Date());
 	}
 }
