@@ -83,7 +83,11 @@ public class SchedulerBuilder implements DisposableBean{
 		jdm.put(SERVICE_DEFINITION, serviceDefinition);
 		jdm.put(OPERATION_DEFINITION, operationDefinition);
 		jdm.put(CHENILE_ENTRY_POINT, chenileEntryPoint);
-		
+		if (schedulerInfo.getJobMetadata() != null) {
+			schedulerInfo.getJobMetadata().forEach((k,v)->{
+				jdm.put(k,v);
+			});
+		}
 		JobDetail job = newJob(ScheduledJob.class)
 	             .withIdentity(schedulerInfo.getJobName())
 	             .setJobData(jdm)
