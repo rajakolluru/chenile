@@ -20,6 +20,7 @@ public class ScheduledJob implements Job {
 		ChenileExchange exchange = new ChenileExchange() ;
 		exchange.setServiceDefinition(getServiceDefinition(context));
 		exchange.setOperationDefinition(getOperationDefinition(context));
+		exchange.setBody(context); // just in case someone wants to use it
 		getChenileEntryPoint(context).execute(exchange); 
 	}
 	

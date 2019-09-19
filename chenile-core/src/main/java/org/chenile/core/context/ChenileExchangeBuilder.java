@@ -3,6 +3,7 @@ package org.chenile.core.context;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.OperationDefinition;
+import org.chenile.core.model.SubscriberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ChenileExchangeBuilder {
@@ -28,5 +29,11 @@ public class ChenileExchangeBuilder {
 		exchange.setOperationDefinition(operationDefinition);
 		if (headerCopier != null) headerCopier.copy(exchange);
 		return exchange;
+	}
+
+	public SubscriberVO makeSubscriberVO(String serviceName, String operationName) {
+		ChenileServiceDefinition serviceDefinition = findService(serviceName);
+		OperationDefinition operationDefinition = findOperationInService(serviceDefinition, operationName);
+		return new SubscriberVO(serviceDefinition,operationDefinition);
 	}
 }
