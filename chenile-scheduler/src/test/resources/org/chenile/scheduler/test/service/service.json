@@ -16,7 +16,6 @@
 			"cacheId": "cache1",
 			"schedulerInfo": {
 				"cronSchedule": "0/5 * * * * ? *",
-				"triggerName": "",
 				"jobName": "Test Job",
 				"jobDescription": "",
 				"triggerGroup": "Test trigger group",
