@@ -9,4 +9,9 @@ public class FooService {
 		System.out.println("I am executed at: " + new Date());
 		TestChenileScheduler.latch.countDown();
 	}
+	
+	public void sch() {
+		System.out.println("sch: I am executed at: " + new Date());
+		TestChenileScheduler.latch1.countDown();
+	}
 }

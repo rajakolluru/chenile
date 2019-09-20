@@ -21,6 +21,18 @@
 				"triggerGroup": "Test trigger group",
 				"triggerName": "Test trigger"
 			}
+		},
+		{
+			"name": "sch",
+			"auditable": "false",
+			"url": "/sch",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"secure": false,
+			"input": "",
+			"fileWatchId": "foo",
+			"output": ""
 		}
 	]
 }
