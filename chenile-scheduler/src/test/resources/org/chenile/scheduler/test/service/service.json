@@ -32,7 +32,20 @@
 			"secure": false,
 			"input": "",
 			"fileWatchId": "foo",
-			"output": ""
+			"output": "",
+			"params":[	
+			      {
+			        "name": "x",
+			        "type": "HEADER",
+			        "description": "some param x that was passed in the job data"
+			      },
+			      {
+			        "name": "index",
+			        "type": "HEADER",
+			        "paramClass": "int",
+			        "description": "some int param index that was passed in the job data"
+			      }
+			]
 		}
 	]
 }

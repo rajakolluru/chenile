@@ -1,5 +1,6 @@
 package org.chenile.scheduler.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
@@ -25,6 +26,8 @@ public class TestChenileScheduler {
 	@Autowired SchedulerBuilder schedulerBuilder;
     public static CountDownLatch latch = new CountDownLatch(1);
     public static CountDownLatch latch1 = new CountDownLatch(1);
+    public static String expectedIndex = "286";
+    public static int actualIndex;
       
     @Test public void testIt() throws Exception { 	
 		assertTrue("Failed: timed out in 10 seconds without executing the test",
@@ -38,10 +41,12 @@ public class TestChenileScheduler {
 		schedulerInfo.setTriggerName("name1");
 		Map<String,String> map = new HashMap<>();
 		map.put("x", "y");
+		map.put("index", expectedIndex);
 		schedulerInfo.setJobMetadata(map);
 		schedulerBuilder.scheduleJob("fooService", "sch", schedulerInfo);
 		assertTrue("Failed: timed out in 10 seconds without executing the test - second",
 				latch1.await(10, TimeUnit.SECONDS));
+		assertEquals(expectedIndex, actualIndex + "");
     }
     
     

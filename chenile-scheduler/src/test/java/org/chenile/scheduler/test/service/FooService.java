@@ -6,12 +6,11 @@ import org.chenile.scheduler.test.TestChenileScheduler;
 
 public class FooService {
 	public void schedule() {
-		System.out.println("I am executed at: " + new Date());
 		TestChenileScheduler.latch.countDown();
 	}
 	
-	public void sch() {
-		System.out.println("sch: I am executed at: " + new Date());
+	public void sch(String x, int index) {
+		TestChenileScheduler.actualIndex = index;
 		TestChenileScheduler.latch1.countDown();
 	}
 }
