@@ -39,7 +39,7 @@ public class TestChenileScheduler {
 		schedulerInfo.setJobName("jobname");
 		schedulerInfo.setTriggerGroup("grp1");
 		schedulerInfo.setTriggerName("name1");
-		Map<String,String> map = new HashMap<>();
+		Map<String,Object> map = new HashMap<>();
 		map.put("x", "y");
 		map.put("index", expectedIndex);
 		schedulerInfo.setJobMetadata(map);

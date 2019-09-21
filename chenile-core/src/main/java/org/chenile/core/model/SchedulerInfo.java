@@ -7,7 +7,7 @@ public class SchedulerInfo {
 	private String triggerName;
 	private String jobName;
 	
-	private Map<String,String> jobMetadata;
+	private Map<String,Object> jobMetadata;
 	public String getJobName() {
 		return jobName;
 	}
@@ -51,11 +51,11 @@ public class SchedulerInfo {
 		this.cronSchedule = cronSchedule;
 	}
 
-	public Map<String,String> getJobMetadata() {
+	public Map<String,Object> getJobMetadata() {
 		return jobMetadata;
 	}
 
-	public void setJobMetadata(Map<String,String> jobMetadata) {
+	public void setJobMetadata(Map<String,Object> jobMetadata) {
 		this.jobMetadata = jobMetadata;
 	}
 }
