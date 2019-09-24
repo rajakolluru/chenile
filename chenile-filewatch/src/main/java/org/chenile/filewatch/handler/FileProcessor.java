@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Properties;
 
 import org.chenile.core.context.ChenileExchange;
@@ -71,7 +72,7 @@ public class FileProcessor {
 		try {
 			Path lastPart = file.getFileName();
 			Path target = processedDir.resolve(lastPart);
-			Files.move(file, target);
+			Files.move(file, target,StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
 			eventLogger.logError(ErrorCodes.CANNOT_MOVE_TO_PROCESSED.getSubError(),
 					"Cannot move the file " + file + " to processed directory " + processedDir, e);

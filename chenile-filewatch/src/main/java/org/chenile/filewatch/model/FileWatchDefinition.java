@@ -56,4 +56,45 @@ public class FileWatchDefinition implements ModuleAware{
 	}
 	private String dirToWatch;
 	private Set<SubscriberVO> subscribers = new HashSet<>();
+	
+	private String templateName;
+	private String template;
+	private String description;
+	/**
+	 * @return the template
+	 */
+	public String getTemplate() {
+		return template;
+	}
+	/**
+	 * @param template the template to set
+	 */
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	/**
+	 * @return the templateName
+	 */
+	public String getTemplateName() {
+		return templateName;
+	}
+	/**
+	 * @param templateName the templateName to set
+	 */
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
+	}
+	
 }
