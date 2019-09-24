@@ -25,7 +25,7 @@ public class ProxyBuilder {
 	public <T> T buildProxy(Class<T> interfaceToProxy, String serviceName, HeaderCopier headerCopier) {
 		@SuppressWarnings("unchecked")
 		T proxy = (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
-				new Class[] { interfaceToProxy }, new ProxyClass(serviceName, headerCopier));
+				new Class[] { interfaceToProxy }, new ProxyClass(interfaceToProxy,serviceName, headerCopier));
 		return proxy;
 	}
 
@@ -37,20 +37,32 @@ public class ProxyBuilder {
 	private class ProxyClass implements InvocationHandler {
 		private String serviceName;
 		private HeaderCopier headerCopier;
+		private Class<?> interfaceToProxy;
 
-		public ProxyClass(String serviceName, HeaderCopier headerCopier) {
+		public ProxyClass(Class<?> interfaceToProxy, String serviceName, HeaderCopier headerCopier) {
 			this.headerCopier = headerCopier;
 			this.serviceName = serviceName;
+			this.interfaceToProxy = interfaceToProxy;
 		}
 
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			// basically invoke the methods from this class itself if they are not declared in the interface 
+			// that we are trying to proxy.
+			if (!method.getDeclaringClass().equals(interfaceToProxy)){
+				return method.invoke(this, args);
+			}
+			
 			ChenileExchange exchange = chenileExchangeBuilder.makeExchange(serviceName, method.getName(), headerCopier);
 			if (args != null)
 				populateArgs(exchange, args);
 			exchange.setLocalInvocation(true);
 			chenileEntryPoint.execute(exchange);
 			return exchange.getResponse();
+		}
+		
+		public String toString() {
+			return "ProxyBuilder.Proxy." + serviceName ;
 		}
 
 		private void populateArgs(ChenileExchange exchange, Object[] args) {

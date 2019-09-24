@@ -20,9 +20,22 @@ public class ScheduledJob implements Job {
 		ChenileExchange exchange = new ChenileExchange() ;
 		exchange.setServiceDefinition(getServiceDefinition(context));
 		exchange.setOperationDefinition(getOperationDefinition(context));
+		// This enables methods to accept job map keys as method params
+		// See the test case sch method for an example
+		copyHeaders(exchange,context);
+		exchange.setBody(context); // just in case someone wants to use it
 		getChenileEntryPoint(context).execute(exchange); 
 	}
 	
+	
+	private void copyHeaders(ChenileExchange exchange, JobExecutionContext context) {
+		if (context.getMergedJobDataMap() == null) return;
+		context.getMergedJobDataMap().forEach((k,v)-> {
+			exchange.setHeader(k, v);
+		});
+		
+	}
+
 	private ChenileServiceDefinition getServiceDefinition(JobExecutionContext context) {
 		return getFromMap(SchedulerBuilder.SERVICE_DEFINITION,context);
 	}

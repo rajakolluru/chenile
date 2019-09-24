@@ -1,9 +1,13 @@
 package org.chenile.core.model;
 
+import java.util.Map;
+
 public class SchedulerInfo {
 	private String cronSchedule;
 	private String triggerName;
 	private String jobName;
+	
+	private Map<String,Object> jobMetadata;
 	public String getJobName() {
 		return jobName;
 	}
@@ -45,5 +49,13 @@ public class SchedulerInfo {
 
 	public void setCronSchedule(String cronSchedule) {
 		this.cronSchedule = cronSchedule;
+	}
+
+	public Map<String,Object> getJobMetadata() {
+		return jobMetadata;
+	}
+
+	public void setJobMetadata(Map<String,Object> jobMetadata) {
+		this.jobMetadata = jobMetadata;
 	}
 }

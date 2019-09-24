@@ -1,13 +1,16 @@
 package org.chenile.scheduler.test.service;
 
-import org.chenile.scheduler.test.TestChenileCache;
+import java.util.Date;
+
+import org.chenile.scheduler.test.TestChenileScheduler;
 
 public class FooService {
-	public FooModel increment(FooModel foo) {
-		FooModel fooRet = new FooModel();
-		int inc = foo.getIncrement();
-		fooRet.setIncrement(++inc);
-		TestChenileCache.fooServiceInvoked = true;
-		return fooRet;
+	public void schedule() {
+		TestChenileScheduler.latch.countDown();
+	}
+	
+	public void sch(String x, int index) {
+		TestChenileScheduler.actualIndex = index;
+		TestChenileScheduler.latch1.countDown();
 	}
 }

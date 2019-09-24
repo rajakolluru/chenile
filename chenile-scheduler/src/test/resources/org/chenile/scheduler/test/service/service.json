@@ -1,28 +1,51 @@
 {
-  "name": "fooService",
-  "id": "fooService",
-  "operations":
-  [
-   {
-    "name": "increment",
-    "auditable": "false",
-    "url": "/increment",
-    "httpMethod": "GET",
-    "produces": "JSON",
-    "consumes": "JSON",
-    "secure":false,
-    "input": "org.chenile.cache.test.service.FooModel",
-    "fileWatchId": "foo",
-    "output": "",
-    "cacheId": "cache1",
-    "params":
-    [
-      {
-        "name": "model",
-        "type": "BODY",
-        "description": "saves the model object"
-      }
-    ]
-  }
-  ]
+	"name": "fooService",
+	"id": "fooService",
+	"operations": [
+		{
+			"name": "schedule",
+			"auditable": "false",
+			"url": "/schedule",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"secure": false,
+			"input": "",
+			"fileWatchId": "foo",
+			"output": "",
+			"cacheId": "cache1",
+			"schedulerInfo": {
+				"cronSchedule": "0/5 * * * * ? *",
+				"jobName": "Test Job",
+				"jobDescription": "",
+				"triggerGroup": "Test trigger group",
+				"triggerName": "Test trigger"
+			}
+		},
+		{
+			"name": "sch",
+			"auditable": "false",
+			"url": "/sch",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"secure": false,
+			"input": "",
+			"fileWatchId": "foo",
+			"output": "",
+			"params":[	
+			      {
+			        "name": "x",
+			        "type": "HEADER",
+			        "description": "some param x that was passed in the job data"
+			      },
+			      {
+			        "name": "index",
+			        "type": "HEADER",
+			        "paramClass": "int",
+			        "description": "some int param index that was passed in the job data"
+			      }
+			]
+		}
+	]
 }

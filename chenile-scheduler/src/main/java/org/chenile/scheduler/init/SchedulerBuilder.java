@@ -5,12 +5,14 @@ import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 import org.chenile.base.exception.ServerException;
+import org.chenile.core.context.ChenileExchangeBuilder;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.SchedulerInfo;
+import org.chenile.core.model.SubscriberVO;
 import org.chenile.scheduler.jobs.ScheduledJob;
 import org.quartz.CronTrigger;
 import org.quartz.JobDataMap;
@@ -39,6 +41,8 @@ public class SchedulerBuilder implements DisposableBean{
 	private Scheduler quartzScheduler;
 	@Autowired
 	private ChenileEntryPoint chenileEntryPoint;
+	@Autowired
+	private ChenileExchangeBuilder chenileExchangeBuilder;
 	
 	public SchedulerBuilder() {
 		super();
@@ -59,24 +63,39 @@ public class SchedulerBuilder implements DisposableBean{
 		quartzScheduler.start();
 	}
 	
+	public void scheduleJob(String serviceName,String operationName, SchedulerInfo schedulerInfo) throws
+	  SchedulerException {
+		SubscriberVO subscriberVo = chenileExchangeBuilder.makeSubscriberVO(serviceName,operationName);
+		scheduleJob(subscriberVo.serviceDefinition, subscriberVo.operationDefinition,schedulerInfo);
+	}
+	
+	
 	private void scheduleJob(ChenileServiceDefinition serviceDefinition, OperationDefinition operationDefinition)
 					throws SchedulerException{
 		if (operationDefinition.getSchedulerInfo() == null) return;
-		SchedulerInfo sinfo = operationDefinition.getSchedulerInfo();
-		
+		scheduleJob(serviceDefinition, operationDefinition,operationDefinition.getSchedulerInfo());
+	}
+	
+	public void scheduleJob(ChenileServiceDefinition serviceDefinition, 
+			OperationDefinition operationDefinition,SchedulerInfo schedulerInfo) throws SchedulerException {
+
 		JobDataMap jdm = new JobDataMap();
 		jdm.put(SERVICE_DEFINITION, serviceDefinition);
 		jdm.put(OPERATION_DEFINITION, operationDefinition);
 		jdm.put(CHENILE_ENTRY_POINT, chenileEntryPoint);
-		
+		if (schedulerInfo.getJobMetadata() != null) {
+			schedulerInfo.getJobMetadata().forEach((k,v)->{
+				jdm.put(k,v);
+			});
+		}
 		JobDetail job = newJob(ScheduledJob.class)
-	             .withIdentity(sinfo.getJobName())
+	             .withIdentity(schedulerInfo.getJobName())
 	             .setJobData(jdm)
-	             .withDescription(sinfo.getJobDescription())
+	             .withDescription(schedulerInfo.getJobDescription())
 	             .build();
 		CronTrigger trigger = newTrigger()
-			    .withIdentity(sinfo.getTriggerName(), sinfo.getTriggerGroup())
-			    .withSchedule(cronSchedule(sinfo.getCronSchedule()))
+			    .withIdentity(schedulerInfo.getTriggerName(), schedulerInfo.getTriggerGroup())
+			    .withSchedule(cronSchedule(schedulerInfo.getCronSchedule()))
 			    .build();
 		quartzScheduler.scheduleJob(
 				job,

@@ -25,4 +25,8 @@ public class TestChenileProxy {
 		// It should increment by 3 + 1 (by the interceptor)
 		assertEquals(27, fooM.getIncrement());
     }
+    
+    @Test public void testWithNonInterfaceMethods() {
+    	assertEquals("ProxyBuilder.Proxy.fooService",fooService.toString());
+    }
 }
