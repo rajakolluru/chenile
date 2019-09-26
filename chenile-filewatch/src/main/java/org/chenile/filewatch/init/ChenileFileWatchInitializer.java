@@ -10,6 +10,8 @@ import java.util.Map;
 import org.chenile.core.init.BaseInitializer;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.filewatch.model.FileWatchDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 
@@ -22,9 +24,13 @@ import org.springframework.core.io.Resource;
  * @author Raja Shankar Kolluru
  *
  */
+
 public class ChenileFileWatchInitializer
 		extends
 			BaseInitializer<FileWatchDefinition> {
+
+	private static final Logger LOG = LoggerFactory
+			.getLogger(ChenileFileWatchInitializer.class);
 
 	@Value("${chenile.file.watch.source.folder}")
 	private String srcFolder;
@@ -41,6 +47,22 @@ public class ChenileFileWatchInitializer
 				FileWatchDefinition.EXTENSION);
 		map.put(fwd.getFileWatchId(), fwd);
 
+		Path srcPath = Paths.get(System.getProperty("java.io.tmpdir") + ""
+				+ File.separator + "src");
+		Path destPath = Paths.get(System.getProperty("java.io.tmpdir") + ""
+				+ File.separator + "dest");
+
+		if (Files.exists(srcPath)) {
+			if (srcPath.toFile().mkdir()) {
+				LOG.info("src dir created..");
+			}
+		}
+		if (Files.exists(destPath)) {
+			if (destPath.toFile().mkdir()) {
+				LOG.info("dest dir created..");
+			}
+		}
+
 		Path spath = Paths.get(
 				srcFolder + "" + File.separator + "" + fwd.getDirToWatch());
 		Path dpath = Paths.get(
@@ -50,8 +72,7 @@ public class ChenileFileWatchInitializer
 			try {
 				Files.createDirectories(spath);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("failed to create dr " + spath);
 			}
 		}
 
@@ -59,8 +80,7 @@ public class ChenileFileWatchInitializer
 			try {
 				Files.createDirectories(dpath);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("failed to create dr " + dpath);
 			}
 		}
 	}
@@ -69,5 +89,4 @@ public class ChenileFileWatchInitializer
 	protected Class<FileWatchDefinition> getModelType() {
 		return FileWatchDefinition.class;
 	}
-
 }
