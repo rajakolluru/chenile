@@ -55,4 +55,18 @@ public class EventLog {
 	private ErrorNumException exception;
 	private String eventSubscriber;
 	private String app;
+	private String batchId;
+	/**
+	 * @return the batchId
+	 */
+	public String getBatchId() {
+		return batchId;
+	}
+	/**
+	 * @param batchId the batchId to set
+	 */
+	public void setBatchId(String batchId) {
+		this.batchId = batchId;
+	}
+	
 }

@@ -19,35 +19,36 @@ public class FileWatchEventLogger {
 	@Autowired private EventLogger eventLogger;
 	private ObjectMapper om = new ObjectMapper();
 	
-	public void logError(int subErrorNum,String message,ErrorNumException... e) {
-		logEvent(StatusEnum.FAIL,subErrorNum,message,e);
+	public void logError(String batchId,int subErrorNum,String message,ErrorNumException... e) {
+		logEvent(batchId,StatusEnum.FAIL,subErrorNum,message,e);
 	}
 	
 	public void logWarning(int subErrorNum,String message,ErrorNumException... e) {
-		logEvent(StatusEnum.WARNING,subErrorNum,message,e);
+		logEvent(null,StatusEnum.WARNING,subErrorNum,message,e);
 	}
 	
-	public void logError(int subErrorNum, String message, Throwable... t) {
+	public void logError(String batchId,int subErrorNum, String message, Throwable... t) {
 		ServerException e = null;
 		if ( t != null && t.length > 0)
 			e = new ServerException(subErrorNum,message,t[0]);
-		logError(subErrorNum,message, e);
+		logError(batchId,subErrorNum,message, e);
 	}
 	
-	public void logSuccess(Object o) {
+	public void logSuccess(Object o,String batchId) {
 		try {
 			String m = null;
 			if (!(m instanceof String))
 				m = om.writeValueAsString(o);
-			logEvent(StatusEnum.SUCCESS,0,m);
+			logEvent(batchId,StatusEnum.SUCCESS,0,m);
 		}catch(Exception e) {
-			logError(ErrorCodes.CANNOT_SERIALIZE_RESPONSE_TO_JSON.getSubError(),
+			logError(batchId,ErrorCodes.CANNOT_SERIALIZE_RESPONSE_TO_JSON.getSubError(),
 			"Cannot serialize the response " + o + " to JSON");
 		}		
 	}
 	
-	private void logEvent(StatusEnum status,int subErrorNum,String message,ErrorNumException... e) {
+	private void logEvent(String batchId,StatusEnum status,int subErrorNum,String message,ErrorNumException... e) {
 		EventLog eventLog = new EventLog();
+		eventLog.setBatchId(batchId);
 		eventLog.setApp("chenile-filewatch");
 		eventLog.setStatus(status);
 		eventLog.setEventId("chenile-filewatch");

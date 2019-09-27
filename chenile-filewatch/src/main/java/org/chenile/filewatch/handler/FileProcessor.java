@@ -53,7 +53,7 @@ public class FileProcessor {
 		
 		if (headers == null) return;
 		if (!headers.containsKey(ACTUAL_FILE_NAME) || !headers.containsKey(ACTUAL_FILE_ENCODING)) {
-			eventLogger.logError(ErrorCodes.MISSING_HEADER_PROPERTIES.getSubError(),
+			eventLogger.logError(null,ErrorCodes.MISSING_HEADER_PROPERTIES.getSubError(),
 					"Header file " + filename + " does not contain required headers "
 					+ ACTUAL_FILE_NAME + " or " + ACTUAL_FILE_ENCODING);
 			return;
@@ -74,7 +74,7 @@ public class FileProcessor {
 			Path target = processedDir.resolve(lastPart);
 			Files.move(file, target,StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
-			eventLogger.logError(ErrorCodes.CANNOT_MOVE_TO_PROCESSED.getSubError(),
+			eventLogger.logError(null,ErrorCodes.CANNOT_MOVE_TO_PROCESSED.getSubError(),
 					"Cannot move the file " + file + " to processed directory " + processedDir, e);
 			e.printStackTrace();
 		}
@@ -95,7 +95,7 @@ public class FileProcessor {
             }
             return props;
         } catch (IOException ex) {
-        	eventLogger.logError(ErrorCodes.CANNOT_PROCESS_FILE.getSubError(), 
+        	eventLogger.logError(null,ErrorCodes.CANNOT_PROCESS_FILE.getSubError(), 
         			"Cannot read Header file " + file, ex);
         	return null;
         }	
@@ -108,7 +108,7 @@ public class FileProcessor {
 				invokeServicesPerRecord(fileWatchDefinition,o,headers);
 			}
 		} catch (Exception e) {
-			eventLogger.logError(ErrorCodes.CANNOT_PROCESS_FILE.getSubError(), 
+			eventLogger.logError(null,ErrorCodes.CANNOT_PROCESS_FILE.getSubError(), 
 					"Error in reading file " + file, e);
 			e.printStackTrace();
 		}		 
@@ -122,7 +122,7 @@ public class FileProcessor {
 		case "JSON":
 			return new JsonReader(file,fileWatchDefinition.getRecordClass());
 		}
-		eventLogger.logError(ErrorCodes.INVALID_ENCODING_TYPE.getSubError(), 
+		eventLogger.logError(null,ErrorCodes.INVALID_ENCODING_TYPE.getSubError(), 
 				"Header has invalid encoding type " + encodingType);
 		return null;
 	}
@@ -140,9 +140,9 @@ public class FileProcessor {
 			exchange.setBody(record);
 			try {
 				chenileEntryPoint.execute(exchange);
-				eventLogger.logSuccess(exchange.getResponse());
+				eventLogger.logSuccess(exchange.getResponse(),headers.getProperty("batchId"));
 			}catch(Throwable t) {
-				eventLogger.logError(ErrorCodes.ERROR_IN_SERVICE.getSubError(),
+				eventLogger.logError(headers.getProperty("batchId"),ErrorCodes.ERROR_IN_SERVICE.getSubError(),
 						"Error in invoking the service " + subscriber.serviceDefinition.getId() +"."
 						+ subscriber.operationDefinition.getName(),
 						t);
