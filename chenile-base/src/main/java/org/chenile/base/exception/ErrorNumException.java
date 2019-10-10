@@ -14,6 +14,11 @@ public class ErrorNumException extends RuntimeException {
 	private static final long serialVersionUID = -6173788572115857426L;
 	private final int errorNum;
 	private final int subErrorNum;
+	
+	public ErrorNumException() {
+		this.errorNum = 500;
+		this.subErrorNum = 0;
+	}
 
 	/**
 	 * @param errorNum
