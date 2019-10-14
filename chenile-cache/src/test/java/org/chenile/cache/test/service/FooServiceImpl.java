@@ -11,4 +11,15 @@ public class FooServiceImpl implements FooService {
 		TestChenileCache.fooServiceInvoked = true;
 		return fooRet;
 	}
+
+	@Override
+	public int sum2() {
+		return this.sum(1, 1);
+	}
+	
+	@Override
+	public int sum(int a, int b) {
+		TestChenileCache.fooServiceInvoked = true;
+		return a + b;
+	}
 }
