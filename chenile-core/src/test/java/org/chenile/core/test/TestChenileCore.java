@@ -116,6 +116,7 @@ public class TestChenileCore {
 		E1 e1 = (E1)exchange.getResponse();
 		assertEquals("xyz",e1.getS1());
 		
+		exchange = makeExchange("mockService","s6");
 		exchange.setHeader("eventId","e2");
 		exchange.setBody("{\"s2\": \"abc\"}");
 		
