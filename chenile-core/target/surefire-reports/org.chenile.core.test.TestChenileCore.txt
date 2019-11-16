@@ -1,0 +1,64 @@
+-------------------------------------------------------------------------------
+Test set: org.chenile.core.test.TestChenileCore
+-------------------------------------------------------------------------------
+Tests run: 10, Failures: 0, Errors: 10, Skipped: 0, Time elapsed: 1.013 s <<< FAILURE! - in org.chenile.core.test.TestChenileCore
+testServiceInvokerWithExceptionHandled(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.285 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testServiceInvokerWithExceptionHandled(TestChenileCore.java:115)
+
+testBodyTypeSelector(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.004 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testBodyTypeSelector(TestChenileCore.java:129)
+
+testServiceInvokerWithHeaderStringArgument(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.003 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testServiceInvokerWithHeaderStringArgument(TestChenileCore.java:65)
+
+testServiceInvokerWithHeaderBooleanArgumentPassedAndBooleanReturned(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.029 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testServiceInvokerWithHeaderBooleanArgumentPassedAndBooleanReturned(TestChenileCore.java:100)
+
+testServiceInvokerWithHeaderIntArgumentPassedAndIntReturned(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testServiceInvokerWithHeaderIntArgumentPassedAndIntReturned(TestChenileCore.java:86)
+
+testInterception(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testInterception(TestChenileCore.java:31)
+
+testServiceInvokerWithHeaderStringArgumentPassedForPrimitiveBooleanAndBooleanReturned(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testServiceInvokerWithHeaderStringArgumentPassedForPrimitiveBooleanAndBooleanReturned(TestChenileCore.java:107)
+
+testServiceInvokerWithHeaderStringArgumentPassedForPrimitiveIntAndIntReturned(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testServiceInvokerWithHeaderStringArgumentPassedForPrimitiveIntAndIntReturned(TestChenileCore.java:93)
+
+testServiceInvokerWithHeaderIntArgumentPassedAsString(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testServiceInvokerWithHeaderIntArgumentPassedAsString(TestChenileCore.java:79)
+
+testServiceInvokerWithHeaderIntArgument(org.chenile.core.test.TestChenileCore)  Time elapsed: 0.001 s  <<< ERROR!
+java.lang.NullPointerException
+	at org.chenile.core.test.TestChenileCore.findOperationInService(TestChenileCore.java:47)
+	at org.chenile.core.test.TestChenileCore.makeExchange(TestChenileCore.java:57)
+	at org.chenile.core.test.TestChenileCore.testServiceInvokerWithHeaderIntArgument(TestChenileCore.java:72)
+

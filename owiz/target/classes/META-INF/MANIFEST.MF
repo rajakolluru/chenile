@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Build-Jdk-Spec: 12
+Implementation-Title: Orchestration Wizard
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor: Chenile
+Created-By: Maven Integration for Eclipse
+

@@ -1,0 +1,24 @@
+{
+  "groups": [
+    {
+      "name": "chenile.kafka.consumer",
+      "type": "java.util.Map",
+      "sourceType": "org.chenile.configuration.kafka.ChenileKafkaConfiguration",
+      "sourceMethod": "public Map<java.lang.String,java.lang.Object> consumerProperties() "
+    },
+    {
+      "name": "chenile.kafka.generic",
+      "type": "java.util.Map",
+      "sourceType": "org.chenile.configuration.kafka.ChenileKafkaConfiguration",
+      "sourceMethod": "public Map<java.lang.String,java.lang.Object> genericProperties() "
+    },
+    {
+      "name": "chenile.kafka.sender",
+      "type": "java.util.Map",
+      "sourceType": "org.chenile.configuration.kafka.ChenileKafkaConfiguration",
+      "sourceMethod": "public Map<java.lang.String,java.lang.Object> senderProperties() "
+    }
+  ],
+  "properties": [],
+  "hints": []
+}

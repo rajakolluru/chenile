@@ -1,0 +1,6 @@
+{
+	"id": "cache1",
+	"timeToLiveInSeconds": 2,
+	"backupCount": 2,
+	"maxSize": 10000
+}

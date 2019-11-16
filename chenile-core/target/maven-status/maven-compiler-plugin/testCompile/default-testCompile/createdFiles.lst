@@ -1,0 +1,4 @@
+org/chenile/core/test/SpringTestConfig.class
+org/chenile/core/test/TestChenileCore.class
+org/chenile/core/test/MockInterceptor.class
+org/chenile/core/test/MockService.class

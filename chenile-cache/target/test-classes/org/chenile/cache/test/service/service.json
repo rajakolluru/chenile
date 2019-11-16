@@ -1,0 +1,67 @@
+{
+	"name": "_fooService_",
+	"id": "fooService",
+	"operations": [
+		{
+			"name": "increment",
+			"auditable": "false",
+			"url": "/increment",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"secure": false,
+			"input": "org.chenile.cache.test.service.FooModel",
+			"fileWatchId": "foo",
+			"output": "",
+			"cacheId": "cache1",
+			"params": [
+				{
+					"name": "model",
+					"type": "BODY",
+					"description": "saves the model object"
+				}
+			]
+		},
+		{
+			"name": "sum2",
+			"auditable": "false",
+			"url": "/sum",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"secure": false,
+			"input": "",
+			"fileWatchId": "foo",
+			"output": "",
+			"cacheId": "cache3",
+			"params": []
+		},
+		{
+			"name": "sum",
+			"auditable": "false",
+			"url": "/sum",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"secure": false,
+			"input": "",
+			"fileWatchId": "foo",
+			"output": "",
+			"cacheId": "cache2",
+			"params": [
+				{
+					"name": "a",
+					"type": "HEADER",
+					"paramClass": "int",
+					"description": "saves the model object"
+				},
+				{
+					"name": "b",
+					"type": "HEADER",
+					"paramClass": "int",
+					"description": "saves the model object"
+				}
+			]
+		}
+	]
+}

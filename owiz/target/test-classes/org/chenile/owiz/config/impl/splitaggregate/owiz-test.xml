@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<flows>
+	<add-command-tag tag='split-aggregator' componentName='splitAggregate' />
+	<add-command-tag tag='split-command'/>
+	<flow id='flow1' defaultFlow="true">
+		<split-aggregator>		
+			<split-command componentName='individualSplitCommand'/>
+		</split-aggregator>		
+	</flow>
+
+</flows>

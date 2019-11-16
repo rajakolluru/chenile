@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flows>
+	<flow id='flow1'>
+		<router id='moduleRouter' componentName='moduleRouter' expression="module" first='true'/>
+		 	
+		<chain id='chain1' componentName='org.chenile.owiz.impl.Chain'>
+			<attach-to parentId='moduleRouter' route='mod1'/>
+			<attach-to parentId='chain3' index='101'/>
+		</chain>
+		
+		<chain id='chain2' componentName='org.chenile.owiz.impl.Chain'>
+			<attach-to parentId='moduleRouter' route='mod2'/>
+		</chain>
+		
+		<chain id='chain3' componentName='org.chenile.owiz.impl.Chain'>
+			<attach-to parentId='moduleRouter' route='mod3'/>
+		</chain>
+		
+		<chain id='mock31' componentName='mock31'>
+			<attach-to parentId='chain3' index='100'/>
+		</chain>
+		
+		<command id='mock11' componentName='mock11'>
+			<attach-to parentId='chain1'/>
+		</command>
+		
+		<command id='mock12' componentName='mock12'>
+			<attach-to parentId='chain1'/>
+		</command>
+		
+		<command id='mock13' componentName='mock13'>
+			<attach-to parentId='chain1'/>
+		</command>
+		
+		<command id='mock21' componentName='mock21'>
+			<attach-to parentId='chain2'/>
+		</command>
+		
+		<command id='mock22' componentName='mock22'>
+			<attach-to parentId='chain2'/>
+		</command>
+		
+		<command id='mock23' componentName='mock23'>
+			<attach-to parentId='chain2'/>
+		</command>
+				
+	</flow>
+</flows>

@@ -1,0 +1,27 @@
+{
+  "name": "fooService",
+  "id": "fooService",
+  "operations":
+  [
+   {
+    "name": "saveFoo",
+    "auditable": "false",
+    "url": "/saveFoo",
+    "httpMethod": "GET",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "input": "org.chenile.filewatch.test.service.FooModel",
+    "fileWatchId": "foo",
+    "output": "",
+    "params":
+    [
+      {
+        "name": "model",
+        "type": "BODY",
+        "description": "saves the model object"
+      }
+    ]
+  }
+  ]
+}
