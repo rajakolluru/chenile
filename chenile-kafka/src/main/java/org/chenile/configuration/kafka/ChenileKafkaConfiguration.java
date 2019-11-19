@@ -79,11 +79,11 @@ public class ChenileKafkaConfiguration {
     	 props.putAll(consumerProperties());
     	 props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     	 props.put(JsonDeserializer.TRUSTED_PACKAGES,"*");
-    	 props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    	 props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+    	 props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer2.class);
+    	 props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer2.class);
     	 props.put(ErrorHandlingDeserializer2.KEY_DESERIALIZER_CLASS, JsonDeserializer.class);
     	 props.put(JsonDeserializer.KEY_DEFAULT_TYPE, BytesDeserializer.class);
-    	 props.put(ErrorHandlingDeserializer2.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
+    	 props.put(ErrorHandlingDeserializer2.VALUE_DESERIALIZER_CLASS, StringDeserializer.class);
     	 props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, BytesDeserializer.class);
     	 return props;
     }
