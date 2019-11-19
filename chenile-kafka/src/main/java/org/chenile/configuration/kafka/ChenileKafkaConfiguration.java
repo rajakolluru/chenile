@@ -79,6 +79,7 @@ public class ChenileKafkaConfiguration {
     	 props.put(JsonDeserializer.TRUSTED_PACKAGES,"*");
     	 props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     	 props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+    	 props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, Object.class);
     	 return props;
     }
     
