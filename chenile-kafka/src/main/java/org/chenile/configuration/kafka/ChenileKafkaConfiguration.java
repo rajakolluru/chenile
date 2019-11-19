@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.BytesDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.chenile.core.event.EventProcessor;
@@ -79,7 +80,7 @@ public class ChenileKafkaConfiguration {
     	 props.put(JsonDeserializer.TRUSTED_PACKAGES,"*");
     	 props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
     	 props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-    	 props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, Object.class);
+    	 props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, BytesDeserializer.class);
     	 return props;
     }
     
