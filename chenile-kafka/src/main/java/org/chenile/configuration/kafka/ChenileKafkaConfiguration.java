@@ -25,6 +25,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
@@ -77,8 +78,12 @@ public class ChenileKafkaConfiguration {
     	 props.putAll(consumerProperties());
     	 props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
     	 props.put(JsonDeserializer.TRUSTED_PACKAGES,"*");
-    	 props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-    	 props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+    	 props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer2.class);
+    	 props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer2.class);
+    	 props.put(ErrorHandlingDeserializer2.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
+//    	 props.put(JsonDeserializer.KEY_DEFAULT_TYPE, StringDeserializer.class);
+    	 props.put(ErrorHandlingDeserializer2.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
+//    	 props.put(JsonDeserializer.VALUE_DEFAULT_TYPE, JsonDeserializer.class);
     	 return props;
     }
     
