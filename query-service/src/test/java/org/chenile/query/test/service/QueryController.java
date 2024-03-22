@@ -2,7 +2,7 @@ package org.chenile.query.test.service;
 
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.chenile.base.response.GenericResponse;
 import org.chenile.http.annotation.ChenileController;

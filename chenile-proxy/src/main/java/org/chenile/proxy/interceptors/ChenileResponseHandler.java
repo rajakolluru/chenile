@@ -30,10 +30,10 @@ public class ChenileResponseHandler extends DefaultResponseErrorHandler{
 
 	@Override
 	public void handleError(ClientHttpResponse response) throws IOException {		
-		HttpStatus statusCode = HttpStatus.resolve(response.getRawStatusCode());
+		HttpStatus statusCode = HttpStatus.resolve(response.getStatusCode().value());
 		if (statusCode != null) {
 			byte[] body = getResponseBody(response);
-			if (body == null || body.length == 0) {
+			if (body.length == 0) {
 				RuntimeException e1 = new ServerException("Error happened in invoking " + getEndpointName() +
 		            response.getRawStatusCode() + response.getStatusText() );
 				chenileExchange.setException(e1);
@@ -47,7 +47,7 @@ public class ChenileResponseHandler extends DefaultResponseErrorHandler{
 	protected void parseBody(byte[] body,ClientHttpResponse response) throws IOException{
 		try {
 			System.out.println("Body is " + new String(body));
-			GenericResponse<?> gr = objectMapper.readValue(body, getTypeReference());
+			GenericResponse<?> gr = (GenericResponse<?>) objectMapper.readValue(body, getTypeReference());
 			System.out.println("error code is " + gr.getCode());
 			ErrorNumException e1 = new ErrorNumException(gr.getCode(),gr.getSubErrorCode(),
 					gr.getDescription());
@@ -56,7 +56,7 @@ public class ChenileResponseHandler extends DefaultResponseErrorHandler{
 		}catch(Exception e) {
 			e.printStackTrace();
 			ErrorNumException e1 = new ServerException("Error happened in invoking " + getEndpointName() +
-		            response.getRawStatusCode() + response.getStatusText() );
+		            response.getStatusCode().value() + response.getStatusText() );
 			chenileExchange.setException(e1);
 		}
 	}

@@ -106,7 +106,7 @@ public class ChenileApiListScanner implements ApiListingScannerPlugin  {
 	private OperationBuilder createOperationBuilder(final OperationDefinition def) {
 		OperationBuilder operationBuilder = new OperationBuilder(operationNames);
 		operationBuilder.uniqueId(def.getName());
-		operationBuilder.method(HttpMethod.resolve(def.getHttpMethod().name()));
+		operationBuilder.method(HttpMethod.valueOf(def.getHttpMethod().name().toUpperCase()));
 		operationBuilder.produces(getMimeTypeSet(def, true));
 		operationBuilder.consumes(getMimeTypeSet(def, false));
 		operationBuilder.notes(def.getDescription());

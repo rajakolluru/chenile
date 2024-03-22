@@ -1,6 +1,6 @@
 package org.chenile.http.test.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.chenile.base.response.GenericResponse;
 import org.chenile.http.annotation.ChenileController;

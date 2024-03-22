@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 import org.chenile.base.response.GenericResponse;
 import org.chenile.core.model.ChenileConfiguration;

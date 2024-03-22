@@ -3,7 +3,7 @@ package org.chenile.http.handler;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.core.context.ChenileExchange;
