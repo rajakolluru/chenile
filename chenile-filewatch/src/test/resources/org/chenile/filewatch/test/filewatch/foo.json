@@ -1,0 +1,5 @@
+{
+	"fileWatchId": "foo",
+	"recordClass": "org.chenile.filewatch.test.service.FooModel",
+	"dirToWatch": "foo"
+}

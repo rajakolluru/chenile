@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<flows>
+	<add-command-tag tag='parallel-chain' componentName='parallelChain' />
+	<add-command-tag tag='command1' componentName='Command1' />
+	<add-command-tag tag='command2' componentName='Command2' />
+	<add-command-tag tag='command3' componentName='Command3' />
+	<add-command-tag tag='command4' componentName='Command4' />
+	
+	
+	<flow id='flow1' defaultFlow="true">
+		<parallel-chain>
+			<command1/>
+			<command2/>
+			<command3/>
+			<command4/>
+		</parallel-chain>
+
+	</flow>
+
+</flows>

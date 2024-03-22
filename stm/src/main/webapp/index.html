@@ -1,0 +1,570 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+
+	<head>
+		<script type="text/javascript" src="/custom/newui/script/jquery/jquery.js" ></script>
+		<script type="text/javascript" src="/custom/newui/script/jquery/jquery.plugin.js"> </script>
+		<script type="text/javascript" src="/custom/newui/script/jquery/jquery-linedtextarea.js"> </script>
+		
+		    <script type="text/javascript" src="/custom/newext/examples/shared/include-ext.js"></script>
+		    
+		   <!--  <script type="text/javascript" src="/custom/newext/examples/shared/options-toolbar.js"></script> -->
+		    
+    
+  <script type="text/javascript" src="/custom/newuiTab.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/metaGrid.js"></script>  
+  <script type="text/javascript" src="/custom/CrudScript.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/customFunctions.js"></script> 
+  <script type="text/javascript" src="/custom/webcommerce/newui5/deliveryFunctions.js"></script> 
+  <script type="text/javascript" src="/custom/webcommerce/newui5/globalMessage/messageCache.js"></script> 
+  <script type="text/javascript" src="/custom/webcommerce/newui5/apiValidation/apiValidation.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/eventNotification/eventNotification.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/productSetup/productSetup.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/emailTemplates/emailTemplates.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/paymentMode/paymentMode.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/company/company.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/discount/discount.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/ticketingModule/ticketingModule.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="/custom/webcommerce/newui5/jquery.timepicker.css" />
+  <link rel="stylesheet" type="text/css" href="/custom/webcommerce/newui5/select2.css" />
+  <script type="text/javascript" src="/custom/webcommerce/newui5/select2.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/custom/webcommerce/newui5/jquery-linedtextarea.css" />
+  <script type="text/javascript" src="/custom/webcommerce/newui5/jquery.timepicker.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/organizationHierarchy/organizationHierarchyCreation.js"></script>
+  <script type="text/javascript" src="/custom/newui/script/multiselect.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/custom/css/multiSelect.css" />
+<link rel="stylesheet" type="text/css" href="/custom/css/backend-base-custom.css" />
+<link rel="stylesheet" type="text/css" href="/custom/css/ItemSelector.css" />
+  
+ 
+  
+<script type="text/javascript" src="/custom/webcommerce/userinterface/reveal.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/custom/webcommerce/userinterface/reveal.css" />
+
+<script type="text/javascript" src="/custom/newui/script/jquery/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="/custom/newui/themes/jquery-ui.css" />
+<script type="text/javascript" src="/custom/webcommerce/newui5/offerAndPromotion.js"></script>
+<script type="text/javascript" src="/custom/newui/script/jquery-fileupload.js"></script>
+<script type="text/css" src="/custom/newui/themes/panel.css"></script>
+<script type="text/javascript" src="/custom/webcommerce/newui5/jquery-ui.multidatespicker.js"></script>
+  <script type="text/javascript" src="/custom/webcommerce/newui5/jquery.simple-dtpicker.js"></script>
+  <link rel="stylesheet" type="text/css" href="/custom/newui/themes/jquery.simple-dtpicker.css" />
+    <style type="text/css">
+        .x-panel-body p {
+            margin: 0px;
+            font-size: 12px;
+        }
+        /* Grid cells when the mouse cursor is over the row */ 
+.custom-grid div:first-child{ 
+    background-color: red; 
+    border-bottom-color: #999; 
+    border-bottom-style: dashed; 
+    border-top-color: #999; 
+    border-top-style: dashed; 
+} 
+ 
+.msg .x-box-mc {
+    font-size:14px;
+}
+#msg-div {
+    position:absolute;
+    left:50%;
+    top:10px;
+    width:400px;
+    margin-left:-200px;
+    z-index:20000;
+}
+#msg-div .msg {
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    background: #F6F6F6;
+    border: 2px solid #ccc;
+    margin-top: 2px;
+    padding: 10px 15px;
+    color: #555;
+}
+#msg-div .msg h3 {
+    margin: 0 0 8px;
+    font-weight: bold;
+    font-size: 15px;
+}
+#msg-div .msg p {
+    margin: 0;
+}
+        
+  
+      div.sdmenu{font-size:12px;padding-bottom:10px;font-weight:100;color:#D3E1F1;float:left;width:223px;}
+div.sdmenu div{background:url(../images/menu/menubg.gif) repeat-x;overflow:hidden;}
+div.sdmenu div:first-child{background:url(../images/sdmenu/toptitle.gif) no-repeat;}
+div.sdmenu div.collapsed{height:20px;border-bottom:1px solid #A0A0A0;}
+div.sdmenu div span{display:block;padding:1px 15px;font-size:13px;font-weight:bold;color:#000;background:url(/9159/images/minus2.gif) no-repeat 2px center;cursor:default;border-bottom:1px solid #A0A0A0;border-left:1px solid #A0A0A0;border-right:1px solid #A0A0A0;width:171px;}
+div.sdmenu div.collapsed span{background-image:url(/9159/images/plus2.gif);border-left:1px solid #A0A0A0;border-right:1px solid #A0A0A0;font-size:13px;font-weight:bold;}
+div.sdmenu div a{padding:6px 6px;background:#FFF;display:block;border-bottom:1px solid #A0A0A0;border-left:1px solid #A0A0A0;border-right:1px solid #A0A0A0;color:#000;padding-left:24px;font-size:12px;text-decoration:none;line-height:10px;}
+div.sdmenu div a.current{background:#E6E7E8;font-size:12px;}
+div.sdmenu div a:hover{font-size:12px;background:#FFF;color:#000;text-decoration:none;}
+div.sdmenu div a:visited{font-size:12px;color:#000;text-decoration:none;}    
+
+.head2 {
+    background: url("/735/images/plus2.gif") no-repeat scroll 2px center #d3e1f1;
+    border-bottom: 1px solid #a0a0a0;
+    border-left: 1px solid #a0a0a0;
+    border-right: 1px solid #a0a0a0;
+    color: #000000;
+    cursor: default;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 1px 15px;
+    width: 171px;
+}
+
+.head {
+    background: url("../images/sdmenu/title.gif") repeat-x scroll center center rgba(0, 0, 0, 0);
+    color: black;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    overflow: hidden;
+    text-decoration: none;
+}
+.icon-side {  width:35px; height:35px;  }
+
+
+a:link {
+text-decoration: none;
+font-weight: italic;} 
+
+a:visited {
+color: #ea9e57;
+text-decoration: none;
+font-weight: bold;}
+
+a:hover {
+color: #ad5e15;
+text-decoration: none;
+font-weight: bold;}
+
+a:active {
+color: #cc0000;}
+
+
+.searchFixed {
+    background-color: lightblue;
+    left: 10px;
+    position: fixed;
+    top: 30px;
+    z-index: 100;
+    display:none;
+}
+
+.hideIcon{
+display:none;
+}
+
+.head-menu123 li{ position:relative }
+.head-menu123 li ul { display: none;top: 48px !important;}
+.head-menu123 li:hover ul{ margin:0px; padding:0px;  position:fixed; right:0;z-index:999999 !important; top:60px;background:#157fcc; cursor:pointer;}
+.head-menu123 li:hover ul li{ float:left; display:block; border:none !important;padding:0px 0px  0px 10px !important; margin:0px !important; width:100% !important;height:30px !important; line-height:30px !important; cursor:pointer; border-bottom:1px solid #428bca !important; }
+.head-menu123 li:hover ul li a{color:#fff; padding:0px !important; margin:0px !important; float:left; height:29px !important; line-height:29px !important;}
+.head-menu123  li ul { display:none;}
+.head-menu123 li:hover ul { display:block; float:left; right:26px;}
+
+    </style>
+		
+
+<script type="text/javascript" >
+
+
+function callLogOff(){
+	 $.cookie("userName", null);
+		$.cookie("password", null);
+		var logoutForm = document.getElementById("logout");
+		logoutForm.submit();
+}
+
+
+
+Ext.Loader.setConfig({enabled: true});
+
+Ext.Loader.setPath('Ext', '/custom/newext/examples');
+
+Ext.Loader.setPath('Ext.ux', '/custom/newext/examples/ux');
+
+Ext.require([
+             'Ext.tab.*',
+             'Ext.window.*',
+             'Ext.tip.*',
+             'Ext.layout.container.Border',
+             'Ext.ux.BoxReorderer',
+             'Ext.layout.container.VBox',
+             'Ext.tip.QuickTipManager',
+             'Ext.menu.*',
+             'Ext.form.field.ComboBox',
+             'Ext.layout.container.Table',
+             'Ext.container.ButtonGroup',
+             'Ext.form.Panel',
+             'Ext.ux.form.MultiSelect',
+             'Ext.ux.form.ItemSelector',
+             'Ext.tip.QuickTipManager',
+             'Ext.ux.ajax.JsonSimlet',
+             'Ext.ux.ajax.SimManager'        
+              
+         ]);
+
+
+var globalSessionValue=''; 
+
+var treeStore=Ext.create('Ext.data.TreeStore', {
+	   
+
+    root: {
+        text: 'Ext JS',
+        expanded: true,
+        children: [
+            {
+                text: 'Home Page Management',
+                icon: '/custom/newui/icons/icon-pincode.png',
+                iconCls:'ico-test',
+                children: [
+                    { leaf:true, text: 'Top Banner',gridName:'CATALOGUE_BANNER_GRID',gridTitle:'Top Banner',gridParam:'type=TopBanner' },
+                    { leaf:true, text: 'Bottom Banner',gridName:'CATALOGUE_BANNER_GRID',gridTitle:'Bottom Banner',gridParam:'type=BottomBanner' }
+                ]
+            },
+            {
+                text: 'Customer Management',
+                icon: '/custom/newui/icons/icon-vendor.png',
+                iconCls:'ico-test',
+                expanded: true,
+                children: [
+                    { leaf:true, text: 'Customers' }
+                   
+                ]
+            },
+           
+            {
+                text: 'N-Level',
+                children: [
+                    {
+                        text: '1st Level',
+                        children: [
+                            { leaf:true, text: 'Click ME' }
+                          
+                        ]
+                    }
+                ]
+            }
+            
+            
+            
+        ]
+    }
+});
+
+
+
+
+var abc={"expand":true,"menuOrder":1,"text":"Store Management","iconCls":"icon-side","children":[{"icon":null,"eventName":"","text":"Product Search","iconCls":"icon-side","leaf":true},{"icon":"false","eventName":"","text":"Customers	 Search","iconCls":"icon-side","leaf":true},{"icon":null,"eventName":"","text":"Customers Search","iconCls"	:"icon-side","leaf":true}]};;
+
+	var treee = '';
+	Ext.onReady(function() {
+
+		Ext.Loader.setConfig({enabled: true});
+
+		Ext.Loader.setPath('Ext', '/custom/newext/examples');
+
+		Ext.Loader.setPath('Ext.ux', '/custom/newext/examples/ux');
+
+		Ext.require([
+		             'Ext.tab.*',
+		             'Ext.window.*',
+		             'Ext.tip.*',
+		             'Ext.layout.container.Border',
+		             'Ext.ux.BoxReorderer',
+		             'Ext.layout.container.VBox',
+		             'Ext.tip.QuickTipManager',
+		             'Ext.menu.*',
+		             'Ext.form.Panel',
+		             'Ext.form.field.ComboBox',
+		             'Ext.layout.container.Table',
+		             'Ext.container.ButtonGroup'
+		            
+		             
+		         ]);
+		
+		
+		var treeStoreJson = Ext.create('Ext.data.TreeStore', {
+
+			root : {
+				text : 'Ext JS',
+				expanded : true,
+				children : eval(getSideMenuJson())
+			}
+
+		});
+
+		treee = Ext.create('Ext.tree.Panel', {
+
+			width : 250,
+			rootVisible : false,
+			store : treeStoreJson,
+			listeners : {
+				itemclick : function(tree, record, item, index, e, options) {
+
+					var isParent = record.data.leaf;
+					if (isParent) {
+						eval(record.data.eventName);
+					}
+				}
+			}
+		});
+
+		try {
+				showPanel();
+			
+			
+
+		} catch (err) {
+			alert(err);
+			showPanel();
+		}
+
+	});
+
+	var windowheight = window.innerHeight;
+	var windowwidth = window.innerWidth;
+
+	function showPanel() {
+
+		var widthSub = Math.round(windowwidth / 30);
+		var heightSub = Math.round(windowheight / 14);
+		var panelWidth = windowwidth - widthSub;
+		var panelHeight = window.innerHeight + 500;
+
+		var mainPanel = Ext.create('Ext.panel.Panel', {
+
+			xtype : 'layout-border',
+			renderTo : 'editor-grid',
+			requires : [ 'Ext.layout.container.Border' ],
+
+			layout : 'border',
+
+			height : panelHeight,
+			items : [ {
+				xtype : 'tabpanel',
+				id : 'finalTab',
+				scroll : 'vertical',
+				autoScoll : true,
+				region : 'center',
+				layout : 'fit',
+
+				items : [ getwelcomePage()]
+			}, {
+				collapsible : true,
+				title : 'Menu',
+				region : 'west',
+				id : 'west-panel',
+				autoScoll : true,
+				layout : 'fit',
+				tools : [ {
+					type : 'search',
+					tooltip : 'Search Tool',
+					handler : function(event, toolEl, panel) {
+						$('#searchWidget').show();
+					}
+				} ],
+				//html:"<div style='overflow:auto;height:100%'>"+getSideMenuContent()+"</div>"
+				items : treee
+			}, {
+				collapsible : false,
+				region : 'north',
+				xtype : 'container',
+				layout : {
+					type : 'hbox',
+					pack : 'start',
+					align : 'stretch'
+				},
+				items : [ {
+					id : 'NorthWestPanel',
+					flex : 1,
+					renderTo : Ext.getBody(),
+					contentEl : 'sideMenuTable'
+				}, {
+					id : 'NorthEastPanel',
+					flex : 1,
+					renderTo : Ext.getBody(),
+					contentEl : 'head_component'
+				} ]
+
+			},{
+              region: 'south',
+              xtype: 'panel',
+              title: 'Powered BY E-bee',
+              split: true,
+              collapsible: false,
+              height: 30,
+              minHeight: 30,
+              maxHeight: 30,
+              collapsible: false,
+              margins: '0 5 5 5',
+              html: ''
+            }
+ ]
+
+		});
+
+	}
+
+	var Ebeeshortcuts = {
+			"query-tool": {
+			       "moduleKey": "query-tool",
+			       "context": "global",
+			       "param": "/static-resources/html/queryTool.html"
+			    }
+	};
+	
+</script>
+</head>
+
+<body >
+<div id="container" >
+       
+    </div>
+			<div id="head_component" class="blue_border" style="padding-right:5px;height:32px;display:none" >
+			
+			
+			<form id="logout" class="formLogout" action='logout/logout.action?method=logOut' method="post">
+</form>
+				
+
+<style type="text/css">
+.head-menu123{ margin:0px; padding:0px; list-style:none} 
+.head-menu123 li{ float:left; display:inline; border-right:1px solid #428bca; color:#fff; height:61px;}
+.head-menu123 li a{ float:left; display:block; width:100%; padding:0px 10px;color:#fff;  line-height:61px; cursor:default !important}
+.head-menu123 li a:hover{ background:#1671b3; color:#addafb}
+.head-menu123 li:hover{ background:#1671b3;}
+.head-menu123 li:last-child{ border-right:none;}
+
+</style> 
+
+<div style="float:right; margin-right:20px;">
+<ul class="head-menu123">
+<li><a href="#"><img id="notifications" src="icons/card_icons/notification.png" onclick="getCurrentRoles(1);" style="margin-top:22px;"></img></a></li>
+<li><a href="#" style="cursor: pointer  !important;">
+<label id="localeLang"  onclick="showLocaleList(event);">English</label>
+<label onclick="showLocaleList(event);">&nbsp;&nbsp;</label></a></li>
+
+<li><a href="#">
+<img src="icons/card_icons/user-ico.png" style="float:left; margin-top:24px;"></img><label style="line-height: 61px;">&nbsp;&nbsp;USERNAME</label>
+<label id="store-loggedIn">&nbsp;</label>
+</a>
+<ul>
+<li><a href="javascript:openRevealTemplate('changePassword','CHANGE_PASSWORD')">CHANGE PASSWORD</a></li>
+<li> <a href="javascript:callLogOff()">Logout</a> </li>
+</ul>
+</li>
+
+</ul>
+</div>
+
+<div id="roles" style="display:none;">roles</div>
+		
+				<input type="hidden" id="linkStore" class="linkStore"></input>
+				<input type="hidden" id="gridTitle" class="gridTitle"></input>
+				<input type="hidden" id="gridDiv" class="gridDiv"></input>
+				<input type="hidden" id="nextIconSrc" class="nextIconSrc"></input>
+				<input type="hidden" id="prevIconSrc" class="prevIconSrc"></input>
+<!--			Required information from Ticket(Service Request) to update the change in the grid while processing Inventory search -->
+				<input type="hidden" id="requester" class="requester"></input>
+				<input type="hidden" id="parentGridTicketId" class="parentGridTicketId"></input>	
+				<input type="hidden" id="javascriptVersion" class="javascriptVersion"></input>	
+			</div>
+			
+
+<div id="editor-grid"></div>
+<div id="welcome" style="display:none">
+
+<div style="position:fixed; left:50%; top:30%;"><!-- margin-top:100px;margin-left:430px;height:100%"-->
+    <img style="opacity:0.15" src="/custom/newui/images/logo/logo.gif"></img>
+</div>
+
+
+</div>
+
+<div>
+<div id="revealDiv" class="reveal-modal">
+<div id="revealData">
+</div>
+ <a class="close-reveal-modal"></a>
+</div>
+</div>
+
+<div>
+<div id="notificationDiv" style="display:none">
+
+</div>
+</div>
+
+
+
+<div style="width: 100%; height: 100%; top: 0px; left: 0px; position: fixed; opacity: 0.8; background-color: rgb(0, 0, 0); z-index: 2000; text-align: center; display: none;" id="notificationMain">
+<table style="height:100px;left:48%; position: absolute; top:30%; width:100px;">
+<tr><td style="float:right"><img onclick="$('#notificationMain').hide();" src="icons/card_icons/cancel.png"></img></td></tr>
+<tr><td>
+<div id="notificationData">
+
+</div></td></tr>
+</table>
+</div>
+
+
+
+
+
+<div id="searchWidget" class="searchFixed">
+<table>
+  <tr onclick="$('#searchWidget').hide()"><td width="80px">&nbsp;</td><td width="100px"><label style="float:right;height:20px" >X</label></td></tr>
+  <tr><td width="80px">Customer:</td><td><input type="text" onkeyup="if(event.keyCode==13){openSearchGrid(this,'Customers Search')}" onblur="if(this.value == '')this.value='Customers Search'" onfocus="this.value=''" value="Customers Search"/></td></tr>
+  <tr><td width="80px">Product:</td><td><input type="text" onkeyup="if(event.keyCode==13){openSearchGrid(this,'Product Search')}" onblur="if(this.value == '')this.value='Product Search'" onfocus="this.value=''" value="Product Search"/></td></tr>
+  <tr><td width="80px">Order:</td><td><input type="text" onkeyup="if(event.keyCode==13){openSearchGrid(this,'Order Search')}" onblur="if(this.value == '')this.value='Order Search'" onfocus="this.value=''" value="Order Search"/></td></tr>
+  <tr><td width="80px">Sub Order:</td><td><input type="text" onkeyup="if(event.keyCode==13){openSearchGrid(this,'SubOrder Search')}" onblur="if(this.value == '')this.value='SubOrder Search'" onfocus="this.value=''" value="SubOrder Search"/></td></tr>
+  <tr><td width="80px">&nbsp;</td></tr>
+  </table>
+</div>
+
+
+
+<div style="display: none;"> 
+<table id="sideMenuTable" width="225" height="100%">
+	<tr>
+		<td height="35px">
+			<div id="logo" style="position: relative; top: 2px; float: left;">
+				<table id='logo'>
+					<tr>
+					<td><img src="/custom/newui/images/logo/e-bee-logo-new.png"  align="left"></img></td>
+					</tr>
+				</table>
+			</div>
+		</td>
+		<td>
+			<div id="sd_menu_container" style="overflow-x:hidden;overflow-y:auto;"></div>
+		</td>
+	</tr>
+</table>
+</div>
+
+<div style="background: none repeat scroll 0 0 #000000;bottom:0;height:100%;left:0; opacity:0.8;position:fixed; right:0; top:0;
+    vertical-align:middle; width:100%; z-index:2000;display:none" id="loading">
+<img width="100" id="loading-image" src="/custom/newui/buttons/blank3.gif" style="height:100px;left:48%; position: absolute; top:30%; width:100px;"></img>
+</div>
+<div style="background: none repeat scroll 0 0 #000000;bottom:0;height:100%;left:0; opacity:0.8;position:fixed; right:0; top:0;
+    vertical-align:middle; width:100%; z-index:2000;display:none" id="loading-wait">
+<img width="100" id="loading-wait-image" src="/custom/newui/images/waiting.gif" style="height:100px;left:48%; position: absolute; top:30%; width:100px;"></img>
+</div>
+
+</body>
+
+</html>

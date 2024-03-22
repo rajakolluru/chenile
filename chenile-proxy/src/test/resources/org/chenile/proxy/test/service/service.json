@@ -1,0 +1,49 @@
+{
+  "name": "_fooService_",
+  "id": "fooService",
+  "operations":
+  [
+   {
+    "name": "increment",
+    "auditable": "false",
+    "url": "/increment",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "input": "org.chenile.proxy.test.service.FooModel",
+    "output": "org.chenile.proxy.test.service.FooModel",
+    "clientInterceptorComponentNames": ["fooInterceptor"],
+    "params":
+    [
+      {
+        "name": "increment",
+        "type": "HEADER",
+        "paramClass": "int",
+        "description": "Specifies the number that we should increment by"
+      },
+      {
+        "name": "model",
+        "type": "BODY",
+        "description": "saves the model object"
+      }
+    ]
+  },
+  {
+    "name": "throwException",
+    "url": "/throw-exception",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "input": "org.chenile.proxy.test.service.FooExceptionModel",
+    "output": "org.chenile.proxy.test.service.FooModel",
+    "params":
+    [
+      {
+        "name": "model",
+        "type": "BODY",
+        "description": "the exception model object based on which it throws exceptions"
+      }
+    ]
+  }
+  ]
+}

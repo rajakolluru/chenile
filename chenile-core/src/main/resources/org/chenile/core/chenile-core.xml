@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<flows>
+	<flow id='chenile-highway' defaultFlow="true">
+		<chenile-highway>
+			<chenile-interceptor-chain>
+				<!--  This is used only in the return path. This surrounds the return value from the service with a generic response -->
+				<generic-response-builder/>
+				<!--  Invoke the exception handler that has been configured -->
+				<exception-handler-interpolation/>
+				<!--  Invoke any other interceptor configured for all services within this deployable. This is done before even computing which API needs to be invoked with what arguments-->
+				<pre-processors-interpolation/>
+				<!--  Compute the class to which the request body will be transformed -->
+				<transformation-class-selector/>
+				<!--  transform the JSON to the class that was computed above -->
+				<transformer/>
+				<!--  See if the service reference needs to be flipped for this trajectory -->
+				<construct-service-reference/>
+				<!--  Compute the arguments required for invoking this service -->
+				<construct-api-invocation/>
+				<!--  Invoke any other interceptor configured for all services within this deployable -->
+				<post-processors-interpolation/>
+				<!--  Invoke any other interceptor configured for this particular operation -->
+				<operation-specific-processors-interpolation/>
+				<!--  Invoke any other interceptor configured for all the operations within the service -->
+				<service-specific-processors-interpolation/>
+				<!--  finally invoke the service -->
+				<service-invoker/>
+			</chenile-interceptor-chain>
+		</chenile-highway>		
+	</flow>	
+</flows>

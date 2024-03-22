@@ -1,0 +1,13 @@
+<project name="OWIZ">
+  <body>
+		<menu name="Main Menu">
+      <item name="Introduction" href="index.html"/>
+      <item name="FAQ" href="faq.html"/>
+    </menu>
+    <menu ref="reports"/>
+    <menu ref="modules"/>
+  </body>
+ <poweredBy>
+    <logo name="itmusings" href="http://itmusings.com/owiz" img="images/owiz_logo.png"/>
+  </poweredBy>
+</project>

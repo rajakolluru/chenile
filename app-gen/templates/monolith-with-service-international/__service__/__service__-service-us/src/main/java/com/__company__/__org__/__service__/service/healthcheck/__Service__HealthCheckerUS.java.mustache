@@ -1,0 +1,22 @@
+package com.{{company}}.{{org}}.{{service}}.service.healthcheck;
+
+import org.chenile.core.service.HealthCheckInfo;
+import com.{{company}}.{{org}}.{{service}}.service.healthcheck.{{Service}}HealthChecker;
+
+public class {{Service}}HealthCheckerUS extends {{Service}}HealthChecker{
+
+	public static final String HEALTH_CHECK_MESSAGE = "{{Service}}US is fine!";
+
+	// Implement a health checker for the service. Just put the additional checks required for this
+	// region. Others are probably implemented by the base health checker
+	// If the service does not extend the base service then you might want to think if this
+	// health checker must extend the base health checker
+	// Check all the dependent systems, DBs etc. 
+	@Override
+	public HealthCheckInfo healthCheck() {
+		HealthCheckInfo healthCheckInfo = super.healthCheck();
+		healthCheckInfo.message = HEALTH_CHECK_MESSAGE;
+		return healthCheckInfo;
+	}
+
+}

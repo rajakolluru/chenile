@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--  contains default configurations for the State Transition Machine (STM). 
+These configurations can be added to normal STM configurations as well.
+The intent behind this file is to avoid repeating similar configurations.
+ -->
+ 
+ <!--  define out of the box OGNL tags. org.chenile.stm.model-->
+<states>
+	<add-state-tag  tag="auto-state" descriptorClass="org.chenile.stm.model.AutomaticStateDescriptor"/>
+	<add-state-tag  tag="manual-state" manualState='true' descriptorClass="org.chenile.stm.model.ManualStateDescriptor"/>
+	<add-state-tag  tag="if" componentName="org.chenile.stm.action.scriptsupport.IfAction" 
+			descriptorClass="org.chenile.stm.model.AutomaticStateDescriptor"/>
+	<add-state-tag  tag="switch" componentName="org.chenile.stm.action.scriptsupport.SwitchAction" 
+			descriptorClass="org.chenile.stm.model.AutomaticStateDescriptor"/>
+	<add-state-tag  tag="script" componentName="org.chenile.stm.action.scriptsupport.ScriptAction" 
+			descriptorClass="org.chenile.stm.model.AutomaticStateDescriptor"/>
+	
+	<!--  Make OGNL the default scripting strategy. Can be replaced by others if necessary. -->
+	<scripting-strategy componentName="org.chenile.stm.ognl.OgnlScriptingStrategy"/>
+	
+	<!-- <bean-factory componentName="org.chenile.stm.impl.spring.SpringBeanFactorySupport" /> -->
+	
+</states>

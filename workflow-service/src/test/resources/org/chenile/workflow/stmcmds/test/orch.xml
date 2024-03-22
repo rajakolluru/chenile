@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flows>
+	<add-command-tag tag='router'/>
+	<flow>
+		<router componentName='tenantRouter' expression="entity.tenantId">
+				<chain componentName='tenant1Chain' route='tenant1'>
+					<command componentName='tenant1TransitionCommand'/>
+				</chain>
+				
+				<chain componentName='defaultChain' route='default'>
+					<command componentName='otherTenantsTransitionCommand'/>
+				</chain>			
+		</router>
+	</flow>
+</flows>

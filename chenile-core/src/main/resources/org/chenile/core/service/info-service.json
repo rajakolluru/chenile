@@ -1,0 +1,55 @@
+{
+	"name": "infoService",
+	"id": "infoService",
+	"healthCheckerName":"infoHealthChecker",
+	
+	"operations": [
+		{
+			"name": "info",
+			"url": "/info",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"output": "org.chenile.core.service.Info",
+			"input": "",
+			"successHttpStatus" : 200
+		},
+		{
+			"name": "healthCheck",
+			"url": "/health-check/{service}",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"output": "org.chenile.core.service.HealthCheckInfo",
+			"input": "",
+			"params": [
+				{
+					"name": "chenile-trajectory-id",
+					"type": "HEADER",
+					"description": "Current trajectory (in case the default health checker is over-ridden)"
+				},
+				{
+					"name": "service",
+					"type": "HEADER",
+					"description": "Name of the service for doing the health check"
+				}
+			]
+		},
+		{
+			"name": "serviceInfo",
+			"url": "/service-info/{service}",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"output": "org.chenile.core.model.ChenileServiceDefinition",
+			"input": "",
+			"params": [
+				{
+					"name": "service",
+					"type": "HEADER",
+					"description": "Name of the service"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<flows>
+	<add-command-tag tag='proxy-router' componentName="proxyTypeRouter" />	
+	<flow id='proxy-flow' defaultFlow="true">
+		<chain componentName='chenileProxyHighway'>
+			<command componentName="chenileProxyInterceptorChain">
+				<command componentName="exceptionHandlerInterpolation"/>
+				<command componentName="operationSpecificClientProcessorsInterpolation"/>
+				<command componentName="serviceSpecificClientProcessorsInterpolation"/>
+				<command componentName='responseBodyTypeSelector'/>
+				<proxy-router>
+					<command componentName="localProxyInvoker" route='LOCAL'/>
+					<command componentName='httpInvoker' route='REMOTE'/>
+				</proxy-router>
+			</command>
+		</chain>		
+	</flow>	
+</flows>

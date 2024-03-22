@@ -1,0 +1,13 @@
+﻿<project name="Chrysalis">
+  <body>
+		<menu name="Main Menu">
+      <item name="Introduction" href="index.html"/>
+      <item name="FAQ" href="faq.html"/>
+    </menu>
+    <menu ref="reports"/>
+    <menu ref="modules"/>
+  </body>
+ <poweredBy>
+    <logo name="JAG Group" href="http://portal.globallogic.com/confluence/display/CTLST/Home" img="images/chrysalis.png"/>
+  </poweredBy>
+</project>

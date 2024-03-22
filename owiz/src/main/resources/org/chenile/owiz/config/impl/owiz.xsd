@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://itmusings.com/vow_0.1" xmlns="http://itmusings.com/vow_0.1">
+
+	<xs:element name="vos">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" minOccurs="0" name="filter-stack" type='FilterStackType'/>
+				<xs:element maxOccurs="unbounded" minOccurs="0" name="vo" type="VOType" />
+			</xs:sequence>
+		</xs:complexType>
+		<!--  Enforce that the id is unique for all the value objects -->
+		<xs:key name="UniqueVoId">
+			<xs:selector xpath="vo" />
+			<xs:field xpath="@id" />
+		</xs:key>
+		<!--  Referential integrity - make sure that parent refers the id -->
+		<xs:keyref name="Parent_Must_Refer_VoID" refer="UniqueVoId">
+			<xs:selector xpath="vo" />
+			<xs:field xpath="parent" />
+		</xs:keyref>
+	</xs:element>
+
+	
+	<xs:complexType name='FilterStackType'>
+		<xs:sequence>
+			<xs:element name='filter' minOccurs='1' maxOccurs='unbounded' type='VOFilterType'/>	
+		</xs:sequence>
+		<xs:attribute name="defaultStack" use="optional" type="xs:boolean" default="false" />
+		<xs:attribute name="id" use="required" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="VOType">
+		<xs:sequence>
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="parent" type="ParentType" maxOccurs="1"/>
+				<xs:element name="scope" type="ScopeType" maxOccurs="1"/>
+			</xs:choice>
+			<xs:element minOccurs="0" name="pre" type="FilterBunchType" maxOccurs="1"/>
+			<xs:element minOccurs="0" name="post" type="FilterBunchType" maxOccurs="1"/>
+			<xs:element name="action" type="VOActionType" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="className" use="required" type="xs:string" />
+		<xs:attribute name="id" use="required" type="xs:string" />
+		<xs:attribute name="filterStackId" use="optional" type="xs:string"/>
+	</xs:complexType>
+	
+		
+	<xs:complexType name="FilterBunchType">
+		<xs:sequence>
+			<xs:element name="filter" minOccurs="1" maxOccurs="unbounded" type="VOFilterType"/>	
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="VOActionType">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="1" name="attributes"
+				type="AttributesType" />
+		</xs:sequence>
+		<xs:attribute name="name" use="required" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="VOFilterType">
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="1" name="attributes"
+				type="AttributesType" />
+		</xs:sequence>
+		<xs:attribute name="id" use="required" type="xs:string" />
+		<xs:attribute name="name" use="required" type="xs:string" />
+	</xs:complexType>
+	
+	<xs:complexType name="ParentType">
+	<xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="property" type="ParentPropertyType" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+	</xs:complexType>
+
+	<xs:simpleType name="ParentPropertyType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z_][a-zA-Z0-9_]*|\$\{id\}|\\\$\{id\}" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ScopeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="request" />
+			<xs:enumeration value="session" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:complexType name="AttributesType">
+		<xs:attribute name="timeToIdleInSeconds" use="optional"
+			type="xs:integer" />
+		<xs:attribute name="timeToLiveInSeconds" use="optional"
+			type="xs:integer" />
+		<xs:attribute name="cacheName" use="optional"
+			type="xs:string" />
+		<xs:attribute name="keyPropertyName" use="optional"
+			type="xs:string" />
+	</xs:complexType>
+</xs:schema>

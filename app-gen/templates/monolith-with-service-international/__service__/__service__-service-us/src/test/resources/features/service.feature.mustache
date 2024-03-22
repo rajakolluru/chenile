@@ -1,0 +1,20 @@
+Feature: Tests the {{service}} Service using a REST client. 
+ 
+  Scenario: Trial test. Change it according to the actual service
+
+    When I construct a REST request with header "chenile-trajectory-id" and value "us"
+    And I POST a REST request to URL "/{{service}}/op1" with payload
+    """
+    {
+	 
+		}
+		"""
+		Then the REST response key "id" is "{{Service}}ServiceImplUS"
+
+		Scenario: Health check test. 
+
+    When I construct a REST request with header "chenile-trajectory-id" and value "us"
+	  And I GET a REST request to URL "/health-check/{{service}}Service" 
+		Then the REST response key "message" is "{{Service}}US is fine!"
+	 
+    

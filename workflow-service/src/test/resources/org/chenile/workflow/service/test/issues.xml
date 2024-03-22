@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<states>
+	<event-information eventId='assign' meta-bodyType='org.chenile.workflow.service.test.issues.AssignIssuePayload'/>
+	<event-information eventId='resolve' meta-bodyType='org.chenile.workflow.param.MinimalPayload'/>
+	<event-information eventId='close' meta-bodyType='org.chenile.workflow.param.MinimalPayload'/>
+	<default-transition-action componentName="issueBaseTransitionAction"/>
+	<entry-action></entry-action>	
+	<flow id='test-flow' default='true'>
+		<entry-action componentName="issueEntryAction" />
+		<exit-action componentName="issueExitAction" />
+		<manual-state id='OPENED' initialState='true'>
+			<on eventId='assign'  newStateId='ASSIGNED' componentName='assignIssue'/>
+		</manual-state>
+
+		<manual-state id='ASSIGNED'>
+			<on eventId='resolve' newStateId='RESOLVED' componentName='resolveIssue'/>
+		</manual-state>
+		<manual-state id='RESOLVED'>
+			<on eventId='close' newStateId='CLOSED' componentName='closeIssue'/>
+		</manual-state>
+		<manual-state id='CLOSED' />
+	</flow>
+	
+</states>

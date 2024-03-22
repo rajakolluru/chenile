@@ -1,0 +1,33 @@
+{
+  "name": "queryService",
+  "id": "queryService",
+  "operations":
+  [
+    {
+    "name": "query",
+    "url": "/query",
+    "auditable": "false",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "input": "java.util.HashMap",
+	"output": "java.util.Map",
+	"successHttpStatus": 200,
+	"warningHttpStatus": 206,
+    "params": [
+		{
+			"name": "headers",
+			"type": "HEADERS",
+			"paramClass":"java.util.Map",
+			"description": "All the headers will be received in this argument"
+		},
+		{
+			"name": "searchRequest",
+			"type": "BODY",
+			"paramClass": "java.util.Map",
+			"description": "The search request that contains the necessary projection information"
+		}
+	]
+  }
+  ]
+}

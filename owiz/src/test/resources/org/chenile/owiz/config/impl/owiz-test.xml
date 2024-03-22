@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- tns:flows xmlns:tns="http://ebee.com/owiz_0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ebee.com/owiz_0.1 owiz.xsd" -->
+<flows>
+	<add-command-tag tag='bar' componentName='org.chenile.owiz.config.impl.BarCommand' />
+	<flow id='flow1' defaultFlow="true">
+		<command id='mod1Command' componentName='mod1Command'>
+			<attach-to index="1" parentId="mod1Chain" />
+		</command>
+		<bar id='barInstance' veg="celery">
+			<attach-to index="5" parentId="mod1Chain" />
+		</bar>
+		
+		<router id='moduleRouter' componentName='moduleRouter' first='true' expression="module">
+		</router>
+
+		<chain id='mod1Chain' componentName='org.chenile.owiz.impl.Chain'>
+			<attach-to route='mod1' parentId="moduleRouter" />
+		</chain>
+
+		<chain id='mod2Chain' componentName='org.chenile.owiz.impl.Chain'>
+			<attach-to route="mod2" parentId="moduleRouter" />
+		</chain>
+
+	</flow>
+	
+	<flow id='flow1'>
+		<command id='mod2Command' componentName='mod2Command'>
+			<attach-to index="1" parentId="mod2Chain" />
+		</command>
+		
+		<command id="mod2Command1" componentName='delegatorCommand'
+		  underlyingObject='foo' method='abc'>
+		  	<attach-to index='2' parentId='mod2Chain'/>
+		  
+		  </command>
+	</flow>
+</flows>

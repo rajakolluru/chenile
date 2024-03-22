@@ -1,0 +1,36 @@
+package com.{{company}}.{{org}}.{{service}}.service.commands;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import {{chenilePackage}}.query.service.commands.RTCommand;
+import com.{{company}}.{{org}}.{{service}}.model.filters.RT3Filter;
+import com.{{company}}.{{org}}.{{service}}.model.RT3Model;
+import {{chenilePackage}}.query.model.ResponseRow;
+import {{chenilePackage}}.query.model.SearchRequest;
+import {{chenilePackage}}.query.model.SearchResponse;
+
+/**
+	Command extracts RT3Model from RT3 by using RT3Filter to construct the request.
+	This command is assumed to be specific to mx and as much is only available for that tenant
+**/
+public class RT3Command extends RTCommand<RT3Filter>	{
+	
+	protected SearchResponse executeSearch(SearchRequest<RT3Filter> searchRequest) {
+		RT3Model model = new RT3Model();
+		model.id = "RT3Command";
+		RT3Filter filters = searchRequest.getFilters();
+		// Use the filters to make downstream invocations and populate the model above 
+		// from the response of the RTs
+		SearchResponse sr = new SearchResponse();
+		ResponseRow responseRow = new ResponseRow();
+		responseRow.setRow(model);
+		sr.setData(responseRow);
+		return sr;
+	}
+
+	@Override
+	protected TypeReference<SearchRequest<RT3Filter>> searchRequestType() {
+		return new TypeReference<SearchRequest<RT3Filter>>() {};
+	}
+}
+
+

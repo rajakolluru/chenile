@@ -1,0 +1,8 @@
+{
+	"id": "t1",
+	"trajectoryOverrides":{
+		"mockService": {
+			"newServiceReferenceId": "t1MockService"
+		}
+	}
+}

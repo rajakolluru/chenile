@@ -1,0 +1,35 @@
+package com.{{company}}.{{org}}.{{service}}.bdd.store;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import {{chenilePackage}}.entity.service.EntityStore;
+import com.{{company}}.{{org}}.{{service}}.model.{{Service}};
+
+/**
+ * Instantiation of a dummy entity store for the purpose of testing.
+ * Uses In Memory Hash maps to store the data.
+ * This store is instantiated only for unit testing purposes
+ * @author Raja Shankar Kolluru
+ *
+ */
+public class Dummy{{Service}}EntityStore implements EntityStore<{{Service}}>{
+	private Map<String, {{Service}}> theStore = new HashMap<>();
+	/**
+	 *  predictable ID to use in a unit test case
+	 */
+	public static final String ID = "dummy";
+	@Override
+	public void store({{Service}} entity) {
+		if (entity.getId() == null) {
+			entity.setId(ID);
+		}
+		theStore.put(entity.getId(), entity);		
+	}
+
+	@Override
+	public {{Service}} retrieve(String id) {
+		return theStore.get(id);
+	}
+
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<states>
+
+	<flow id='orderApproval' default='true'>
+
+		<entry-action componentName='entryAction' />
+		<exit-action componentName='exitAction' />
+
+
+		<if id='new' initialState='true'
+			condition='numItems == 1 &amp;&amp; itemNames[0] != "foo"' then='valid'
+			else='invalid'>
+			<on eventId='valid' newStateId='valid' />
+			<on eventId='invalid' newFlowId='invalidOrder' newStateId='invalid' />
+		</if>
+
+		<if id='valid' condition='orderTotal &lt;= 10000' then='autoApproval'
+			else='requiresApproval'>
+			<on eventId='autoApproval' newStateId='fulfilled' />
+			<on eventId='requiresApproval' newStateId='pendingApproval' />
+		</if>
+
+		<manual-state id='fulfilled'/>
+
+		<manual-state id='pendingApproval'>
+			<on eventId='approved' newStateId='fulfilled' />
+			<on eventId='rejected' newStateId='discarded' />
+		</manual-state>
+
+		<manual-state id='discarded'>
+		</manual-state>
+
+	</flow>
+
+
+	<flow id='invalidOrder'>
+
+		<entry-action componentName='entryAction' />
+		<exit-action componentName='exitAction' />
+
+		<if id='invalid' condition='orderTotal &lt;= 10000' then='autoCorrected'
+			else='needsManualCorrection'>
+			<on eventId='autoCorrected' newStateId='autoCorrected' />
+			<on eventId='needsManualCorrection' newStateId='manualCorrection' />
+		</if>
+
+		<!-- This script below uses an OGNL expression to take care of the requirements 
+			described. The first itemNames[] item is first checked to see if it is foo. 
+			If it is the expression's value is rejected. Else it does two things. one 
+			it corrects the numItems and then the corrected value would become the result 
+			of the expression by virtue of the comma operator. -->
+		<script id='autoCorrected'>
+			<component-properties>
+				<code><![CDATA[
+				(itemNames[0] == 'foo') ? "rejected" : 
+				 (numItems = 1, "corrected")
+			]]></code>
+			</component-properties>
+			<on eventId='corrected' newFlowId='orderApproval' newStateId='new' />
+			<on eventId='rejected' newFlowId='orderApproval' newStateId='discarded' />
+		</script>
+
+		<manual-state id='manualCorrection'>
+			<on eventId='corrected' newFlowId='orderApproval' newStateId='new' />
+			<on eventId='rejected' newFlowId='orderApproval' newStateId='discarded' />
+		</manual-state>
+
+
+	</flow>
+
+
+
+
+</states>

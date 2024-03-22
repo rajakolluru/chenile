@@ -1,0 +1,35 @@
+package com.{{company}}.{{org}}.{{service}}.service.commands;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import {{chenilePackage}}.query.service.commands.RTCommand;
+import com.{{company}}.{{org}}.{{service}}.model.filters.RT2Filter;
+import com.{{company}}.{{org}}.{{service}}.model.RT2Model;
+import {{chenilePackage}}.query.model.ResponseRow;
+import {{chenilePackage}}.query.model.SearchRequest;
+import {{chenilePackage}}.query.model.SearchResponse;
+
+/**
+ * The base command that can be extended by anyone who wants to query an RT and extract results pertaining to a projection
+ *
+ *
+ */
+public class RT2Command extends RTCommand<RT2Filter>	{
+	
+	protected SearchResponse executeSearch(SearchRequest<RT2Filter> searchRequest) {
+		RT2Model model = new RT2Model();
+		model.id = "RT2Command";
+		RT2Filter filters = searchRequest.getFilters();
+		// Use the filters to make downstream invocations and populate the model above 
+		// from the response of the RTs
+		SearchResponse sr = new SearchResponse();
+		ResponseRow responseRow = new ResponseRow();
+		responseRow.setRow(model);
+		sr.setData(responseRow);
+		return sr;
+	}
+
+	@Override
+	protected TypeReference<SearchRequest<RT2Filter>> searchRequestType() {
+		return new TypeReference<SearchRequest<RT2Filter>>() {};
+	}
+}

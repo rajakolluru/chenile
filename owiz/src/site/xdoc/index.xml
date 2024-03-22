@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<document>
+
+    <properties>
+        <title>Welcome to OWIZ - The Orchestration Wizard</title>
+				
+    </properties>
+
+    <body>
+
+        <section name="OWIZ- Orchestration Wizard">
+            <a name="Welcome"/>
+
+        <div style="text-align:left;min-height:200px">
+        <a href="http://itmusings.com/owiz"><img src="images/owiz_logo.png" alt="OWIZ page" hspace="16" align="left"/></a>
+
+        <p>
+         <strong>OWIZ</strong> is an extensible framework for creating enterprise-ready applications that are compliant with
+				 the chain of responsibility pattern. 
+				 
+        </p>
+
+        <p>
+				OWIZ is now at its first version. 
+        </p>
+        </div>
+        <div>
+        <table><tr><td>
+        <a href="https://sourceforge.net/p/owiz/home/">
+          <div style="background:url(images/download.gif) no-repeat scroll 0%; width:200px; min-height:80px; float:left;position:relative;margin:5px">
+            <span style="top:15px;position:absolute;color:white;padding-left:10px">
+              <small>version 0.1-SNAPSHOT</small>
+              <br />
+              <span style="font-weight: bold; font-size:140%">Download Now</span>
+            </span>
+          </div>
+        </a>
+        </td><td>
+        <a href="http://itmusings.com/owiz" style="margin:10px">
+          <div style="background:url(images/chrysalis2butterfly.jpg) no-repeat scroll 0%; width:200px; min-height:80px; float:left;position:relative;margin:5px">
+            <span style="top:15px;position:absolute;color:white;padding-left:10px">
+              <span style="font-weight: bold; font-size:140%">OWIZ Web site</span>
+            </span>
+          </div>
+        </a>
+        </td><td>
+        </td></tr>
+        </table></div>
+        </section>
+
+        <section name="Features &amp; Integrated Frameworks">
+            <ul>
+            <li>
+                <em>External Frameworks</em>
+                <ul>
+                <li>
+                    <strong>ognl</strong> - Use OGNL for scripting ability. 
+                </li>
+                 <li>
+                    <strong>Command and chain of responsiblity pattern support</strong> - Ensures that SRP is enforced.
+                </li>
+                
+        
+                </ul>
+					</li></ul>
+
+		</section>
+        <section name="Licensing">
+        <p>
+           TODO a link to the sourceforge page
+        </p>
+				</section>
+    </body>
+</document>

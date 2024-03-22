@@ -1,0 +1,70 @@
+{
+	"name": "_issueStateEntityService_",
+	"id": "issueCommandService",
+	"operations": [
+		{
+			"name": "retrieve",
+			"url": "/issue/{id}",
+			"httpMethod": "GET",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"input": "",
+			"output": "org.chenile.workflow.dto.StateEntityServiceResponse",
+			"params": [
+				{
+					"name": "id",
+					"type": "HEADER",
+					"paramClass": "java.lang.String",
+					"description": "ID of the entity to retrieve"
+				}
+			]
+		},
+		{
+			"name": "create",
+			"url": "/issue",
+			"httpMethod": "POST",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"input": "org.chenile.workflow.service.test.issues.Issue",
+			"output": "org.chenile.workflow.dto.StateEntityServiceResponse",
+			"params": [
+				{
+					"name": "entity",
+					"type": "BODY",
+					"description": "The entity that needs to be created",
+					"paramClass": "org.chenile.workflow.model.AbstractStateEntity"
+				}
+			]
+		},
+		{
+			"name": "processById",
+			"url": "/issue/{id}/{eventID}",
+			"httpMethod": "PUT",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"input": "org.chenile.workflow.service.test.issues.Issue",
+			"output": "org.chenile.workflow.dto.StateEntityServiceResponse",
+			"bodyTypeSelectorComponentName": "issueBodyTypeSelector",
+			"params": [
+				{
+					"name": "id",
+					"type": "HEADER",
+					"description": "The ID of the entity that needs to receive this event",
+					"paramClass": "java.lang.String"
+				},
+				{
+					"name": "eventID",
+					"type": "HEADER",
+					"description": "The event ID that needs to be sent to the entity",
+					"paramClass": "java.lang.String"
+				},
+				{
+					"name": "payload",
+					"type": "BODY",
+					"description": "The payload for the event",
+					"paramClass": "java.lang.Object"
+				}
+			]
+		}
+	]
+}

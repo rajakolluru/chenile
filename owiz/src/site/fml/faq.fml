@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+  <part id="General">
+    <faq id="why-owiz">
+      <question>Why would I use OWIZ?</question>
+      <answer>
+        <p>
+				OWIZ is useful for many things - SOA, modularization, SRP among other benefits.
+        </p>
+       </answer>
+       </faq>
+       <faq id='how-owiz'>
+       <question>How to use OWIZ?</question>
+       <answer>
+       <p>
+        It is easy to use OWIZ. Here are the steps:
+        1. Decide on a context object for passing information around. Let us say we call the class Context.It has 
+        all the important information that can be passed from command to command.
+        2. Break the application responsibility into pieces. (Single Responsibility Principle). Let each piece of
+        the responsibility be implemented by one single command. Let this command implement the Command&lt;Context&gt; 
+        interface in the package com.itmusings.owiz
+        3. Construct chains of commands and write an xml file that shows the chain of execution. (Please see 
+        com.itmusings.owiz.config.impl.owiz-test.xml for an example. Commands can form a chain of execution by
+        using the com.itmusings.owiz.impl.Chain class.
+        4. Finally, trigger this chain of execution as documented in the test case TestXmlOrchConfigurator.
+        </p>
+				<source>
+				    // create your own context class. Call it Context for instance.
+				    
+					XmlOrchConfigurator&lt;Context&gt; xoc = new XmlOrchConfigurator&lt;Context&gt;();
+					xoc.setFilename("com/itmusings/owiz/config/impl/owiz-test.xml");
+					OrchExecutor&lt;Context&gt; oe = xoc; // can be downcast to an OrchExecutor for execution.
+					// this will avoid tying it to the xml implementation.
+					// use the xoc in the line below.
+					Context context = new Context(); 
+					oe.execute(context);
+				</source>
+      </answer>
+    </faq>
+  </part>
+</faqs>

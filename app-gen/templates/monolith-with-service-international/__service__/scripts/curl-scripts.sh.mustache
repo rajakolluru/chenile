@@ -1,0 +1,53 @@
+display_cmd=cat
+which jq && display_cmd=jq # if jq is present in path use jq to format the json payload well
+
+function execute(){
+	cmd="curl $1"
+	header="curl -i $1"
+	echo "Command: curl $1" | tr -d '\n' | tr '\t' ' ' | tr -s ' ' # all newlines ignored. all tabs to spaces. fuse multiple spaces to one space
+	echo
+	echo "---------------------------------------" 
+	# eval $header 2> /dev/null | sed -n '/^[A-Za-z-]*:/p' # print only lines that have a word in the beginning (word can include -)
+	echo 
+	eval $cmd 2> /dev/null | $display_cmd
+	echo "---------------------------------------" 
+}
+#----
+echo "Checking on all the services that have been exposed in this deployment"
+execute localhost:8080/info 
+
+json1='
+  {
+   
+  }
+'
+
+echo "Executing a health check on the service"
+execute "-X GET -H 'Content-Type: application/json' localhost:8080/health-check/{{service}}Service"
+
+echo "Getting information about the service:"
+execute "-X GET -H 'Content-Type: application/json' localhost:8080/service-info/{{service}}Service"
+
+echo "Executing the base service"
+execute  "-X POST -d '${json1}' -H 'Content-Type: application/json'  localhost:8080/{{service}}/op1"
+
+echo "Executing the US service"
+execute  "-X POST -d '${json1}' -H 'Content-Type: application/json' -H 'chenile-trajectory-id: us' localhost:8080/{{service}}/op1"
+
+echo "Executing the CAN service"
+execute  "-X POST -d '${json1}' -H 'Content-Type: application/json' -H 'chenile-trajectory-id: can' localhost:8080/{{service}}/op1"
+
+echo "Executing the MX service"
+execute  "-X POST -d '${json1}' -H 'Content-Type: application/json' -H 'chenile-trajectory-id: mx' localhost:8080/{{service}}/op1"
+
+echo "Executing the base health check"
+execute  "-X GET  -H 'Content-Type: application/json'  localhost:8080/health-check/{{service}}Service"
+
+echo "Executing the US health check"
+execute  "-X GET  -H 'Content-Type: application/json' -H 'chenile-trajectory-id: us' localhost:8080/health-check/{{service}}Service"
+
+echo "Executing the CAN health check"
+execute  "-X GET  -H 'Content-Type: application/json' -H 'chenile-trajectory-id: can' localhost:8080/health-check/{{service}}Service"
+
+echo "Executing the MX health check"
+execute  "-X GET  -H 'Content-Type: application/json' -H 'chenile-trajectory-id: mx' localhost:8080/health-check/{{service}}Service"

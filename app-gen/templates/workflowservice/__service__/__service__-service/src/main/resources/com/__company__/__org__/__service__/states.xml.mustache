@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<states>
+	<event-information eventId='assign' meta-bodyType='com.{{company}}.{{org}}.{{service}}.model.Assign{{Service}}Payload'/>
+	<event-information eventId='resolve' meta-bodyType='{{chenilePackage}}.workflow.param.MinimalPayload'/>
+	<event-information eventId='close' meta-bodyType='{{chenilePackage}}.workflow.param.MinimalPayload'/>
+	<default-transition-action componentName="{{service}}BaseTransitionAction"/>
+	
+	<flow id='test-flow' default='true'>
+		<entry-action componentName="{{service}}EntryAction"/>
+		<exit-action componentName="{{service}}ExitAction"/>
+		<manual-state id='OPENED' initialState='true'>
+			<on eventId='assign'  newStateId='ASSIGNED' componentName='assign{{Service}}'/>
+		</manual-state>
+
+		<manual-state id='ASSIGNED'>
+			<on eventId='resolve' newStateId='RESOLVED' componentName='resolve{{Service}}'/>
+		</manual-state>
+		<manual-state id='RESOLVED'>
+			<on eventId='close' newStateId='CLOSED' componentName='close{{Service}}'/>
+		</manual-state>
+		<manual-state id='CLOSED' />
+	</flow>
+	
+</states>

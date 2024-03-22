@@ -1,0 +1,154 @@
+{
+  "name": "mockService",
+  "id": "mockService",
+  "mockName": "_mockMockService_",
+  "healthCheckerName":"mockHealthChecker",
+  "operations":
+  [
+    {
+    "name": "mockMethod",
+    "auditable": "false",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "output": "",
+    "input": "java.util.ArrayList",
+    "interceptorComponentNames": ["odIncludedInterceptor" ], 
+    "params":
+    [
+      {
+        "name": "list",
+        "type": "BODY",
+        "paramClass": "java.util.List",
+        "description": "list is picked up from the body"
+      }
+    ]
+  },{
+    "name": "s1",
+    "auditable": "false",
+    "url": "/s1",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "output": "",
+    "input": "",
+    "params":
+    [
+      {
+        "name": "id",
+        "type": "HEADER",
+        "description": "ID"
+      }
+    ]}, {
+    "name": "s2",
+    "auditable": "false",
+    "url": "/s2",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "output": "",
+    "input": "",
+    "params":
+    [
+      {
+        "name": "id",
+        "type": "HEADER",
+        "paramClass": "java.lang.Integer",
+        "description": "System property multi key value."
+      }
+    ]}, {
+    "name": "s3",
+    "auditable": "false",
+    "url": "/s3",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "output": "",
+    "input": "",
+    "params":
+    [
+      {
+        "name": "id",
+        "type": "HEADER",
+        "paramClass": "int",
+        "description": "System property multi key value."
+      }
+    ]}, {
+    "name": "s4",
+    "url": "/s4",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "output": "",
+    "input": "",
+    "params":
+    [
+      {
+        "name": "flag",
+        "type": "HEADER",
+        "paramClass": "boolean",
+        "description": "some description"
+      }
+    ]}, {
+    "name": "s5",
+    "url": "/s5",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "output": "",
+    "input": "",
+    "params":
+    [
+      {
+        "name": "exceptionNum",
+        "type": "HEADER",
+        "paramClass": "int",
+        "description": "test exception"
+      }
+    ]}, {
+    "name": "s6",
+    "url": "/s6",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "output": "",
+    "input": "",
+    "bodyTypeSelectorComponentName": "s6BodyTypeSelector",
+    "params":
+    [
+      {
+        "name": "eventId",
+        "type": "HEADER",
+        "description": "event that determines the type"
+      },
+      {
+        "name": "param",
+        "type": "BODY",
+        "paramClass": "java.lang.Object",
+        "description": "flexible body type"
+      }
+    ]},{
+    "name": "s7",
+    "url": "/s7",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "output": "",
+    "input": "",
+    "params":
+    [
+      {
+        "name": "headers",
+        "type": "HEADERS",
+        "paramClass": "java.util.Map",
+        "description": "headers"
+      }
+    ]}
+  ]
+}

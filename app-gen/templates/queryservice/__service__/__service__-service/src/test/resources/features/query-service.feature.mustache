@@ -1,0 +1,39 @@
+Feature: Tests the {{service}} Service using a REST client. 
+ 
+  Scenario: Test full request. If the request contains all projections the service must return the entire response
+    When I POST a REST request to URL "/{{service}}" with payload
+    """
+    {
+		"rt1model":{},
+		"rt2model":{}    
+	}
+	"""
+	  Then the REST response contains key "rt1model"
+	  And the REST response contains key "rt2model"
+	  And the REST response key "rt1model.data.row.id" is "RT1Command"
+	  And the REST response key "rt2model.data.row.id" is "RT2Command"
+    
+Scenario: Test partial requests. If syracuse does not have a request, then syracuse must not have a response
+    When I POST a REST request to URL "/{{service}}" with payload
+    """
+    {
+		"rt1model":{}    
+	}
+	"""
+  	Then the REST response contains key "rt1model"
+  	And the REST response key "rt1model.data.row.id" is "RT1Command"
+  	And the REST response does not contain key "rt2model"
+	  
+	  
+ Scenario: If an invalid key is there at the root level the response will be an error
+    When I POST a REST request to URL "/{{service}}" with payload
+    """
+    {
+    	"invalidKey":{}
+	}
+	"""
+	Then a REST exception is thrown with status 400 and message code 101
+	And a REST exception is thrown with param number 1 value "invalidKey"
+	And a REST exception is thrown with param number 2 value "root"
+	  
+ 

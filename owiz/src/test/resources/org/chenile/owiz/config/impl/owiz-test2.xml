@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<flows>
+	<flow id='flow1'>
+		<command id='mod2Command' componentName='mod2Command'>
+			<attach-to index="1" parentId="mod2Chain" />
+		</command>
+		
+		<command id="mod2Command1" componentName='delegatorCommand'
+		  underlyingObject='foo' method='abc'>
+		  	<attach-to index='2' parentId='mod2Chain'/>
+		  
+		  </command>
+	</flow>
+</flows>

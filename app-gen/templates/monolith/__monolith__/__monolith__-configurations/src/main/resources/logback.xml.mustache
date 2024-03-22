@@ -1,0 +1,82 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>../logs/{{monolith}}.%d{dd-MM-yyyy}.log</fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>%d %-5level [%thread] %logger{0}: %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>512</queueSize>
+        <appender-ref ref="FILE"/>
+    </appender>   
+
+    <logger name="com.{{company}}.{{org}}" level="${logback.loglevel}"/>
+
+    <logger name="javax.activation" level="WARN"/>
+    <logger name="javax.mail" level="WARN"/>
+    <logger name="javax.xml.bind" level="WARN"/>
+    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="com.codahale.metrics" level="WARN"/>
+    <logger name="com.ryantenney" level="WARN"/>
+    <logger name="com.sun.xml.internal.bind" level="WARN"/>
+    <logger name="com.zaxxer" level="WARN"/>
+    <logger name="io.undertow" level="WARN"/>
+    <logger name="net.sf.ehcache" level="WARN"/>
+    <logger name="org.apache" level="WARN"/>
+    <logger name="org.apache.catalina.startup.DigesterFactory" level="OFF"/>
+    <logger name="org.bson" level="WARN"/>
+    <!-- <logger name="org.hibernate.validator" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.hibernate.ejb.HibernatePersistence" level="OFF"/> -->
+    <logger name="org.hibernate.SQL" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <!-- Change level to `TRACE` only to debug DB related things -->
+    <logger name="org.hibernate.type.descriptor.sql" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.security" level="WARN"/>
+    <logger name="org.springframework.cache" level="WARN"/>
+    <logger name="org.thymeleaf" level="WARN"/>
+    <logger name="org.xnio" level="WARN"/>
+    <logger name="com.mangofactory.swagger" level="WARN"/>
+    <logger name="com.wordnik.swagger" level="WARN"/>
+    <!-- <logger name="liquibase" level="WARN"/> -->
+    <logger name="sun.rmi" level="WARN"/>
+    <logger name="javax.management" level="WARN"/>
+    <logger name="org.apache.kafka" level="ERROR"/>
+    <!-- <logger name="org.mybatis.spring" level="DEBUG"/> -->
+    
+    <springProfile name="develop">
+    	<logger name="com.meratransport" level="DEBUG"/>
+    </springProfile>
+    
+    <springProfile name="!develop">
+    	<logger name="com.meratransport" level="INFO"/>
+    </springProfile>
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+    
+    <root level="${logback.loglevel}">
+        <appender-ref ref="STDOUT" />
+    </root>
+    
+    <root level="INFO">
+	    <appender-ref ref="FILE"/>
+    </root>
+</configuration>

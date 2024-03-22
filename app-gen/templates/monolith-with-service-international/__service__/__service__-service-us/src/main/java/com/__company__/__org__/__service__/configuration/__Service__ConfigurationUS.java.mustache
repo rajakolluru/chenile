@@ -1,0 +1,27 @@
+package com.{{company}}.{{org}}.{{service}}.configuration;
+
+import org.chenile.core.annotation.ConditionalHealthCheckOnTrajectory;
+import org.chenile.core.annotation.ConditionalOnTrajectory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.{{company}}.{{org}}.{{service}}.service.{{Service}}Service;
+import com.{{company}}.{{org}}.{{service}}.service.impl.{{Service}}ServiceImplUS;
+import com.{{company}}.{{org}}.{{service}}.service.healthcheck.{{Service}}HealthCheckerUS;
+
+/**
+ This is where you will instantiate all the required classes in Spring
+
+*/
+@Configuration
+public class {{Service}}ConfigurationUS {
+	@ConditionalOnTrajectory(id = "us",service = "{{service}}Service")
+	@Bean public {{Service}}Service _{{service}}ServiceUS_() {
+		return new {{Service}}ServiceImplUS();
+	}
+
+	@ConditionalHealthCheckOnTrajectory(id = "us",service = "{{service}}Service")
+	@Bean {{Service}}HealthCheckerUS {{service}}HealthCheckerUS(){
+    	return new {{Service}}HealthCheckerUS();
+    }
+}

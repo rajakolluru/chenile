@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>chenile-parent</artifactId>
+		<groupId>org.chenile</groupId>
+		<version>${revision}</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>chenile-swagger</artifactId>
+
+	<properties>
+		<swagger.version>2.9.2</swagger.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.chenile</groupId>
+			<artifactId>chenile-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-spring-web</artifactId>
+			<version>${swagger.version}</version>
+		</dependency> -->
+
+		<!-- <dependency> <groupId>io.swagger.core.v3</groupId> <artifactId>swagger-jaxrs2</artifactId> 
+			<version>2.1.0</version> </dependency> -->
+
+	</dependencies>
+
+</project>

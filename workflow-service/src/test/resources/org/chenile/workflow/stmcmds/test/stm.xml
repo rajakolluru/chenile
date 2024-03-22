@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<states>
+
+	<default-transition-action componentName="baseTransitionAction"/>	
+	<flow id='test-flow' default='true'>
+		
+		<manual-state id='S1' initialState='true'>
+			<on eventId='T1'  newStateId='S2' meta-command='mockTransitionCommand'/>
+			<on eventId="T2" newStateId='S3' meta-orchExecutor='mockOrchExecutor'/>
+			<on eventId="T3" newStateId='S4' meta-orchestratedCommandsConfiguration='org/chenile/workflow/stmcmds/test/orch1.xml'/>
+		</manual-state>
+
+		<manual-state id='S2'/>
+		<manual-state id='S3' />
+		<manual-state id='S4' />
+	</flow>
+	
+</states>

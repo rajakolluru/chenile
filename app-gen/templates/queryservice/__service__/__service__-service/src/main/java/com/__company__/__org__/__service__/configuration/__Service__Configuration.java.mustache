@@ -1,0 +1,78 @@
+package com.{{company}}.{{org}}.{{service}}.configuration;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.chenile.owiz.BeanFactoryAdapter;
+import org.chenile.owiz.OrchExecutor;
+import org.chenile.owiz.config.impl.XmlOrchConfigurator;
+import org.chenile.owiz.impl.OrchExecutorImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import {{chenilePackage}}.query.service.commands.QueryChain;
+import {{chenilePackage}}.query.service.commands.model.SearchContext;
+import {{chenilePackage}}.query.service.impl.EntityQueryServiceImpl;
+import {{chenilePackage}}.tenant.commands.TenantRouter;
+import com.{{company}}.{{org}}.{{service}}.service.commands.RT1Command;
+import com.{{company}}.{{org}}.{{service}}.service.commands.RT2Command;
+import com.{{company}}.{{org}}.{{service}}.service.healthcheck.{{Service}}HealthChecker;
+
+@Configuration
+public class {{Service}}Configuration {
+	@Autowired ApplicationContext applicationContext;
+	
+	@Bean public OrchExecutor<SearchContext> {{service}}SearchExecutor() throws Exception {
+    	XmlOrchConfigurator<SearchContext> xmlOrchConfigurator = new XmlOrchConfigurator<>();
+    	xmlOrchConfigurator.setBeanFactoryAdapter(new BeanFactoryAdapter() {	
+    		
+			@Override
+			public Object lookup(String componentName) {
+				try {
+				return applicationContext.getBean(componentName);
+				}catch (Exception e) {
+					return null;
+				}
+			}
+		});
+		xmlOrchConfigurator.setFilename("com/{{company}}/{{org}}/{{service}}/orch.xml");
+		OrchExecutorImpl<SearchContext> executor = new OrchExecutorImpl<>();
+		executor.setOrchConfigurator(xmlOrchConfigurator);
+		
+		return executor;		
+    }
+
+    @Bean {{Service}}HealthChecker {{service}}HealthChecker(){
+    	return new {{Service}}HealthChecker();
+    }
+	
+	@Bean ExecutorService {{service}}ExecutorService() {
+		return Executors.newFixedThreadPool(100); // TODO change it to a configurable parameter
+	}
+	
+
+	@Bean TenantRouter tenantRouterSearch() {
+		return new TenantRouter();
+	}
+	
+	@Bean EntityQueryServiceImpl _{{service}}Service_(@Qualifier("{{service}}SearchExecutor") OrchExecutor<SearchContext> {{service}}SearchExecutor) {
+		return new EntityQueryServiceImpl({{service}}SearchExecutor);
+	}
+	
+	@Bean RT1Command rt1Command() {
+		return new RT1Command();
+	}
+	@Bean RT2Command rt2Command(){
+		return new RT2Command();
+	}
+	
+	
+	@Bean QueryChain root(ExecutorService {{service}}ExecutorService) {
+		QueryChain chain = new QueryChain();
+		chain.setExecutorService({{service}}ExecutorService);
+		return chain;
+	}
+}

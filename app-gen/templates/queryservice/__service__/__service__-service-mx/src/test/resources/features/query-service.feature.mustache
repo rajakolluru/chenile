@@ -1,0 +1,15 @@
+Feature: Tests the {{service}} Service - MX using a REST client. 
+ 
+  Scenario: Test full request. If the request contains all projections the service must return the entire response
+  	When I construct a REST request with header "x-aurora-region-id" and value "MX"
+    And I POST a REST request to URL "/{{service}}" with payload
+    """
+    {
+		"rt1model":{},
+		"rt3model":{}    
+	}
+	"""
+	  Then the REST response contains key "rt1model"
+	  And the REST response contains key "rt3model"
+	  And the REST response key "rt1model.data.row.id" is "RT1Command"
+	  And the REST response key "rt3model.data.row.id" is "RT3Command"

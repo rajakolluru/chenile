@@ -1,0 +1,17 @@
+package com.{{company}}.{{org}}.{{service}}.service.impl;
+
+import org.chenile.base.exception.BadRequestException;
+import org.chenile.base.exception.ErrorNumException;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.{{company}}.{{org}}.{{service}}.model.{{Service}}Entity;
+import com.{{company}}.{{org}}.{{service}}.service.impl.{{Service}}ServiceImpl;
+
+public class {{Service}}ServiceImplMX extends {{Service}}ServiceImpl{
+	@Override
+	public {{Service}}Entity op1({{Service}}Entity {{service}}Entity) {
+		// Implement the service here
+		{{service}}Entity.id = "{{Service}}ServiceImplMX";
+		return {{service}}Entity;
+	}
+}

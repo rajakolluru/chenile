@@ -1,0 +1,15 @@
+package {{chenilePackage}}.configuration.{{interceptorName}};
+
+
+import {{chenilePackage}}.{{interceptorName}}.interceptor.{{InterceptorName}}Interceptor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class {{InterceptorName}}Configuration {
+	
+	@Bean
+	public {{InterceptorName}}Interceptor {{interceptorName}}Interceptor() {
+		return new {{InterceptorName}}Interceptor();
+	}
+}
