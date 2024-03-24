@@ -8,19 +8,18 @@ import org.chenile.stm.impl.STMFlowStoreImpl;
 import org.chenile.stm.impl.STMImpl;
 import org.chenile.stm.impl.XmlFlowReader;
 import org.chenile.stm.spring.SpringBeanFactoryAdapter;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import {{chenilePackage}}.entity.service.EntityStore;
-import {{chenilePackage}}.service.impl.StateEntityServiceImpl;
-import {{chenilePackage}}.service.stmcmds.BaseTransitionAction;
-import {{chenilePackage}}.service.stmcmds.GenericEntryAction;
-import {{chenilePackage}}.service.stmcmds.GenericExitAction;
-import {{chenilePackage}}.service.stmcmds.StmBodyTypeSelector;
+import {{chenilePackage}}.utils.entity.service.EntityStore;
+import {{chenilePackage}}.workflow.service.impl.StateEntityServiceImpl;
+import {{chenilePackage}}.workflow.service.stmcmds.BaseTransitionAction;
+import {{chenilePackage}}.workflow.service.stmcmds.GenericEntryAction;
+import {{chenilePackage}}.workflow.service.stmcmds.GenericExitAction;
+import {{chenilePackage}}.workflow.service.stmcmds.StmBodyTypeSelector;
 import com.{{company}}.{{org}}.{{service}}.model.{{Service}};
 import com.{{company}}.{{org}}.{{service}}.service.cmds.Assign{{Service}}Action;
 import com.{{company}}.{{org}}.{{service}}.service.cmds.Close{{Service}}Action;
@@ -33,9 +32,8 @@ import com.{{company}}.{{org}}.{{service}}.service.store.{{Service}}EntityStore;
 
 */
 @Configuration
-public class {{Service}}Configuration implements InitializingBean{
+public class {{Service}}Configuration {
 	private static final String FLOW_DEFINITION_FILE = "com/{{company}}/{{org}}/{{service}}/states.xml";
-	@Autowired @Qualifier("{{service}}FlowStore") STMFlowStoreImpl flowStore;
 	
 	@Bean BeanFactoryAdapter {{service}}BeanFactoryAdapter() {
 		return new SpringBeanFactoryAdapter();
@@ -99,13 +97,11 @@ public class {{Service}}Configuration implements InitializingBean{
 		return new Close{{Service}}Action();
 	}
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		// Read the XML now after creating all the dependent beans. Else there
-		// will be a circular dependency
-		
+	@Bean
+	XmlFlowReader {{service}}FlowReader(@Qualifier("{{service}}FlowStore") STMFlowStoreImpl flowStore) throws Exception {
 		XmlFlowReader flowReader = new XmlFlowReader(flowStore);
 		flowReader.setFilename(FLOW_DEFINITION_FILE);
+		return flowReader;
 	}
 	
 

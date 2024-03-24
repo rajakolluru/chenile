@@ -39,8 +39,8 @@ setenv $0
 
 usage="${prog}"
 function usage {
-	echo "$usage <monolith-directory> <aurora-service-name>" 1>&2
-	echo "This script makes the monolith (defined in monolith-directory) to bundle the aurora-service." 1>&2
+	echo "$usage <monolith-directory> <chenile-service-name>" 1>&2
+	echo "This script makes the monolith (defined in monolith-directory) to bundle the chenile-service." 1>&2
 	echo "$prog -? for this usage message" 1>&2
 }
 

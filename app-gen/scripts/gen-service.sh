@@ -43,8 +43,8 @@ function constructJsonfile(){
 	echo "\"serviceVersion\": \"$serviceVersion\","
 	echo "\"org\": \"$org\","
 	echo "\"company\": \"$company\","
-	echo "\"auroraPackage\": \"$auroraPackage\","
-	echo "\"auroraVersion\": \"$auroraVersion\","
+	echo "\"chenilePackage\": \"$chenilePackage\","
+	echo "\"chenileVersion\": \"$chenileVersion\","
 	echo "\"Service\": \"$Service\""
 	echo "}"
 }

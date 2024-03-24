@@ -42,8 +42,8 @@ function constructJsonfile(){
 	echo "\"moduleVersion\": \"$moduleVersion\","
 	echo "\"org\": \"$org\","
 	echo "\"company\": \"$company\","
-	echo "\"auroraPackage\": \"$auroraPackage\","
-	echo "\"auroraVersion\": \"$auroraVersion\","
+	echo "\"chenilePackage\": \"$chenilePackage\","
+	echo "\"chenileVersion\": \"$chenileVersion\","
 	echo "\"moduleList\": [ $moduleList ]"
 	echo "}"
 }

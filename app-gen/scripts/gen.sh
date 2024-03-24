@@ -114,7 +114,7 @@ choice=$(choices  \
     "i|Generate international service & Monolith" \
     "Q|Generate Query Service & Mini Monolith"   \
     "W|Generate Workflow Service & Mini Monolith" \
-    "I|Generate an Aurora interceptor stub" \
+    "I|Generate a Chenile interceptor stub" \
     "C|Create a local config")
 
 case $choice in

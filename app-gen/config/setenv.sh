@@ -1,8 +1,8 @@
-export auroraPackage=org.chenile
-export auroraVersion=1.0.0-SNAPSHOT
+export chenilePackage=org.chenile
+export chenileVersion=1.2.3
 
-export company=netscoretech
-export org=pos
+export company=mycompany
+export org=myorg
 
 export defaultServiceName="serviceName"
 export defaultVersion="0.0.1-SNAPSHOT"

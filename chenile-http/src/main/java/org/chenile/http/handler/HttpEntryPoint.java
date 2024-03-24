@@ -180,7 +180,8 @@ public class HttpEntryPoint implements HttpRequestHandler {
 	public static Map<String, Object> getHeaders(OperationDefinition od, 
 			HttpServletRequest httpServletRequest) {
 		Map<String, Object> headers = new HashMap<>();
-		headers.putAll(extractPathVariables(od.getUrl(),httpServletRequest.getPathInfo()));
+		String pathInfo = httpServletRequest.getRequestURI();
+		headers.putAll(extractPathVariables(od.getUrl(),pathInfo));
 
 //		Map<String,Object> pathParams = (Map<String, Object>) httpServletRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 //		if (null != pathParams) {

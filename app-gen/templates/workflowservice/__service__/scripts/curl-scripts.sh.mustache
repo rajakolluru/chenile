@@ -39,13 +39,20 @@ json_close='
 }
 '
 
+tmpfile=/tmp/tmp.$$
+echo "Creating {{service}} with payload |$json_create| "
+curl -X POST -d "${json_create}" -H 'Content-Type: application/json' localhost:8080/{{service}} > $tmpfile
+cat $tmpfile | jq
+id=$(cat $tmpfile | jq ".payload.mutatedEntity.id" | tr -d '"')
+echo "Obtained ID = $id"
+rm -f %tmpfile
 
-execute  "-X POST -d '${json_create}' -H 'Content-Type: application/json' localhost:8080/{{service}}"
+# execute  "-X POST -d '${json_create}' -H 'Content-Type: application/json' localhost:8080/{{service}}"
 
-execute  "-X PUT -d '${json_assign}' -H 'Content-Type: application/json' localhost:8080/{{service}}/1/assign"
+execute  "-X PUT -d '${json_assign}' -H 'Content-Type: application/json' localhost:8080/{{service}}/${id}/assign"
 
-execute  "-X PUT -d '${json_resolve}' -H 'Content-Type: application/json' localhost:8080/{{service}}/1/resolve"
+execute  "-X PUT -d '${json_resolve}' -H 'Content-Type: application/json' localhost:8080/{{service}}/${id}/resolve"
 
-execute  "-X PUT -d '${json_close}' -H 'Content-Type: application/json' localhost:8080/{{service}}/1/close"
+execute  "-X PUT -d '${json_close}' -H 'Content-Type: application/json' localhost:8080/{{service}}/${id}/close"
 
 execute "-X GET -H 'Content-Type: application/json' localhost:8080/health-check/{{service}}Service"

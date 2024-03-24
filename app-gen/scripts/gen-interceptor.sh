@@ -43,8 +43,8 @@ function constructJsonfile(){
 	echo "\"interceptorVersion\": \"$serviceVersion\","
 	echo "\"org\": \"$org\","
 	echo "\"company\": \"$company\","
-	echo "\"auroraPackage\": \"$auroraPackage\","
-	echo "\"auroraVersion\": \"$auroraVersion\","
+	echo "\"chenilePackage\": \"$chenilePackage\","
+	echo "\"chenileVersion\": \"$chenileVersion\","
 	echo "\"InterceptorName\": \"$InterceptorName\""
 	echo "}"
 }

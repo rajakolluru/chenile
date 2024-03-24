@@ -62,13 +62,13 @@ function replaceServiceInName(){
   done
   }
 
-## Get All Aurora projects under the folder.
+## Get All Chenile projects under the folder.
 function getAllProjects(){
   folder=$1
-  find $folder -name ".auroragen.json" -print |
+  find $folder -name ".chenilegen.json" -print |
     while read project
     do
-      project=${project%/.auroragen.json}
+      project=${project%/.chenilegen.json}
       project=${project##*/}
       echo "\"${project}\""
     done
@@ -82,13 +82,13 @@ function generateModule(){
   cp -r $template_folder/* $target_folder
   processTemplates $target_folder $json_file
   replaceServiceInName $target_folder "$subParams"
-  processAuroraHeaderFiles $target_folder $json_file
+  processChenileHeaderFiles $target_folder $json_file
 }
 
-function processAuroraHeaderFiles(){
+function processChenileHeaderFiles(){
   target_folder=$1
   json_file=$2
-  find $target_folder -name .auroragen.json -print |
+  find $target_folder -name .chenilegen.json -print |
     while read file
     do
       emitJsonContentsTofile $file $json_file
