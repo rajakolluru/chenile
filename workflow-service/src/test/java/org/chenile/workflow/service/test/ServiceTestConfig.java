@@ -19,7 +19,6 @@ import org.chenile.workflow.service.test.issues.CloseIssueAction;
 import org.chenile.workflow.service.test.issues.Issue;
 import org.chenile.workflow.service.test.issues.IssueEntityStore;
 import org.chenile.workflow.service.test.issues.ResolveIssueAction;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,7 +34,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("unittest")
 public class ServiceTestConfig extends SpringBootServletInitializer{
 
-	
+	private static final String FLOW_DEFINITION_FILE = "org/chenile/workflow/service/test/issues.xml";
 	@Bean BeanFactoryAdapter issueBeanFactoryAdapter() {
 		return new SpringBeanFactoryAdapter();
 	}
@@ -44,6 +43,12 @@ public class ServiceTestConfig extends SpringBootServletInitializer{
 		STMFlowStoreImpl stmFlowStore = new STMFlowStoreImpl();
 		stmFlowStore.setBeanFactory(issueBeanFactoryAdapter);
 		return stmFlowStore;
+	}
+	
+	@Bean XmlFlowReader issueFlowReader(@Qualifier("issueFlowStore") STMFlowStoreImpl flowStore) throws Exception{
+		XmlFlowReader flowReader = new XmlFlowReader(flowStore);
+        flowReader.setFilename(FLOW_DEFINITION_FILE);
+		return flowReader;
 	}
 	
 	@Bean @Autowired STM<Issue> issueEntityStm(@Qualifier("issueFlowStore") STMFlowStoreImpl stmFlowStore) throws Exception{
