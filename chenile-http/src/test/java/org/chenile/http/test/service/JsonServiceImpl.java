@@ -7,6 +7,7 @@ public class JsonServiceImpl implements JsonService{
 
     @Override
     public JsonData getOne(String id) {
+    	System.out.println("At getOne() Id is " + id);
         JsonData j=new JsonData();
         j.setName("Hello");
         j.setId(id);

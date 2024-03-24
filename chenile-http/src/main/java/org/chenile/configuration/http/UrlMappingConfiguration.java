@@ -31,7 +31,7 @@ public class UrlMappingConfiguration {
     }
     
     @Bean
-	public TrajectoryPostprocessor trajectoryPostProcessor() {
+	public static TrajectoryPostprocessor trajectoryPostProcessor() {
 		return new TrajectoryPostprocessor();
 	}
 	

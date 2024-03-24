@@ -62,7 +62,7 @@ public class ControllerSupport {
 	
 	private ChenileExchange makeExchange(HttpServletRequest request, String opName,Object[] args) {
 		ChenileExchange chenileExchange = chenileExchangeBuilder.makeExchange(service, opName, null);
-		chenileExchange.setHeaders(HttpEntryPoint.getHeaders(request));
+		chenileExchange.setHeaders(HttpEntryPoint.getHeaders(chenileExchange.getOperationDefinition(),request));
 		chenileExchange.setLocale(localeResolver.resolveLocale(request));
 		chenileExchange.setMultiPartMap(HttpEntryPoint.getMultiPartMap(request));
 		// populate body from the RequestBody param
