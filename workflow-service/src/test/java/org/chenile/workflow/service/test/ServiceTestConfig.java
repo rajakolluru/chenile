@@ -33,9 +33,8 @@ import org.springframework.test.context.ActiveProfiles;
 @PropertySource("classpath:org/chenile/workflow/service/test/TestWorkflowService.properties")
 @SpringBootApplication(scanBasePackages = { "org.chenile.configuration" })
 @ActiveProfiles("unittest")
-public class ServiceTestConfig extends SpringBootServletInitializer implements InitializingBean{
-	private static final String FLOW_DEFINITION_FILE = "org/chenile/workflow/service/test/issues.xml";
-	@Autowired @Qualifier("issueFlowStore") STMFlowStoreImpl flowStore;
+public class ServiceTestConfig extends SpringBootServletInitializer{
+
 	
 	@Bean BeanFactoryAdapter issueBeanFactoryAdapter() {
 		return new SpringBeanFactoryAdapter();
@@ -99,14 +98,7 @@ public class ServiceTestConfig extends SpringBootServletInitializer implements I
 		return new CloseIssueAction();
 	}
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		// Read the XML now after creating all the dependent beans. Else there
-		// will be a circular dependency
-		
-		XmlFlowReader flowReader = new XmlFlowReader(flowStore);
-		flowReader.setFilename(FLOW_DEFINITION_FILE);
-	}
+
 	
 }
 

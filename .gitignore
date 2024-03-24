@@ -16,7 +16,6 @@
 log/
 target/
 .factorypath
-.mvn/
 .flattened-pom.xml
 
 # run time files
