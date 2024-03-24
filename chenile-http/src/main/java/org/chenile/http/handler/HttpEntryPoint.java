@@ -11,10 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import org.chenile.base.exception.ServerException;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.base.response.WarningAware;
@@ -35,6 +31,10 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class HttpEntryPoint implements HttpRequestHandler {
 
@@ -176,59 +176,17 @@ public class HttpEntryPoint implements HttpRequestHandler {
 		}
 		exchange.setBody(body);
 	}
-
-	@SuppressWarnings("unchecked")
-	public static Map<String, Object> getHeaders(HttpServletRequest httpServletRequest) {
-		printHttpServletRequest(httpServletRequest);
-		Map<String, Object> headers = new HashMap<>();
-		Map<String,Object> pathParams = (Map<String, Object>) httpServletRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-		System.out.println("path params is " + pathParams);
-		if (null != pathParams) {
-			headers.putAll(pathParams);
-		}
-		headers.putAll(Collections.list(httpServletRequest.getParameterNames()).stream()
-				.collect(Collectors.toMap(parameterName -> parameterName, httpServletRequest::getParameterValues)));
-		Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
-
-		if (headerNames != null) {
-			while (headerNames.hasMoreElements()) {
-				String headerName = headerNames.nextElement();
-				System.out.println("Header name is " + headerName + " and value is " + httpServletRequest.getHeader(headerName));
-				headers.put(headerName, httpServletRequest.getHeader(headerName));
-			}
-		}
-		return headers;
-	}
 	
-	public static void printHttpServletRequest(HttpServletRequest httpServletRequest) {
-		System.out.println("print http servlet request " + httpServletRequest);
-		Enumeration<String> x = httpServletRequest.getAttributeNames();
-		while (x.hasMoreElements()) {
-			String s = x.nextElement();
-			System.out.println("Attribute " + s + " with value " + httpServletRequest.getAttribute(s));
-		}
-		System.out.println("Parameter map is " + httpServletRequest.getParameterMap());
-		System.out.println("Path Indo: " + httpServletRequest.getPathInfo()) ;
-		System.out.println("Context path: " + httpServletRequest.getContextPath());
-		System.out.println("Path Translated: " + httpServletRequest.getPathTranslated()) ;
-		System.out.println("Servlet Path: " + httpServletRequest.getServletPath()) ;
-		System.out.println("http servlet mapping: " + httpServletRequest.getHttpServletMapping()) ;
-		
-	}
-	
-	@SuppressWarnings("unchecked")
+	// @SuppressWarnings("unchecked")
 	public static Map<String, Object> getHeaders(OperationDefinition od, 
 			HttpServletRequest httpServletRequest) {
 		Map<String, Object> headers = new HashMap<>();
 		headers.putAll(extractPathVariables(od.getUrl(),httpServletRequest.getPathInfo()));
-		
-		printHttpServletRequest(httpServletRequest);
-		
-		Map<String,Object> pathParams = (Map<String, Object>) httpServletRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-		System.out.println("path params is " + pathParams);
-		if (null != pathParams) {
-			headers.putAll(pathParams);
-		}
+
+//		Map<String,Object> pathParams = (Map<String, Object>) httpServletRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+//		if (null != pathParams) {
+//			headers.putAll(pathParams);
+//		}
 		headers.putAll(Collections.list(httpServletRequest.getParameterNames()).stream()
 				.collect(Collectors.toMap(parameterName -> parameterName, httpServletRequest::getParameterValues)));
 		Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
@@ -236,7 +194,6 @@ public class HttpEntryPoint implements HttpRequestHandler {
 		if (headerNames != null) {
 			while (headerNames.hasMoreElements()) {
 				String headerName = headerNames.nextElement();
-				System.out.println("Header name is " + headerName + " and value is " + httpServletRequest.getHeader(headerName));
 				headers.put(headerName, httpServletRequest.getHeader(headerName));
 			}
 		}
@@ -250,14 +207,12 @@ public class HttpEntryPoint implements HttpRequestHandler {
 			int endIndex = url.indexOf("}");
 			String pathVarName = url.substring(startIndex+2,endIndex);
 			url = url.substring(endIndex+1);
-			// In the pathInfo the position will be startIndex +1 since we dont 
+			// In the pathInfo the position will be startIndex +1 since we don't 
 			// expect to see { there.
 			startIndex = startIndex + 1;
 			endIndex = pathInfo.indexOf("/", startIndex);
 			if (endIndex == -1) endIndex = pathInfo.length();
 			String pathVarValue = pathInfo.substring(startIndex, endIndex);
-			System.out.println("path var name = |" + pathVarName + 
-					"| path var value = |" + pathVarValue + "|");
 			pathInfo = pathInfo.substring(endIndex);
 			pathVars.put(pathVarName, pathVarValue);
 		}
