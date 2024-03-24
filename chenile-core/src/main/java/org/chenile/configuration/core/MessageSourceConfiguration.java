@@ -6,6 +6,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.chenile.core.event.EventLogger;
+import org.chenile.core.context.EventLog;
 
 /**
  * 
@@ -26,6 +28,16 @@ public class MessageSourceConfiguration {
 		MultipleMessageSource mms = new MultipleMessageSource();
 		mms.setBasename("classpath*:" + resourceBundle);
 		return mms;
+	}
+	
+	@Bean public EventLogger eventLogger() {
+		return new EventLogger() {
+			
+			@Override
+			public void log(EventLog eventLog) {
+				// do nothing				
+			}
+		};
 	}
 	
 }

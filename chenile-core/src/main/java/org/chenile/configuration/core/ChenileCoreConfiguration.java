@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.ChenileExchangeBuilder;
-import org.chenile.core.context.EventLog;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.event.EventLogger;
 import org.chenile.core.event.EventProcessor;
@@ -223,16 +222,6 @@ public class ChenileCoreConfiguration {
 	
 	@Bean public Command<ChenileExchange> serviceSpecificProcessorsInterpolation(){
 		return new ServiceSpecificProcessorsInterpolation(); 
-	}
-	
-	@Bean public EventLogger eventLogger() {
-		return new EventLogger() {
-			
-			@Override
-			public void log(EventLog eventLog) {
-				// do nothing				
-			}
-		};
 	}
 	
 	@Bean public GenericResponseBuilder genericResponseBuilder() {

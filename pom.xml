@@ -39,13 +39,13 @@
 	</parent>
 
 	<properties>
-		<java.version>17</java.version >
-<!--		<java.compiler.version>1.8</java.compiler.version>-->
+		<java.version>17</java.version>
+		<!--		<java.compiler.version>1.8</java.compiler.version>-->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- tomcat.version>9.0.21</tomcat.version>
 		<zookeeper.version>3.4.13</zookeeper.version>
 		<jacoco.version>0.8.5</jacoco.version -->
-	
+
 		<!-- java.version>21</java.version -->
 		<cucumber.version>4.3.1</cucumber.version>
 		<jacoco.version>0.8.11</jacoco.version>
@@ -187,18 +187,18 @@
 				<artifactId>springdoc-openapi-ui</artifactId>
 				<version>${springdoc.version}</version>
 			</dependency>
-			
+
 			<dependency>
-    			<groupId>com.hazelcast</groupId>
-		   	 <artifactId>hazelcast</artifactId>
-		   	 <version>${hazelcast.version}</version>
-		</dependency>
-		
-		<dependency>
-    		<groupId>com.hazelcast</groupId>
-		    <artifactId>hazelcast-client</artifactId>
-		    <version>${hazelcast.version}</version>
-		</dependency>
+				<groupId>com.hazelcast</groupId>
+				<artifactId>hazelcast</artifactId>
+				<version>${hazelcast.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.hazelcast</groupId>
+				<artifactId>hazelcast-client</artifactId>
+				<version>${hazelcast.version}</version>
+			</dependency>
 		</dependencies>
 
 	</dependencyManagement>
@@ -249,10 +249,10 @@
 					<localCheckout>true</localCheckout> <!-- must be true -->
 				</configuration>
 			</plugin>
-			<plugin>
+			<!-- plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-			</plugin>
+			</plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
