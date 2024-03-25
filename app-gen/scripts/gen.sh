@@ -111,16 +111,12 @@ fi
 
 choice=$(choices  \
     "N|Generate Normal Service & Mini Monolith"  \
-    "i|Generate international service & Monolith" \
-    "Q|Generate Query Service & Mini Monolith"   \
     "W|Generate Workflow Service & Mini Monolith" \
     "I|Generate a Chenile interceptor stub" \
     "C|Create a local config")
 
 case $choice in
     "N") generateNormalServiceAndMonolith ;;
-    "i") generateInternationalServiceMonolith ;;
-    "Q") generateQueryServiceAndMonolith;;
     "W") generateWorkflowServiceAndMonolith;;
     "I") generateInterceptor;;
     "C") generateLocalConfig;;
