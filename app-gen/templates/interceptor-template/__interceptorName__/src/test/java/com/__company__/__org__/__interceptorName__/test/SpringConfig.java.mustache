@@ -1,7 +1,7 @@
-package {{chenilePackage}}.{{interceptorName}}.test;
+package com.{{company}}.{{org}}.{{interceptorName}}.test;
 
-import {{chenilePackage}}.{{interceptorName}}.test.service.TestService;
-import {{chenilePackage}}.{{interceptorName}}.test.service.TestServiceImpl;
+import com.{{company}}.{{org}}.{{interceptorName}}.test.service.TestService;
+import com.{{company}}.{{org}}.{{interceptorName}}.test.service.TestServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -11,8 +11,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ActiveProfiles;
 
 @Configuration
-@SpringBootApplication(scanBasePackages = {  "{{chenilePackage}}.configuration", "{{chenilePackage}}.{{interceptorName}}.test.service"})
-@PropertySource("classpath:{{chenilePackageSlash}}/{{interceptorName}}/test/Test{{InterceptorName}}.properties")
+@SpringBootApplication(scanBasePackages = {  "{{chenilePackage}}.configuration", "com.{{company}}.{{org}}.configuration",
+"com.{{company}}.{{org}}.{{interceptorName}}.test.service"})
+@PropertySource("classpath:com/{{company}}/{{org}}/{{interceptorName}}/test/Test{{InterceptorName}}.properties")
 @ActiveProfiles("unittest")
 public class SpringConfig extends SpringBootServletInitializer{
 	
