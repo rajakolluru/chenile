@@ -26,6 +26,8 @@ public class Test{{InterceptorName}} {
 	@Test public void test{{InterceptorName}}() throws Exception {
 		mvc.perform( MockMvcRequestBuilders
             .get("/test")
+            .header("{{interceptorName}}-preprocessheader","some_message")
+        	.header("{{interceptorName}}-postprocessheader","some_message")
             .accept(MediaType.APPLICATION_JSON))
         	.andDo(print())
         	.andExpect(status().isOk())

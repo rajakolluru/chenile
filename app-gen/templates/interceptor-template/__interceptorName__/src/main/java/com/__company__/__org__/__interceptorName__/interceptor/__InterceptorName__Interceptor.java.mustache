@@ -17,6 +17,9 @@ public class {{InterceptorName}}Interceptor extends BaseChenileInterceptor {
 	@Override
 	protected void doPreProcessing(ChenileExchange exchange) {
 		Map<String,Object> config = getExtensionByAnnotation("{{InterceptorName}}", exchange);
+		System.out.println("At logger (pre-processor): value is " + config.get("value"));
+		exchange.setHeader("{{interceptorName}}-preprocessheader", config.get("value"));
+		// as a test we will obtain the value of the 
 		// do something with the config 
 		// use exchange.getBody() to access the payload if this interceptor is intended to be a payload processor
 		// else use exchange.getHeader("name") to access specific headers
@@ -25,6 +28,8 @@ public class {{InterceptorName}}Interceptor extends BaseChenileInterceptor {
 	@Override
 	protected void doPostProcessing(ChenileExchange exchange) {
 		Map<String,Object> config = getExtensionByAnnotation("{{InterceptorName}}", exchange);
+		System.out.println("At logger (post-processor): value is " + config.get("value"));
+		exchange.setHeader("{{interceptorName}}-postprocessheader", config.get("value"));
 		// do something with the config 
 		// use exchange.getResponse() to access the response
 		// use exchange.getException() to access the response

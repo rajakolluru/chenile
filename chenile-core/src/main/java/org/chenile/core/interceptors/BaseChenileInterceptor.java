@@ -71,7 +71,7 @@ public class BaseChenileInterceptor implements Command<ChenileExchange>{
 	/**
 	 * See if there is an annotation of type T defined in either the OperationDefinition or ServiceDefinition. Return if it exists
 	 * @param <T> - the type of the annotation
-	 * @param klass - the annotation class
+	 * @param name - the annotation class name
 	 * @param exchange - the context thst is being passed around
 	 * @return the annotation if it exists or null if it does not. Opertion level annotations override service level annotations
 	 */
