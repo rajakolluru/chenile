@@ -51,7 +51,7 @@
 		<jacoco.version>0.8.11</jacoco.version>
 		<!-- revision>0.0.9-SNAPSHOT</revision -->
 		<chenile.version>${revision}</chenile.version>
-		<springdoc.version>1.5.9</springdoc.version>
+		<springdoc.version>2.4.0</springdoc.version>
 		<hazelcast.version>3.12.3</hazelcast.version>
 	</properties>
 
@@ -184,9 +184,11 @@
 
 			<dependency>
 				<groupId>org.springdoc</groupId>
-				<artifactId>springdoc-openapi-ui</artifactId>
+				<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 				<version>${springdoc.version}</version>
 			</dependency>
+
+
 
 			<dependency>
 				<groupId>com.hazelcast</groupId>
