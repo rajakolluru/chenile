@@ -42,7 +42,11 @@ function generateMiniMonolith(){
 }
 
 function generateLocalConfig() {
-		[[ -d config ]] && { echo "Config folder exists already. Please delete it first"; exit 1}
+		if [[ -d config ]]
+		then 
+			echo "Config folder exists already. Please delete it first"
+			return 1 
+		fi
     mkdir config
     cp $config_folder/setenv.sh config
     echo "Generated a config folder under this folder with defaults in setenv.sh. You can edit setenv.sh!!!"
