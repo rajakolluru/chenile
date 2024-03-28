@@ -30,8 +30,8 @@ json2='
 '
 
 
-execute  "-X POST -d '${json1}' -H 'Content-Type: application/json' -H 'x-aurora-region-id: US' localhost:8080/{{service}}"
+execute  "-X POST -d '${json1}' -H 'Content-Type: application/json' -H 'x-chenile-region-id: US' localhost:8080/{{service}}"
 
-execute  "-X POST -d '${json2}' -H 'Content-Type: application/json' -H 'x-aurora-region-id: MX' localhost:8080/{{service}}"
+execute  "-X POST -d '${json2}' -H 'Content-Type: application/json' -H 'x-chenile-region-id: MX' localhost:8080/{{service}}"
 
 execute "-X GET -H 'Content-Type: application/json' localhost:8080/health-check/{{service}}Service"

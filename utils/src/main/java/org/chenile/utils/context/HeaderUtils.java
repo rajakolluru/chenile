@@ -8,16 +8,16 @@ import java.util.Map;
  *
  */
 public class HeaderUtils {
-	public static final String REGION_ID_KEY = "x-aurora-region-id";
-	public static final String TENANT_ID_KEY = "x-aurora-tenant-id";
-	public static final String USER_ID_KEY = "x-aurora-uid";
-	public static final String EMPLOYEE_ID_KEY = "x-aurora-eid";
-	public static final String GROUP_ID_KEY = "x-aurora-gid";
-	public static final String APP_TYPE_KEY = "x-aurora-apt";
+	public static final String REGION_ID_KEY = "x-chenile-region-id";
+	public static final String TENANT_ID_KEY = "x-chenile-tenant-id";
+	public static final String USER_ID_KEY = "x-chenile-uid";
+	public static final String EMPLOYEE_ID_KEY = "x-chenile-eid";
+	public static final String GROUP_ID_KEY = "x-chenile-gid";
+	public static final String APP_TYPE_KEY = "x-chenile-apt";
 	public static final String USER_AGENT_KEY = "user-agent";
 	public static final String BATCH_ID = "batchId";
-	public static final String DEVICE_ID = "x-aurora-deviceid";
-	public static final String TENANT_TYPE = "x-aurora-tenanttype";
+	public static final String DEVICE_ID = "x-chenile-deviceid";
+	public static final String TENANT_TYPE = "x-chenile-tenanttype";
 	
 	private static String convertToString(Object o) {
 		return (o == null) ? null: o.toString();

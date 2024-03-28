@@ -6,7 +6,7 @@ public class TenantRouter extends Router<HeadersAwareContext>{
 
 	@Override
 	protected String computeRoutingString(HeadersAwareContext context) throws Exception {
-		Object region = context.getHeaders().get("x-aurora-region-id");
+		Object region = context.getHeaders().get("x-chenile-tenant");
 		return (region == null)? "": region.toString();
 	}
 

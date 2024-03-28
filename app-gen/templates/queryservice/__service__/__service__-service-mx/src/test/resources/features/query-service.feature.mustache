@@ -1,7 +1,7 @@
 Feature: Tests the {{service}} Service - MX using a REST client. 
  
   Scenario: Test full request. If the request contains all projections the service must return the entire response
-  	When I construct a REST request with header "x-aurora-region-id" and value "MX"
+  	When I construct a REST request with header "x-chenile-region-id" and value "MX"
     And I POST a REST request to URL "/{{service}}" with payload
     """
     {
