@@ -8,6 +8,9 @@
 				<generic-response-builder/>
 				<!--  Invoke the exception handler that has been configured -->
 				<exception-handler-interpolation/>
+				<!-- Validate the headers to prohibit protected headers from outside. Copy other
+				headers to context container -->
+				<validate-copy-headers/>
 				<!--  Invoke any other interceptor configured for all services within this deployable. This is done before even computing which API needs to be invoked with what arguments-->
 				<pre-processors-interpolation/>
 				<!--  Compute the class to which the request body will be transformed -->

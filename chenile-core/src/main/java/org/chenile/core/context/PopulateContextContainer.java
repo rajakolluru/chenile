@@ -1,9 +1,8 @@
-package org.chenile.utils.context;
+package org.chenile.core.context;
 
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.HeaderCopier;
 import org.chenile.core.interceptors.BaseChenileInterceptor;
-import org.chenile.utils.context.ContextContainer.SimpleMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class PopulateContextContainer extends BaseChenileInterceptor implements HeaderCopier{
@@ -16,7 +15,7 @@ public class PopulateContextContainer extends BaseChenileInterceptor implements 
 	}
 	
 	public static void populateContextFromChenileExchange(ChenileExchange exchange,ContextContainer contextContainer) {
-			contextContainer.fromSimpleMap(new SimpleMap() {
+			contextContainer.fromSimpleMap(new ContextContainer.SimpleMap() {
 				public String getValue(String key) {
 					return exchange.getHeader(key,String.class);
 				}

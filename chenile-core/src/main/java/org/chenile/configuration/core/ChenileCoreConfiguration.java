@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.ChenileExchangeBuilder;
+import org.chenile.core.context.ContextContainer;
+import org.chenile.core.context.PopulateContextContainer;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.event.EventLogger;
 import org.chenile.core.event.EventProcessor;
@@ -15,11 +17,7 @@ import org.chenile.core.init.ChenileEventInitializer;
 import org.chenile.core.init.ChenileEventSubscribersInitializer;
 import org.chenile.core.init.ChenileServiceInitializer;
 import org.chenile.core.init.ChenileTrajectoryInitializer;
-import org.chenile.core.interceptors.ChenileExceptionHandler;
-import org.chenile.core.interceptors.ConstructApiInvocation;
-import org.chenile.core.interceptors.ConstructServiceReference;
-import org.chenile.core.interceptors.GenericResponseBuilder;
-import org.chenile.core.interceptors.ServiceInvoker;
+import org.chenile.core.interceptors.*;
 import org.chenile.core.interceptors.interpolations.ExceptionHandlerInterpolation;
 import org.chenile.core.interceptors.interpolations.OperationSpecificProcessorsInterpolation;
 import org.chenile.core.interceptors.interpolations.PostProcessorsInterpolation;
@@ -108,6 +106,22 @@ public class ChenileCoreConfiguration {
         configuration.setEventLoggerName(eventLoggerName);
         return configuration;
     }
+
+	@Bean
+	ContextContainer  contextContainer(){
+		return new ContextContainer();
+	}
+
+	@Bean
+	ValidateCopyHeaders validateCopyHeaders(){
+		return new ValidateCopyHeaders();
+	}
+
+
+	@Bean
+	public PopulateContextContainer populateContextContainer() {
+		return new PopulateContextContainer();
+	}
     
     @Bean
     public ChenileServiceInitializer chenileServiceInitializer()throws IOException {

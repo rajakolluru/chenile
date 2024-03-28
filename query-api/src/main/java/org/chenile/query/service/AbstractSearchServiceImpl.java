@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.chenile.base.exception.NotFoundException;
 import org.chenile.base.exception.ServerException;
+import org.chenile.core.context.ContextContainer;
 import org.chenile.query.model.CannedReport;
 import org.chenile.query.model.ColumnMetadata;
 import org.chenile.query.model.QueryMetadata;
@@ -22,7 +23,6 @@ import org.chenile.query.service.error.ErrorCodes;
 import org.chenile.stm.State;
 import org.chenile.stm.StateEntity;
 import org.chenile.stm.impl.STMActionsInfoProvider;
-import org.chenile.utils.context.ContextContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 

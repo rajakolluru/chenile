@@ -1,4 +1,5 @@
-package org.chenile.utils.context;
+package org.chenile.core.context;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +7,7 @@ import java.util.Map;
 public class ContextContainer {
 	private ThreadLocal<Context> contexts = new ThreadLocal<Context>();
 	
-	private static class Context {
+	private static class Context extends HashMap<String,String>{
 		public String userId = "";
 		public String regionId = "";
 		public String groupId = "";
@@ -34,6 +35,22 @@ public class ContextContainer {
 		}
 		return context;
 	}
+
+	public void put(String key, String value){
+		getContext().put(key,value);
+	}
+
+	public String get(String key){
+		return getContext().get(key);
+	}
+	public String getProtectedHeader(String headerName){
+		return get("x-p-" + headerName);
+	}
+
+	public String getHeader(String headerName){
+		return get("x-" + headerName);
+	}
+
 
 	public void setUserId(String userId) {
 		if (userId == null)

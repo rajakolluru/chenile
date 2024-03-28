@@ -1,17 +1,15 @@
 package org.chenile.core.test;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.chenile.base.exception.ErrorNumException;
 import org.chenile.base.exception.ServerException;
 import org.chenile.base.response.GenericResponse;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.ChenileExchangeBuilder;
+import org.chenile.core.context.ContextContainer;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.service.HealthCheckInfo;
 import org.junit.Test;
@@ -20,12 +18,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.*;
+
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes={SpringTestConfig.class})
 public class TestChenileCore {
 
 	@Autowired private ChenileEntryPoint chenileEntryPoint;
 	@Autowired private ChenileExchangeBuilder chenileExchangeBuilder;
+	@Autowired ContextContainer contextContainer;
 	
 	private ChenileExchange makeExchange(String serviceName,String operationName) {
 		return chenileExchangeBuilder.makeExchange(serviceName, operationName,null);
@@ -62,6 +63,21 @@ public class TestChenileCore {
 		chenileEntryPoint.execute(exchange);
 		Object data = ((GenericResponse<Object>)exchange.getResponse()).getData();
 		assertEquals("Expected does not match the actual return value","mockint123",data);
+	}
+
+	@Test public void testValidateCopyHeadersforXP() throws Exception{
+		ChenileExchange exchange = makeExchange("mockService","s2");
+		exchange.setHeader("x-p-id","123");
+		chenileEntryPoint.execute(exchange);
+		assertTrue(exchange.getException() instanceof ErrorNumException);
+	}
+
+	@Test public void testValidateCopyHeadersforX() throws Exception{
+		ChenileExchange exchange = makeExchange("mockService","s2");
+		exchange.setHeader("x-id","123");
+
+		chenileEntryPoint.execute(exchange);
+		assertEquals("context container does not contain x-id", "123", contextContainer.get("x-id"));
 	}
 	
 	@SuppressWarnings("unchecked")
