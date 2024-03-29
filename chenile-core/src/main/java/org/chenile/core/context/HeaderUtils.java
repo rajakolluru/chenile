@@ -15,7 +15,7 @@ public class HeaderUtils {
 	public static final String GROUP_ID_KEY = "x-chenile-gid";
 	public static final String APP_TYPE_KEY = "x-chenile-apt";
 	public static final String USER_AGENT_KEY = "user-agent";
-	public static final String BATCH_ID = "batchId";
+	public static final String BATCH_ID = "x-batchId";
 	public static final String DEVICE_ID = "x-chenile-deviceid";
 	public static final String TENANT_TYPE = "x-chenile-tenanttype";
 	
