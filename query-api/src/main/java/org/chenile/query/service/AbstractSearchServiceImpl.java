@@ -14,15 +14,14 @@ import org.chenile.base.exception.ServerException;
 import org.chenile.core.context.ContextContainer;
 import org.chenile.query.model.CannedReport;
 import org.chenile.query.model.ColumnMetadata;
+import org.chenile.query.model.ColumnMetadata.ColumnType;
 import org.chenile.query.model.QueryMetadata;
 import org.chenile.query.model.SearchRequest;
 import org.chenile.query.model.SearchResponse;
 import org.chenile.query.model.SortCriterion;
-import org.chenile.query.model.ColumnMetadata.ColumnType;
 import org.chenile.query.service.error.ErrorCodes;
 import org.chenile.stm.State;
 import org.chenile.stm.StateEntity;
-import org.chenile.stm.impl.STMActionsInfoProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -44,7 +43,7 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 	// @Autowired protected SecurityService securityService;
 	@Autowired protected ContextContainer contextContainer;
 	@Autowired protected CannedReportStore cannedReportStore;
-	@Autowired protected STMActionsInfoProvider stmActionsInfoProvider;
+	// @Autowired protected STMActionsInfoProvider stmActionsInfoProvider;
 
 	public final SearchResponse search(SearchRequest<Map<String, Object>> searchRequest) {
 		
@@ -281,11 +280,17 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		this.contextContainer = contextContainer;
 	}
 	
+	/**
+	 * @deprecated
+	 * @param obj
+	 * @return
+	 */
 	protected List<String> getAllowedActionsForWorkflowEntity(Object obj) {
 		if ( obj == null) return null;
 		State state = extractStateFromObject(obj);
 		if (state == null) return null;
-		return stmActionsInfoProvider.getAllowedActions(state);
+		return null;
+		//return stmActionsInfoProvider.getAllowedActions(state);
 	}
 
 	protected State extractStateFromObject(Object obj) {

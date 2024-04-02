@@ -27,6 +27,11 @@
 		<module>workflow-service</module>
 		<module>query-api</module>
 		<module>query-service</module>
+		<module>security-api</module>
+		<module>security-service</module>
+		<module>chenile-query-service</module>
+		<module>test-query-helper</module>
+		<module>student-query-service</module>
 	</modules>
 
 	<packaging>pom</packaging>
@@ -53,6 +58,8 @@
 		<chenile.version>${revision}</chenile.version>
 		<springdoc.version>2.4.0</springdoc.version>
 		<hazelcast.version>3.12.3</hazelcast.version>
+		<mybatis.spring.version>3.0.3</mybatis.spring.version>
+		<revision>1.2.3</revision>
 	</properties>
 
 	<dependencyManagement>
@@ -160,6 +167,36 @@
 				<version>${chenile.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.chenile</groupId>
+				<artifactId>security-api</artifactId>
+				<version>${chenile.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.chenile</groupId>
+				<artifactId>security-service</artifactId>
+				<version>${chenile.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.chenile</groupId>
+				<artifactId>chenile-query-service</artifactId>
+				<version>${chenile.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.chenile</groupId>
+				<artifactId>student-query-service</artifactId>
+				<version>${chenile.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.chenile</groupId>
+				<artifactId>test-query-helper</artifactId>
+				<version>${chenile.version}</version>
+			</dependency>
+
 			<!-- Third Party Libraries -->
 			<dependency>
 				<groupId>commons-lang</groupId>
@@ -188,6 +225,11 @@
 				<version>${springdoc.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis.spring.version}</version>
+			</dependency>
 
 
 			<dependency>
@@ -238,10 +280,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
+				<!-- configuration>
 					<target>${java.compiler.version}</target>
 					<source>${java.compiler.version}</source>
-				</configuration>
+				</configuration -->
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

@@ -1,0 +1,58 @@
+{
+	"name": "queryController",
+	"id": "queryController",
+    "interceptorComponentNames": ["querySAASInterceptor"], 
+	"operations": [
+		{
+			"name": "getAll",
+			"auditable": "false",
+			"url": "/query/{entity}",
+			"httpMethod": "POST",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"secure": false,
+			"input": "com.meratransport.query.model.SearchRequest",
+			"output": "",
+			"params": [
+				{
+					"name": "entity",
+					"type": "HEADER",
+					"description": "Entity to be the fetched."
+				},
+				{
+					"name": "request",
+					"type": "BODY",
+					"description": "Filters to be applied on the entity."
+				}
+			]
+		},
+		{
+			"name": "getById",
+			"auditable": "false",
+			"url": "/query/{entity}/{id}",
+			"httpMethod": "POST",
+			"produces": "JSON",
+			"consumes": "JSON",
+			"secure": false,
+			"input": "com.meratransport.query.model.SearchRequest",
+			"output": "",
+			"params": [
+				{
+					"name": "entity",
+					"type": "HEADER",
+					"description": "Entity to be the fetched."
+				},
+				{
+					"name": "id",
+					"type": "HEADER",
+					"description": "Entity ID to be the fetched."
+				},
+				{
+					"name": "request",
+					"type": "BODY",
+					"description": "Filters to be applied on the entity."
+				}
+			]
+		}
+	]
+}

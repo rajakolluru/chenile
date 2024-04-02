@@ -8,6 +8,8 @@ public class ContextContainer {
 	private ThreadLocal<Context> contexts = new ThreadLocal<Context>();
 	
 	private static class Context extends HashMap<String,String>{
+		
+		private static final long serialVersionUID = -8834996563220573087L;
 		public String userId = "";
 		public String regionId = "";
 		public String groupId = "";
@@ -15,6 +17,7 @@ public class ContextContainer {
 
 		public String appType = "";
 		public String tenantType = "";
+		public String tenant = "";
 
 		public boolean isActive = false;
 		public boolean isVerified = false;
@@ -259,7 +262,18 @@ public class ContextContainer {
 		getContext().batchId = batchId;
 
 	}
+	public String getTenant() {
+		String tenant = getContext().tenant;
+		return (null == tenant) ? "" : tenant;
+	}
+	public void setTenant(String tenant) {
+		if (tenant == null)
+			tenant = "";
+		getContext().tenant = tenant;
+
+	}
 	/**
+	 *
 	 * @return the deviceId
 	 */
 	private String getDeviceId() {
@@ -287,10 +301,12 @@ public class ContextContainer {
 		map.put(HeaderUtils.BATCH_ID, getBatchId());
 		map.put(HeaderUtils.DEVICE_ID, getDeviceId());
 		map.put(HeaderUtils.TENANT_TYPE, getTenantType());
+		map.put(HeaderUtils.TENANT_ID_KEY, getTenant());
 		return map;
 	}
 
 	public void fromSimpleMap(SimpleMap map) {
+		setTenant(map.getValue(HeaderUtils.TENANT_ID_KEY));
 		setRegion(map.getValue(HeaderUtils.REGION_ID_KEY));
 		setUserId(map.getValue(HeaderUtils.USER_ID_KEY));
 		setEmployeeId(map.getValue(HeaderUtils.EMPLOYEE_ID_KEY));
