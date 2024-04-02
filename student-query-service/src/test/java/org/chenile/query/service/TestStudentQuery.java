@@ -10,13 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.chenile.TestApplication;
-import org.chenile.query.model.ColumnMetadata;
-import org.chenile.query.model.QueryMetadata;
 import org.chenile.query.model.ResponseRow;
 import org.chenile.query.model.SearchRequest;
 import org.chenile.query.model.SearchResponse;
 import org.chenile.query.model.SortCriterion;
-import org.chenile.test.query.store.QueryStoreSettings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +34,6 @@ public class TestStudentQuery {
     @Autowired
     private SearchService<Map<String, Object>> searchService;
     @Autowired private SecuritySettings securitySettings;
-    @Autowired private QueryStoreSettings queryStoreSettings;
 
     /**
      * @param searchService the searchService to set
@@ -49,103 +45,12 @@ public class TestStudentQuery {
     @Before
     public void setUp() throws Exception{
         securitySettings.initializeMockRolesAcls();
-        Map<String, QueryMetadata> store = new HashMap<String, QueryMetadata>();
-        populateQueryStore(store);
-        queryStoreSettings.init(store);
     }
-
-    private void populateQueryStore(Map<String, QueryMetadata> store) {
-        Map<String, ColumnMetadata> cmdmap = getColumnMetadataMap();
-        QueryMetadata qm = new QueryMetadata();
-        qm.setId("Student.getById");
-        qm.setColumnMetadata(cmdmap);
-        qm.setAcls(null);
-        qm.setFlexiblePropnames(false);
-        qm.setPaginated(false);
-        qm.setWorkflowName(null);
-        qm.setSortable(false);
-        store.put(qm.getId(),qm);
-
-        qm = new QueryMetadata();
-        qm.setId("Student.getAll");
-        qm.setColumnMetadata(cmdmap);
-        qm.setAcls(null);
-        qm.setFlexiblePropnames(true);
-        qm.setPaginated(true);
-        qm.setWorkflowName(null);
-        qm.setSortable(true);
-        store.put(qm.getId(),qm);
-
-        qm = new QueryMetadata();
-        qm.setId("Student.getSpecific");
-        qm.setColumnMetadata(cmdmap);
-        qm.setAcls(null);
-        qm.setFlexiblePropnames(false);
-        qm.setPaginated(false);
-        qm.setWorkflowName(null);
-        qm.setSortable(false);
-        store.put(qm.getId(),qm);		
-    }
-
-
-    private Map<String, ColumnMetadata> getColumnMetadataMap() {
-        Map<String,ColumnMetadata> cmdmap = new HashMap<String, ColumnMetadata>();
-        ColumnMetadata cmd = new ColumnMetadata();
-        cmd.setName("id");
-        cmd.setFilterable(true);
-        cmd.setColumnType(ColumnMetadata.ColumnType.Text);
-        cmd.setDropDownValues(null);
-        cmd.setLikeQuery(false);
-        cmdmap.put(cmd.getName(), cmd);
-
-        cmd = new ColumnMetadata();
-        cmd.setName("name");
-        cmd.setFilterable(true);
-        cmd.setColumnType(ColumnMetadata.ColumnType.Text);
-        cmd.setDropDownValues(null);
-        cmd.setLikeQuery(true);
-        cmdmap.put(cmd.getName(), cmd);
-
-        cmd = new ColumnMetadata();
-        cmd.setName("branch");
-        cmd.setFilterable(true);
-        cmd.setColumnType(ColumnMetadata.ColumnType.Text);
-        cmd.setDropDownValues(null);
-        cmd.setLikeQuery(false);
-        cmd.setContainsQuery(true);
-        cmdmap.put(cmd.getName(), cmd);
-
-        cmd = new ColumnMetadata();
-        cmd.setName("phone");
-        cmd.setFilterable(true);
-        cmd.setColumnType(ColumnMetadata.ColumnType.Text);
-        cmd.setDropDownValues(null);
-        cmd.setLikeQuery(false);
-        cmdmap.put(cmd.getName(), cmd);
-
-        cmd = new ColumnMetadata();
-        cmd.setName("percentage");
-        cmd.setFilterable(true);
-        cmd.setColumnType(ColumnMetadata.ColumnType.Text);
-        cmd.setDropDownValues(null);
-        cmd.setLikeQuery(false);
-        cmdmap.put(cmd.getName(), cmd);
-
-        cmd = new ColumnMetadata();
-        cmd.setName("email");
-        cmd.setFilterable(true);
-        cmd.setColumnType(ColumnMetadata.ColumnType.Text);
-        cmd.setDropDownValues(null);
-        cmd.setLikeQuery(true);
-        cmdmap.put(cmd.getName(), cmd);
-        return cmdmap;
-    }
-
-
+    
     @Test
     public void testById() {
         SearchRequest<Map<String, Object>> searchRequest = new SearchRequest<Map<String, Object>>();
-        searchRequest.setQueryName("Student.getById");
+        searchRequest.setQueryName("student");
         Map<String, Object> filters = new HashMap<String, Object>();
         filters.put("id", 1);
         searchRequest.setFilters(filters);
@@ -164,7 +69,7 @@ public class TestStudentQuery {
     @Test
     public void testOrderbyPagination() {
         SearchRequest<Map<String, Object>> searchRequest = new SearchRequest<Map<String, Object>>();
-        searchRequest.setQueryName("Student.getAll");
+        searchRequest.setQueryName("students-all");
         SortCriterion sc = new SortCriterion();
         sc.setName("name");
         sc.setAscendingOrder(true);
@@ -191,7 +96,7 @@ public class TestStudentQuery {
     @Test
     public void testSpecific() {
         SearchRequest<Map<String, Object>> searchRequest = new SearchRequest<Map<String, Object>>();
-        searchRequest.setQueryName("Student.getSpecific");
+        searchRequest.setQueryName("students");
         Map<String, Object> filters = new HashMap<String, Object>();
         filters.put("name","ja");
         searchRequest.setFilters(filters);
@@ -210,7 +115,7 @@ public class TestStudentQuery {
     @Test
     public void testContainsWithArray() {
         SearchRequest<Map<String, Object>> searchRequest = new SearchRequest<Map<String, Object>>();
-        searchRequest.setQueryName("Student.getSpecific");
+        searchRequest.setQueryName("students");
         Map<String, Object> filters = new HashMap<String, Object>();
         filters.put("branch",new String[] { "Gurgaon", "Jaipur", "Trivandrum"});
         searchRequest.setFilters(filters);
@@ -224,7 +129,7 @@ public class TestStudentQuery {
     @Test
     public void testTwoParams() {
         SearchRequest<Map<String, Object>> searchRequest = new SearchRequest<Map<String, Object>>();
-        searchRequest.setQueryName("Student.getSpecific");
+        searchRequest.setQueryName("students");
         Map<String, Object> filters = new HashMap<String, Object>();
         filters.put("branch",new String[] { "Bangalore"});
         filters.put("name","ka");
@@ -239,7 +144,7 @@ public class TestStudentQuery {
     @Test
     public void testContainsWithList() {
         SearchRequest<Map<String, Object>> searchRequest = new SearchRequest<Map<String, Object>>();
-        searchRequest.setQueryName("Student.getSpecific");
+        searchRequest.setQueryName("students");
         Map<String, Object> filters = new HashMap<String, Object>();
         List<String> list = new ArrayList<String>();
         list.add("Jaipur"); list.add("Gurgaon"); list.add("Trivandrum");
@@ -255,7 +160,7 @@ public class TestStudentQuery {
     @Test
     public void testContainsWithString() {
         SearchRequest<Map<String, Object>> searchRequest = new SearchRequest<Map<String, Object>>();
-        searchRequest.setQueryName("Student.getSpecific");
+        searchRequest.setQueryName("students");
         Map<String, Object> filters = new HashMap<String, Object>();
   
         filters.put("branch","Trivandrum");

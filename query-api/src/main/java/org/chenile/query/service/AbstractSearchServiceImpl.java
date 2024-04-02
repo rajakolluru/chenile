@@ -39,7 +39,11 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 	
 	protected static final String PAGINATION_PART = "pagination";
 	protected static final String ORDER_BY = "orderby";
-	@Autowired protected QueryStore queryStore;
+	
+	public AbstractSearchServiceImpl(QueryStore queryStore) {
+		this.queryStore = queryStore;
+	}
+	protected QueryStore queryStore;
 	// @Autowired protected SecurityService securityService;
 	@Autowired protected ContextContainer contextContainer;
 	@Autowired protected CannedReportStore cannedReportStore;

@@ -1,5 +1,6 @@
 package org.chenile.configuration.query.service;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -17,9 +18,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
-
+import org.chenile.query.service.QueryStore;
 import org.chenile.query.service.SearchService;
 import org.chenile.query.service.impl.NamedQueryServiceSpringMybatisImpl;
+import org.chenile.query.service.impl.QueryDefinitions;
 import org.chenile.query.service.interceptor.QuerySAASInterceptor;
 import org.chenile.query.service.interceptor.QueryUserFilterInterceptor;
 
@@ -31,6 +33,13 @@ public class QueryConfiguration {
 
 	@Value("${query.mapperFiles}")
 	private Resource[] mapperFiles;
+	
+	@Value("${query.definitionFiles}")
+	private Resource[] queryDefinitionFiles;
+	
+	@Bean("queryDefinitions") QueryDefinitions queryDefinitions() throws IOException{
+		return new QueryDefinitions(queryDefinitionFiles);
+	}
 
     @Bean("queryDatasource")
     @ConfigurationProperties(prefix = "query.datasource")
@@ -48,8 +57,9 @@ public class QueryConfiguration {
 	}
 
     @Bean
-    SearchService<Map<String, Object>> searchService() {
-		return new NamedQueryServiceSpringMybatisImpl();
+    SearchService<Map<String, Object>> searchService(@Autowired @Qualifier("queryDefinitions") 
+       QueryStore queryStore) {
+		return new NamedQueryServiceSpringMybatisImpl(queryStore);
 	}
 
     @Bean

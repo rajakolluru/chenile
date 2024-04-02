@@ -4,7 +4,6 @@ import org.chenile.base.exception.BadRequestException;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.interceptors.BaseChenileInterceptor;
-import org.chenile.owiz.Command;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;

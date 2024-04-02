@@ -17,6 +17,7 @@ public class QueryMetadata extends Entity {
 	private static final long serialVersionUID = -5311145579935980818L;
 
 	private String id;
+	private String name; // the externally visible name for this query
 	
 	/**
 	 * @return the id
@@ -106,6 +107,14 @@ public class QueryMetadata extends Entity {
 
 	public void setSortable(boolean sortable) {
 		this.sortable = sortable;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	

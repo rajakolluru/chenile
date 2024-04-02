@@ -13,8 +13,13 @@ import org.chenile.query.model.QueryMetadata;
 import org.chenile.query.model.ResponseRow;
 import org.chenile.query.model.SearchResponse;
 import org.chenile.query.service.AbstractSearchServiceImpl;
+import org.chenile.query.service.QueryStore;
 
 public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImpl{
+
+	public NamedQueryServiceSpringMybatisImpl(QueryStore queryStore) {
+		super(queryStore);
+	}
 
 	protected static final String PAGINATION_PART = "pagination";
 	@Autowired SqlSessionTemplate sessionTemplate;
@@ -32,7 +37,7 @@ public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImp
 			processCountQuery(searchRequest.enhancedFilters,searchResponse,queryMetadata);
 		}
 		
-		List<Object> list = executeQuery(searchRequest.originalSearchRequest.getQueryName(),
+		List<Object> list = executeQuery(queryMetadata.getId(),
 				searchRequest.enhancedFilters);
 		List<ResponseRow> responseList = new ArrayList<ResponseRow>();
 		for (Object o : list) {
