@@ -60,6 +60,7 @@
 		<hazelcast.version>3.12.3</hazelcast.version>
 		<mybatis.spring.version>3.0.3</mybatis.spring.version>
 		<revision>1.2.3</revision>
+		<spring-boot.version>3.2.4</spring-boot.version>
 	</properties>
 
 	<dependencyManagement>
