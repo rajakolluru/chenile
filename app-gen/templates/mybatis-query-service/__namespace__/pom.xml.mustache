@@ -6,15 +6,14 @@
 
 	<parent>
 		<artifactId>chenile-parent</artifactId>
-		<groupId>org.chenile</groupId>
-		<version>${revision}</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>{{chenilePackage}}</groupId>
+		<version>{{chenileVersion}}</version>
 	</parent>
 	
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>student-query-service</artifactId>
-	<name>Query Service Test Cases for a Student Table </name>
-	<description>Query Service Test Cases - Mock Data</description>
+	<artifactId>{{namespace}}-query-service</artifactId>
+	<name>Query Service Test Cases for {{namespace}} </name>
+	<description>Query Service Test Cases for {{namespace}} </description>
 
 	<dependencies>	
 		<dependency>
@@ -28,12 +27,7 @@
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.chenile</groupId>
-			<artifactId>test-query-helper</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.chenile</groupId>
+			<groupId>{{chenilePackage}}</groupId>
 			<artifactId>cucumber-utils</artifactId>
 			<scope>test</scope>
 		</dependency>

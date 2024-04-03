@@ -1,4 +1,4 @@
-Feature: Tests the Aurora Query Service. A location service exists and is under test for serving info about different locations.
+Feature: Tests the Query Service. A location service exists and is under test for serving info about different locations.
  
   Scenario: Test full request. If the request contains all projections the service must return the entire response
     When I POST a request to service "queryService" and operation "query" with payload

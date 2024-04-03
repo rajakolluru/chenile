@@ -1,4 +1,4 @@
-Feature: Tests the Aurora Query Service using a REST client. A location service exists and is under test for serving info about different locations.
+Feature: Tests the Query Service using a REST client. A location service exists and is under test for serving info about different locations.
  
   Scenario: Test full request. If the request contains all projections the service must return the entire response
     When I POST a REST request to URL "/query5" with payload

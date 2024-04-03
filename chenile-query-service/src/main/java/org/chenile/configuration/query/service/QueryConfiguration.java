@@ -94,7 +94,7 @@ public class QueryConfiguration {
 		liquibase.setChangeLog(properties.getChangeLog());
 		liquibase.setContexts(properties.getContexts());
 		liquibase.setDefaultSchema(properties.getDefaultSchema());
-		liquibase.setDropFirst(properties.isDropFirst());
+		// liquibase.setDropFirst(false);
 		liquibase.setShouldRun(properties.isEnabled());
 		// liquibase.setLabels(properties.getLabels());
 		liquibase.setChangeLogParameters(properties.getParameters());

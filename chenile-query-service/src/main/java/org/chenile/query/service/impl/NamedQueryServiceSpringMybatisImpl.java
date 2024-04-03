@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.chenile.query.model.ColumnMetadata;
 import org.chenile.query.model.QueryMetadata;
 import org.chenile.query.model.ResponseRow;
+import org.chenile.query.model.SearchRequest;
 import org.chenile.query.model.SearchResponse;
 import org.chenile.query.service.AbstractSearchServiceImpl;
 import org.chenile.query.service.QueryStore;
@@ -19,6 +20,12 @@ public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImp
 
 	public NamedQueryServiceSpringMybatisImpl(QueryStore queryStore) {
 		super(queryStore);
+	}
+	
+	public SearchResponse search(String queryName,SearchRequest<Map<String,Object>> searchRequest) {
+		// Make sure that searchRequest.query name is populated
+		searchRequest.setQueryName(queryName);
+		return search(searchRequest);
 	}
 
 	protected static final String PAGINATION_PART = "pagination";

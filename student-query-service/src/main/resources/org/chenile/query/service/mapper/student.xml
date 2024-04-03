@@ -50,7 +50,7 @@
         AND phone = #{phone}
     </if>
   </where>
-
+  ${orderby} ${pagination}
 </select>
 
 <select id = "getById" parameterType = "int" resultMap = "result">

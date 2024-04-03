@@ -18,6 +18,14 @@ function generateService(){
     $scripts_folder/gen-service.sh $service $serviceVersion $outfolder
 }
 
+function generateMybatisQuery(){   
+    namespace=$(captureNonNullField "Namespace")
+    namespaceVersion=$(captureFieldWithDefaultValue "Namespace Version" "$defaultVersion")
+    outfolder=$(captureFieldWithDefaultValue "Output Folder" $defaultDestFolder)
+    # columns="$(captureList 'Columns to map')"
+    $scripts_folder/gen-mybatis-query.sh $namespace $namespaceVersion $outfolder 
+}
+
 function generateQueryService(){   
     service=$(captureNonNullField "Service Name")
     serviceVersion=$(captureFieldWithDefaultValue "Service Version" "$defaultVersion")
@@ -118,12 +126,14 @@ choice=$(choices  \
     "N|Generate Normal Service & Mini Monolith"  \
     "W|Generate Workflow Service & Mini Monolith" \
     "I|Generate a Chenile interceptor stub" \
+    "Q|Generate a Chenile Mybatis Query Service" \
     "C|Create a local config")
 
 case $choice in
     "N") generateNormalServiceAndMonolith ;;
     "W") generateWorkflowServiceAndMonolith;;
     "I") generateInterceptor;;
+    "Q") generateMybatisQuery;;
     "C") generateLocalConfig;;
 esac
 _exit 0

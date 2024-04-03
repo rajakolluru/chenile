@@ -27,13 +27,14 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestApplication.class)
+@SpringBootTest(classes = TestApplication.class,properties = {"spring.profiles.active=unittest"})
 @ActiveProfiles("unittest")
 public class TestStudentQuery {
 
     @Autowired
     private SearchService<Map<String, Object>> searchService;
     @Autowired private SecuritySettings securitySettings;
+		
 
     /**
      * @param searchService the searchService to set

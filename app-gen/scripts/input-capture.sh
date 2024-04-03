@@ -10,6 +10,24 @@ function captureNonNullField(){
     echo $field
 }
 
+#captures a list of values. returns them all
+function captureList(){
+    list=""
+    error=1
+    while (( error > 0 ))
+    do
+        read -p "Enter $1 (enter to end the list):" field
+        [[ -z $field ]] && error=0
+        if [[ ! -z $field ]] 
+        then 
+            list="$list
+            $field"
+        fi
+        
+    done
+    echo $list
+}
+
 ## Usage: captureFieldWithDefaultValue prompt defaultvalue
 ## captures user input with a prompt. Defaults to defaultValue if the user pressed enter
 
