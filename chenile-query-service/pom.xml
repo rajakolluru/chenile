@@ -12,7 +12,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>chenile-query-service</artifactId>
-	<name>Query Service</name>
+	<name>Query Service - Mybatis Implementation</name>
 	<description>A Mybatis implementation of the Query API</description>
 
 	<dependencies>
@@ -48,9 +48,5 @@
 			<groupId>org.chenile</groupId>
 			<artifactId>chenile-http</artifactId>
 		</dependency>
-		<!-- dependency>
-			<groupId>org.chenile</groupId>
-			<artifactId>mock-store-service</artifactId>
-		</dependency -->
 	</dependencies>
 </project>

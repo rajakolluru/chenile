@@ -1,4 +1,4 @@
-package com.{{company}}.{{org}}.query.service.bdd;
+package com.{{company}}.{{org}}.{{namespace}}.query.service.bdd;
 
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,8 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ActiveProfiles;
 
 @Configuration
-@SpringBootApplication(scanBasePackages = { "org.chenile.configuration", 
-		"com.{{company}}.{{org}}.query.service.bdd"})
+@SpringBootApplication(scanBasePackages = { "org.chenile.configuration"})
 @ActiveProfiles("unittest")
 public class SpringTestConfig extends SpringBootServletInitializer{
 }

@@ -2,7 +2,7 @@ query.datasource.type=com.zaxxer.hikari.HikariDataSource
 query.datasource.minimumIdle = 2
 query.datasource.maximumPoolSize = 10
 query.datasource.idleTimeout = 5000
-# query.datasource.jdbcUrl=jdbc:h2:mem:datalake;MODE=MYSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:schema.sql'
+
 query.datasource.jdbcUrl=jdbc:h2:mem:datalake;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=RUNSCRIPT FROM 'classpath:schema.sql'
 
 query.datasource.username=sa
@@ -19,8 +19,8 @@ query.jpa.properties.hibernate.format_sql=true
 
 query.jpa.hibernate.ddl-auto=create
 
-query.mapperFiles=classpath*:org/chenile/query/service/mapper/*.xml
-query.definitionFiles=classpath*:org/chenile/query/service/mapper/*.json
+query.mapperFiles=classpath*:com/{{company}}/{{org}}/query/service/mapper/*.xml
+query.definitionFiles=classpath*:com/{{company}}/{{org}}/query/service/mapper/*.json
 
 ##Liquibase
 #query.datasource.liquibase.change-log=classpath:liquibase/query/changelog/changelog-master.sql

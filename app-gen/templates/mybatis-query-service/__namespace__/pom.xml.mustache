@@ -12,8 +12,13 @@
 	
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>{{namespace}}-query-service</artifactId>
+	<version>${revision}</version>
 	<name>Query Service Test Cases for {{namespace}} </name>
 	<description>Query Service Test Cases for {{namespace}} </description>
+
+	<properties>
+		<revision>{{namespaceVersion}}</revision>
+	</properties>
 
 	<dependencies>	
 		<dependency>
@@ -21,13 +26,24 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>{{chenilePackage}}</groupId>
+    		<groupId>com.h2database</groupId>
+    		<artifactId>h2</artifactId>
+    		<scope>test</scope>
+		</dependency>
+		<dependency>
+    		<groupId>org.chenile</groupId>
+    		<artifactId>chenile-query-service</artifactId>
+    		<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.chenile</groupId>
 			<artifactId>cucumber-utils</artifactId>
 			<scope>test</scope>
 		</dependency>

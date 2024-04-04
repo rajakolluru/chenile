@@ -1,23 +1,8 @@
  
-Feature: Tests the Mybatis Query Service using a REST client. 
- 
-Scenario: Test get By Id
-When I POST a REST request to URL "/q/student" with payload
-"""
-{
-	"filters" :{
-		"id": 1
-	}	
-}
-"""
-Then the http status code is 200
-And the top level code is 200
-And success is true 
-And the REST response key "numRowsReturned" is "1"
-And the REST response key "list[0].row.phone" is "9988765700"
+Feature: Tests the {{Namespace}} Query Service using a REST client. 
 
-Scenario: Test getAll - tests out pagination capability
-When I POST a REST request to URL "/q/students-all" with payload
+Scenario: Tests out pagination capability
+When I POST a REST request to URL "/q/{{namespace}}s" with payload
 """
 {
 	"sortCriteria" :[
@@ -38,10 +23,8 @@ And the REST response key "list[0].row.id" is "25"
 And the REST response key "list[14].row.name" is "Vikas"
 And the REST response key "list[14].row.id" is "18"
 
-
-
-Scenario: Test Specific - Test Likes query
-When I POST a REST request to URL "/q/students" with payload
+Scenario: Test Likes query
+When I POST a REST request to URL "/q/{{namespace}}s" with payload
 """
 {
 	"filters" :{
@@ -57,7 +40,7 @@ And the REST response key "list[0].row.name" is "Vijay"
 And the REST response key "list[0].row.id" is "29"
 
 Scenario: Test Specific - Test Contains with an array and sort descending
-When I POST a REST request to URL "/q/students" with payload
+When I POST a REST request to URL "/q/{{namespace}}s" with payload
 """
 {
 	"filters" :{
@@ -78,7 +61,7 @@ And the REST response key "list[1].row.id" is "21"
 And the REST response key "list[2].row.id" is "8"
 
 Scenario: Test Specific - Test Two params
-When I POST a REST request to URL "/q/students" with payload
+When I POST a REST request to URL "/q/{{namespace}}s" with payload
 """
 {
 	"filters" :{
@@ -100,7 +83,7 @@ And the REST response key "list[0].row.name" is "Akash"
 And the REST response key "list[1].row.name" is "Vikas"
 
 Scenario: Test Specific - Test Two params but with one of them just as a string
-When I POST a REST request to URL "/q/students" with payload
+When I POST a REST request to URL "/q/{{namespace}}s" with payload
 """
 {
 	"filters" :{

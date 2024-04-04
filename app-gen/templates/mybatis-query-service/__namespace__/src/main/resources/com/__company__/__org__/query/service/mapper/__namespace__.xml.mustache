@@ -19,21 +19,35 @@ with the name getAll-count for such queries. Also all paginated queries must hav
 ${pagination} as part of them as shown below. -->
 <select id='getAll-count' resultType="int" >
 	select count(*) from {{namespace}}
+    <where>
+    <if test="branch != null">
+         branch in
+        <foreach item="item" index="index" collection="branch"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </if>
+    <if test="name != null">
+        AND name like #{name}
+    </if>
+    <if test="phone != null">
+        AND phone = #{phone}
+    </if>
+  </where>
 </select>
 
-<!-- The ${orderby} keyword ensures that this query is sortable --> 
-<select id = "getAll" resultMap = "result">	
-   SELECT * FROM {{namespace}} ${orderby} ${pagination}
-</select>
-
-<!-- The getSpecific query supports an elaborate where clause. 
+<!-- The getAll query supports an elaborate where clause. 
 The conditional constructs ensure that the clause is constructed only if 
 specific filters are passed. Notice that 
 branch supports an IN clause and name supports a like clause. 
 This information must be reflected in the column meta data in the definitions JSON that 
 accompanies this mapper.
+Since this query is sortable the orderby clause is important.
+Since this query supports pagination the ${pagination} is mandatory. 
+We also need the count query above
+Make sure that sortable and paginated are set to true in the corresponding query definitions 
 -->
-<select id = "getSpecific" resultMap = "result">	
+<select id = "getAll" resultMap = "result">	
    SELECT * FROM {{namespace}}
     <where>
     <if test="branch != null">
@@ -50,19 +64,10 @@ accompanies this mapper.
         AND phone = #{phone}
     </if>
   </where>
-  ${orderby} 
+  ${orderby} ${pagination}
 </select>
 
-<!-- In the getId query the where clause is unconditional since the 
-ID is mandatory. Typically getById must be implemented as part of the 
-command and not as a query since it needs to read from a command database.
- -->
 
-<select id = "getById" parameterType = "int" resultMap = "result">
-  <![CDATA[
-   SELECT * FROM {{namespace}} WHERE ID = #{id};
-  ]]>
-</select>
 
 
     	

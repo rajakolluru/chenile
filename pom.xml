@@ -17,7 +17,7 @@
 		<module>chenile-proxy</module>
 		<module>chenile-http</module>
 		<!-- module>chenile-kafka</module -->
-		<module>chenile-filewatch</module>
+		<!-- module>chenile-filewatch</module -->
 		<module>chenile-scheduler</module>
 		<module>cucumber-utils</module>
 		<module>chenile-swagger</module>
@@ -30,8 +30,6 @@
 		<module>security-api</module>
 		<module>security-service</module>
 		<module>chenile-query-service</module>
-		<module>test-query-helper</module>
-		<module>student-query-service</module>
 	</modules>
 
 	<packaging>pom</packaging>

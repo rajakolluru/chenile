@@ -1,4 +1,4 @@
-package com.{{company}}.{{org}}.query.service.bdd;
+package com.{{company}}.{{org}}.{{namespace}}.query.service.bdd;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
@@ -9,7 +9,7 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources/rest/features",
-		glue = {"classpath:org/chenile/cucumber/rest", "classpath:com/{{company}}/{{org}}/query/service/bdd"},
+		glue = {"classpath:org/chenile/cucumber/rest", "classpath:com/{{company}}/{{org}}/{{namespace}}/query/service/bdd"},
         plugin = {"pretty"}
         )
 @ActiveProfiles("unittest")

@@ -1,0 +1,47 @@
+[
+	{
+
+        "id": "{{Namespace}}.getAll",
+        "name": "{{namespace}}s",
+        "columnMetadata": {
+			"id" : {
+				"name": "id",
+				"filterable": true,
+				"columnType": "Text"
+			},
+			"name" : {
+				"name": "name",
+				"columnType" : "Text",
+				"likeQuery": true,
+				"filterable": true
+			},
+			"branch": {
+				"name": "branch",
+				"filterable": true,
+				"columnType": "Text",
+				"containsQuery": true,
+				"sortable": true
+			},
+			"phone": {
+				"name" : "phone",
+				"filterable": true,
+				"columnType": "Text"
+			},
+			"percentage" : {
+				"name": "name",
+				"columnType" : "Text",
+				"filterable": true
+			},
+			"email": {
+				"name": "email",
+				"columnType" : "Text",
+				"likeQuery": true,
+				"filterable": true
+			}
+		},	
+		"flexiblePropnames": false,
+        "paginated" : true,
+        "sortable" : true
+    }
+    
+]
