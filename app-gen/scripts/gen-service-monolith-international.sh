@@ -34,7 +34,7 @@ function setenv(){
 
 function generateAll(){
 	template_folder=$template_folder_base/monolith-with-service-international
-  	generateModule $template_folder $dest_folder $json_file "monolith org company Monolith service Service"
+  	generateModule $template_folder $dest_folder $json_file "monolith com org company Monolith service Service"
   	doGitInit $dest_folder/$service $serviceVersion
 }
 
@@ -42,6 +42,7 @@ function constructJsonfile(){
 	echo "{"
 	echo "\"monolith\": \"$monolith\","
 	echo "\"monolithVersion\": \"$monolithVersion\","
+	echo "\"com\": \"$com\","
 	echo "\"org\": \"$org\","
 	echo "\"company\": \"$company\","
 	echo "\"chenilePackage\": \"$chenilePackage\","

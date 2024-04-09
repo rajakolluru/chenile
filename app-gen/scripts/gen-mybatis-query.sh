@@ -34,7 +34,7 @@ function setenv(){
 function generateQueryNamespace(){
 	constructJsonfile > $json_file
 	template_folder=$template_folder_base/mybatis-query-service
-  	generateModule $template_folder $dest_folder $json_file "namespace org company Namespace"
+  	generateModule $template_folder $dest_folder $json_file "namespace com org company Namespace"
   	doGitInit $dest_folder/$namespace $namespaceVersion
 }
 
@@ -42,6 +42,7 @@ function constructJsonfile(){
 	echo "{"
 	echo "\"namespace\": \"$namespace\","
 	echo "\"namespaceVersion\": \"$namespaceVersion\","
+	echo "\"com\": \"$com\","
 	echo "\"org\": \"$org\","
 	echo "\"company\": \"$company\","
 	echo "\"chenilePackage\": \"$chenilePackage\","

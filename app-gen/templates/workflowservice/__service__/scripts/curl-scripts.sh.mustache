@@ -45,7 +45,7 @@ curl -X POST -d "${json_create}" -H 'Content-Type: application/json' localhost:8
 cat $tmpfile | jq
 id=$(cat $tmpfile | jq ".payload.mutatedEntity.id" | tr -d '"')
 echo "Obtained ID = $id"
-rm -f %tmpfile
+rm -f $tmpfile
 
 # execute  "-X POST -d '${json_create}' -H 'Content-Type: application/json' localhost:8080/{{service}}"
 

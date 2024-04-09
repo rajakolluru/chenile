@@ -1,8 +1,8 @@
 # All Chenile configuration properties
 
-chenile.service.json.package=classpath*:com/walmart/mp/**/service/*.json,classpath*:org/chenile/**/service/*.json
-chenile.event.json.package=classpath*:com/walmart/mp/foo/event/*.json
-chenile.cache.json.package=classpath*:com/walmart/mp/foo/cache/*.json
+chenile.service.json.package=classpath*:{{com}}/{{company}}/{{org}}/**/service/*.json,classpath*:org/chenile/**/service/*.json
+chenile.event.json.package=classpath*:{{com}}/{{company}}/{{org}}/foo/event/*.json
+chenile.cache.json.package=classpath*:{{com}}/{{company}}/{{org}}/foo/cache/*.json
 
 chenile.interceptors.path=org/chenile/core/chenile-core.xml
 
@@ -26,7 +26,7 @@ chenile.kafka.consumer[auto.commit.interval.ms]=100
 chenile.kafka.consumer[session.timeout.ms]=15000
 
 # File Watch Related
-#chenile.file.watch.json.package=classpath*:com/walmart/mp/**/filewa tch/*.json
+#chenile.file.watch.json.package=classpath*:{{com}}/{{company}}/{{org}}/**/filewa tch/*.json
 chenile.file.watch.source.folder=/tmp/src
 chenile.file.watch.dest.folder=/tmp/dest
 chenile.file.watch.polltime.seconds=20

@@ -33,7 +33,7 @@ function setenv(){
 function generateService(){
 	constructJsonfile > $json_file
 	template_folder=$template_folder_base/service
-  	generateModule $template_folder $dest_folder $json_file "service org company Service"
+  	generateModule $template_folder $dest_folder $json_file "service com org company Service"
   	doGitInit $dest_folder/$service $serviceVersion
 }
 
@@ -41,6 +41,7 @@ function constructJsonfile(){
 	echo "{"
 	echo "\"service\": \"$service\","
 	echo "\"serviceVersion\": \"$serviceVersion\","
+	echo "\"com\": \"$com\","
 	echo "\"org\": \"$org\","
 	echo "\"company\": \"$company\","
 	echo "\"chenilePackage\": \"$chenilePackage\","

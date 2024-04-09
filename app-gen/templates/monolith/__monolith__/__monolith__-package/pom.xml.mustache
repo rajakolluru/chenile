@@ -5,7 +5,7 @@
 
 	<parent>
 		<artifactId>{{monolith}}-parent</artifactId>
-		<groupId>com.{{company}}.{{org}}.{{monolith}}</groupId>
+		<groupId>{{com}}.{{company}}.{{org}}.{{monolith}}</groupId>
 		<version>${revision}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
@@ -34,7 +34,7 @@
 			<artifactId>utils</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.{{company}}.{{org}}.{{monolith}}</groupId>
+			<groupId>{{com}}.{{company}}.{{org}}.{{monolith}}</groupId>
 			<artifactId>{{monolith}}-configurations</artifactId>
 			<version>${revision}</version>
 		</dependency>
@@ -46,7 +46,7 @@
 		<!-- Start including all the services that need to be packaged with this mini monolith -->
 		{{#services}}
   			<dependency>
-				<groupId>com.{{company}}.{{org}}.{{service}}</groupId>
+				<groupId>{{com}}.{{company}}.{{org}}.{{service}}</groupId>
 				<artifactId>{{.}}</artifactId>
 				<version>{{serviceVersion}}</version>
 			</dependency>

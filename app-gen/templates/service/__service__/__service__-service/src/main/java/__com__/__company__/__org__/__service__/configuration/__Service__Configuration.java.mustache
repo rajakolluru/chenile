@@ -1,0 +1,23 @@
+package {{com}}.{{company}}.{{org}}.{{service}}.configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import {{com}}.{{company}}.{{org}}.{{service}}.service.{{Service}}Service;
+import {{com}}.{{company}}.{{org}}.{{service}}.service.impl.{{Service}}ServiceImpl;
+import {{com}}.{{company}}.{{org}}.{{service}}.service.healthcheck.{{Service}}HealthChecker;
+
+/**
+ This is where you will instantiate all the required classes in Spring
+
+*/
+@Configuration
+public class {{Service}}Configuration {
+	@Bean public {{Service}}Service _{{service}}Service_() {
+		return new {{Service}}ServiceImpl();
+	}
+
+	@Bean {{Service}}HealthChecker {{service}}HealthChecker(){
+    	return new {{Service}}HealthChecker();
+    }
+}

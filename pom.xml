@@ -171,7 +171,7 @@
 				<artifactId>security-api</artifactId>
 				<version>${chenile.version}</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>org.chenile</groupId>
 				<artifactId>security-service</artifactId>
@@ -246,9 +246,7 @@
 
 	</dependencyManagement>
 
-	<distributionManagement>
-	</distributionManagement>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -334,8 +332,43 @@
 				</executions>
 			</plugin>
 
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.3</version>
+			</plugin>
 		</plugins>
 	</build>
 
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<!--  version>2.9</version -->
+				<reportSets>
+					<reportSet>
+						<id>aggregate</id>
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+				<configuration>
+					<!-- Here you can add special configurations for your
+					javadoc, if needed -->
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+	</reporting>
+	<distributionManagement>
+		<site>
+			<id>website</id>
+			<url>http://chenile.org</url>
+		</site>
+	</distributionManagement>
 
 </project>

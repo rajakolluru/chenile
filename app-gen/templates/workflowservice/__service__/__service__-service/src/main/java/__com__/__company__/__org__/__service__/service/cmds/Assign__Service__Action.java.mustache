@@ -1,0 +1,21 @@
+package {{com}}.{{company}}.{{org}}.{{service}}.service.cmds;
+
+import org.chenile.stm.STMInternalTransitionInvoker;
+import org.chenile.stm.State;
+import org.chenile.stm.action.STMTransitionAction;
+import org.chenile.stm.model.Transition;
+
+import {{com}}.{{company}}.{{org}}.{{service}}.model.Assign{{Service}}Payload;
+import {{com}}.{{company}}.{{org}}.{{service}}.model.{{Service}};
+
+public class Assign{{Service}}Action implements STMTransitionAction<{{Service}}>{
+
+	@Override
+	public void doTransition({{Service}} {{service}}, Object transitionParam, State startState, String eventId,
+			State endState, STMInternalTransitionInvoker<?> stm, Transition transition) throws Exception {
+		Assign{{Service}}Payload payload = (Assign{{Service}}Payload) transitionParam;
+		{{service}}.assignee = payload.assignee;
+		{{service}}.assignComment = payload.getComment();
+	}
+
+}

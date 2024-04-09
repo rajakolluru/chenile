@@ -40,6 +40,7 @@ function constructJsonfile(){
 	echo "{"
 	echo "\"module\": \"$module\","
 	echo "\"moduleVersion\": \"$moduleVersion\","
+	echo "\"com\": \"$com\","
 	echo "\"org\": \"$org\","
 	echo "\"company\": \"$company\","
 	echo "\"chenilePackage\": \"$chenilePackage\","

@@ -1,0 +1,26 @@
+package {{com}}.{{company}}.{{org}}.{{interceptorName}}.test.service;
+
+import java.util.Map;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+import org.chenile.base.response.GenericResponse;
+import org.chenile.http.annotation.ChenileController;
+import org.chenile.http.annotation.InterceptedBy;
+import org.chenile.http.handler.ControllerSupport;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import {{com}}.{{company}}.{{org}}.{{interceptorName}}.{{InterceptorName}};
+
+@RestController
+@ChenileController(value = "testService", serviceName = "testService")
+public class TestController extends ControllerSupport{
+	@GetMapping("/test")
+	@InterceptedBy("{{interceptorName}}Interceptor")
+	@{{InterceptorName}}("some_message")
+	ResponseEntity<GenericResponse<Map<String, Object>>> example(HttpServletRequest request){
+		return process("example",request);
+	}
+}

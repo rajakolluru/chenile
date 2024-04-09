@@ -33,7 +33,7 @@ function setenv(){
 function generateInterceptor(){
 	constructJsonfile > $json_file
 	template_folder=$template_folder_base/interceptor-template
-  	generateModule $template_folder $dest_folder $json_file "interceptorName org company InterceptorName"
+  	generateModule $template_folder $dest_folder $json_file "interceptorName com org company InterceptorName"
   	doGitInit $dest_folder/$interceptorName $interceptorVersion
 }
 
@@ -41,6 +41,7 @@ function constructJsonfile(){
 	echo "{"
 	echo "\"interceptorName\": \"$interceptorName\","
 	echo "\"interceptorVersion\": \"$serviceVersion\","
+	echo "\"com\": \"$com\","
 	echo "\"org\": \"$org\","
 	echo "\"company\": \"$company\","
 	echo "\"chenilePackage\": \"$chenilePackage\","

@@ -9,7 +9,7 @@ function usage(){
 }
 
 function _exit {
-	# rm -f $json_file
+	rm -f $json_file
   	exit $1
 }
 
@@ -34,7 +34,7 @@ function setenv(){
 
 function generateMonolith(){
 	template_folder=$template_folder_base/monolith
-  	generateModule $template_folder $dest_folder $json_file "monolith org company Monolith"
+  	generateModule $template_folder $dest_folder $json_file "monolith com org company Monolith"
   	generateCurlScript 
   	doGitInit $dest_folder/$monolith $monolithVersion
 }
@@ -55,6 +55,7 @@ function constructJsonfile(){
 	echo "{"
 	echo "\"monolith\": \"$monolith\","
 	echo "\"monolithVersion\": \"$monolithVersion\","
+	echo "\"com\": \"$com\","
 	echo "\"org\": \"$org\","
 	echo "\"company\": \"$company\","
 	echo "\"chenilePackage\": \"$chenilePackage\","
