@@ -76,7 +76,7 @@ public class ChenileCoreConfiguration {
 	@Value("${chenile.event.logger:eventLogger}")
 	private String eventLoggerName;
 	
-	@Value("${chenile.trajectory.header.name:chenile-trajectory-id}")
+	@Value("${chenile.trajectory.header.name:x-chenile-trajectory-id}")
 	private String trajectoryHeaderName;
 	
 	

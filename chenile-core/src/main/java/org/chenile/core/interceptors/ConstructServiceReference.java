@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class ConstructServiceReference extends BaseChenileInterceptor{
 	private static final String MOCK_HEADER = "x-chenile-mock-mode";
 	@Autowired ChenileConfiguration chenileConfiguration;
-	private String trajectoryHeaderName;
+	private final String trajectoryHeaderName ;
 	
 	public ConstructServiceReference(String trajectoryHeaderName) {
 		this.trajectoryHeaderName = trajectoryHeaderName;
