@@ -1,5 +1,6 @@
 package org.chenile.base.exception;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import org.chenile.base.response.ResponseMessage;
 
 public class ErrorNumException extends RuntimeException {
 
+	@Serial
 	private static final long serialVersionUID = -6173788572115857426L;
 	private ResponseMessage responseMessage = new ResponseMessage();
 	private List<ResponseMessage> errors = new ArrayList<>();
@@ -35,10 +37,11 @@ public class ErrorNumException extends RuntimeException {
 		this.responseMessage.setCode(errorNum);
 		this.responseMessage.setSeverity(ErrorType.ERROR);
 	}
-	
+
 	/**
+	 *
 	 * @param errorNum
-	 * @param message
+	 * @param params
 	 * @param cause
 	 */
 	public ErrorNumException(int errorNum, Object[] params, Throwable cause) {
@@ -96,12 +99,12 @@ public class ErrorNumException extends RuntimeException {
 		this.responseMessage.setSubErrorCode(subErrorNum);
 		this.responseMessage.setSeverity(ErrorType.ERROR);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param errorNum
 	 * @param subErrorNum
-	 * @param message
+	 * @param params
 	 */
 	public ErrorNumException(int errorNum, int subErrorNum, Object[] params) {
 		this.responseMessage.setParams(params);

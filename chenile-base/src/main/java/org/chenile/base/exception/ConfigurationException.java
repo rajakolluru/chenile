@@ -12,10 +12,11 @@ public class ConfigurationException extends ErrorNumException {
 	public ConfigurationException(int subErrorNum, String message) {
 		super(500, subErrorNum, message);
 	}
+
 	/**
-	 * 
+	 *
 	 * @param subErrorNum
-	 * @param message
+	 * @param params
 	 */
 	public ConfigurationException(int subErrorNum, Object[]params) {
 		super(500, subErrorNum, params);
@@ -47,11 +48,11 @@ public class ConfigurationException extends ErrorNumException {
 	public ConfigurationException(int subErrorNum, String message, Throwable cause) {
 		super(500, subErrorNum, message, cause);
 	}
-	
+
 	/**
 	 *
 	 * @param subErrorNum
-	 * @param message
+	 * @param params
 	 * @param cause
 	 */
 	public ConfigurationException(int subErrorNum, Object[] params, Throwable cause) {

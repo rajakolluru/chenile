@@ -15,20 +15,20 @@ public class NotFoundException extends ErrorNumException {
 	public NotFoundException (String message, Throwable cause) {
 		super(404, message, cause);
 	}
-	
+
 	/**
-	 * 
+	 *
+	 * @param subErrorCode
 	 * @param message
-	 * @param cause
 	 */
 	public NotFoundException (int subErrorCode, String message) {
 		super(404, subErrorCode, message);
 	}
-	
+
 	/**
-	 * 
-	 * @param message
-	 * @param cause
+	 *
+	 * @param subErrorCode
+	 * @param params
 	 */
 	public NotFoundException (int subErrorCode, Object[] params) {
 		super(404, subErrorCode, params);
@@ -42,12 +42,12 @@ public class NotFoundException extends ErrorNumException {
 	public NotFoundException ( String message) {
 		super(404, message);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param message
+	 * @param subErrorNum
 	 * @param cause
-	 * @param bhiveErrorCode
 	 */
 	public NotFoundException (String message, int subErrorNum,Throwable cause) {
 		super(404,subErrorNum, message, cause);
@@ -63,11 +63,11 @@ public class NotFoundException extends ErrorNumException {
 	public NotFoundException(int subErrorNum, String message, Throwable cause) {
 		super(404, subErrorNum, message, cause);
 	}
-	
+
 	/**
 	 *
 	 * @param subErrorNum
-	 * @param message
+	 * @param params
 	 * @param cause
 	 */
 	public NotFoundException(int subErrorNum, Object[] params, Throwable cause) {

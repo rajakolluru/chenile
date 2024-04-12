@@ -1,8 +1,11 @@
 package org.chenile.base.exception;
 
+import java.io.Serial;
+
 public class ServerException extends ErrorNumException{
 
-    private static final long serialVersionUID = 6520135959170422755L;
+    @Serial
+	private static final long serialVersionUID = 6520135959170422755L;
 
     /**
      *
@@ -28,12 +31,13 @@ public class ServerException extends ErrorNumException{
     public ServerException( int subErrorNum, String message) {
         super(500, subErrorNum,message);
     }
-    
-    /**
-    *
-    * @param message
-    */
-   public ServerException( int subErrorNum, Object[] params) {
+
+	/**
+	 *
+	 * @param subErrorNum
+	 * @param params
+	 */
+	public ServerException( int subErrorNum, Object[] params) {
        super(500, subErrorNum,params);
    }
     

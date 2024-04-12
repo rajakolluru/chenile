@@ -18,7 +18,7 @@
 		<module>chenile-http</module>
 		<!-- module>chenile-kafka</module -->
 		<!-- module>chenile-filewatch</module -->
-		<module>chenile-scheduler</module>
+		<!-- module>chenile-scheduler</module -->
 		<module>cucumber-utils</module>
 		<module>chenile-swagger</module>
 		<module>chenile-config-maven-plugin</module>
