@@ -19,8 +19,6 @@
 				<transformer/>
 				<!--  See if the service reference needs to be flipped for this trajectory -->
 				<construct-service-reference/>
-				<!--  Compute the arguments required for invoking this service -->
-				<construct-api-invocation/>
 				<!--  Invoke any other interceptor configured for all services within this deployable -->
 				<post-processors-interpolation/>
 				<!--  Invoke any other interceptor configured for this particular operation -->
@@ -28,7 +26,9 @@
 				<!--  Invoke any other interceptor configured for all the operations within the service -->
 				<service-specific-processors-interpolation/>
 				<!--  finally invoke the service -->
-				<service-invoker/>
+				<service-invocation-chain>
+					<service-invoker index="500"/>
+				</service-invocation-chain>
 			</chenile-interceptor-chain>
 		</chenile-highway>		
 	</flow>	

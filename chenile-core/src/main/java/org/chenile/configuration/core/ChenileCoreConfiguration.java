@@ -148,10 +148,6 @@ public class ChenileCoreConfiguration {
     	return new ChenileEntryPoint();
     }
     
-    @Bean ConstructApiInvocation constructApiInvocation() {
-    	return new ConstructApiInvocation();
-    }
-    
     @Bean
     public ServiceInvoker serviceInvoker() {
     	return new ServiceInvoker();
@@ -161,6 +157,11 @@ public class ChenileCoreConfiguration {
     public ConstructServiceReference constructServiceReference() {
     	return new ConstructServiceReference(trajectoryHeaderName);
     }
+
+	@Bean
+	public Chain<ChenileExchange> serviceInvocationChain(){
+		return new Chain<ChenileExchange>();
+	}
     
     @Bean
     public OrchExecutor<ChenileExchange> chenileOrchExecutor() throws Exception {

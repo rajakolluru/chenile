@@ -1,5 +1,6 @@
 package org.chenile.cache.interceptor;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,9 @@ import java.util.List;
 import org.chenile.cache.model.CacheKey;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.interceptors.BaseChenileInterceptor;
+import org.chenile.core.model.HttpBindingType;
 import org.chenile.core.model.OperationDefinition;
+import org.chenile.core.model.ParamDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.chenile.cache.Cacheable;
@@ -22,6 +25,7 @@ import com.hazelcast.core.ReplicatedMap;
  *
  */
 public class CacheInterceptor extends BaseChenileInterceptor implements Serializable{
+	@Serial
 	private static final long serialVersionUID = 5426626774012030375L;
 	@Autowired HazelcastInstance hazelcastInstance;
 	
@@ -60,17 +64,33 @@ public class CacheInterceptor extends BaseChenileInterceptor implements Serializ
 	private CacheKey generate(ChenileExchange exchange) {
 		CacheKey key = new CacheKey();
 		List<Object> apiInvocation = new ArrayList<>();
+		List<ParamDefinition> params = exchange.getOperationDefinition().getParams();
 		// Treat cacheable objects specially
-		for (Object o: exchange.getApiInvocation()) {
-			if (o instanceof Cacheable) {
-				apiInvocation.add(((Cacheable)o).cacheKey());
-			}else {
-				apiInvocation.add(o);
-			}
+		for (ParamDefinition p: params) {
+			apiInvocation.add(key(exchange,p));
 		}
 		key.apiInvocation = apiInvocation;
 		key.serviceName = exchange.getServiceDefinition().getId();
 		key.opName = exchange.getOperationDefinition().getName();
 		return key;
+	}
+
+	private Object key(ChenileExchange exchange, ParamDefinition p){
+		HttpBindingType typ = p.getType();
+		if (typ == HttpBindingType.HEADER){
+			return exchange.getHeader(p.getName());
+		}else if (typ == HttpBindingType.BODY){
+			Object body = exchange.getBody();
+			if ( body instanceof Cacheable) {
+				return ((Cacheable)body).cacheKey();
+			}else {
+				return body;
+			}
+		} else if (typ == HttpBindingType.HEADERS){
+			return exchange.getHeaders();
+		}else if (typ == HttpBindingType.MULTI_PART){
+			return exchange.getMultiPartMap().get(p.getName());
+		}
+		return null;
 	}
 }
