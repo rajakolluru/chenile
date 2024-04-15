@@ -1,9 +1,10 @@
 package org.chenile.owiz.config.impl;
 
 import org.apache.commons.digester.Rule;
+import org.chenile.owiz.config.model.FlowDescriptor;
 import org.xml.sax.Attributes;
 
-public class OwizRule extends Rule{
+public class OwizRule<InputType> extends Rule{
 	public String getKey(Attributes attributes, int i) {
 		 String name = attributes.getLocalName(i);
          if ("".equals(name)) {
@@ -22,9 +23,9 @@ public class OwizRule extends Rule{
 	}
 	
 	public String getXmlNameAsCamelCase(String xmlElementName) {
-		if (xmlElementName == null || xmlElementName.length() == 0)
+		if (xmlElementName == null || xmlElementName.isEmpty())
 			return null;
-		StringBuffer sbuf = new StringBuffer();
+		StringBuilder sbuf = new StringBuilder();
 		boolean first = true;
 		for(String s:xmlElementName.split("-")) {
 			char c = s.charAt(0);
@@ -33,11 +34,16 @@ public class OwizRule extends Rule{
 			}else {
 				c = Character.toUpperCase(s.charAt(0));
 			}
-			sbuf.append(c + s.substring(1));
+			sbuf.append(c).append(s.substring(1));
 		}
-		if (sbuf.length() == 0) {
+		if (sbuf.isEmpty()) {
 			return xmlElementName;
 		}
 		return sbuf.toString();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected  FlowDescriptor<InputType> getFlow(){
+		return (FlowDescriptor<InputType>) digester.peek(XmlOrchConfigurator.FLOW_STACK);
 	}
 }

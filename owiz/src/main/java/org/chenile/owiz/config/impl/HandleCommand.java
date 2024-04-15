@@ -5,7 +5,7 @@ import org.chenile.owiz.config.model.FlowDescriptor;
 import org.chenile.owiz.exception.OwizConfigException;
 import org.xml.sax.Attributes;
 
-public class HandleCommand<InputType> extends OwizRule {
+public class HandleCommand<InputType> extends OwizRule<InputType> {
 	public final String DEFAULT_ATTACHMENT_TAG = "attach-to";
 	protected IDGenerator idGenerator;
 	protected HandleAttachment<InputType> handleAttachment;
@@ -44,11 +44,6 @@ public class HandleCommand<InputType> extends OwizRule {
 			commandDescriptor.setId(id);
 		}
 		return commandDescriptor;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private FlowDescriptor<InputType> getFlow(){
-		return (FlowDescriptor<InputType>) digester.peek(XmlOrchConfigurator.FLOW_STACK);
 	}
 	
 	protected void addToFlow(CommandDescriptor<InputType> commandDescriptor) {

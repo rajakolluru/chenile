@@ -44,15 +44,19 @@ public class CommandAttachmentDelegatorRule<InputType> extends Rule {
 			handleRegisteredCommand.end(namespace,xmlElementName);
 		else if (handleAttachment.isRegisteredAttachmentTag(xmlElementName))
 			handleAttachment.end(namespace,xmlElementName);
+		else if (xmlElementName != null  && xmlElementName.startsWith("attach-to"))
+			handleAttachment.end(namespace,xmlElementName);
 		else
 			handleCommand.end(namespace,xmlElementName);
 	}
 	@Override
 	public void begin(String namespace, String xmlElementName, Attributes attributes)
 			throws OwizConfigException {
-		if (handleRegisteredCommand.isRegisteredCommandTag(xmlElementName)) {
+		if (handleRegisteredCommand.isRegisteredCommandTag(xmlElementName))
 			handleRegisteredCommand.begin(namespace,xmlElementName,attributes);
-		}else if (handleAttachment.isRegisteredAttachmentTag(xmlElementName))
+		else if (handleAttachment.isRegisteredAttachmentTag(xmlElementName))
+			handleAttachment.begin(namespace,xmlElementName,attributes);
+		else if (xmlElementName != null  && xmlElementName.startsWith("attach-to-"))
 			handleAttachment.begin(namespace,xmlElementName,attributes);
 		else
 			handleCommand.begin(namespace,xmlElementName,attributes);		
