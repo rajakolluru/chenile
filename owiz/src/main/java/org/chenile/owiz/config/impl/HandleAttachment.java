@@ -37,28 +37,25 @@ public class HandleAttachment<InputType> extends OwizRule<InputType> {
 			// parentId must not be mandatory. automatically attach it to the containing command.
 			if (ad.getParentId() == null){
 
-				CommandDescriptor<InputType> cd = null;
+				CommandDescriptor<InputType> parentCommandDescriptor = null;
 				Object o = digester.peek(1);
-				if (o instanceof CommandDescriptor )
-					cd = (CommandDescriptor<InputType>) o;
+				if (o instanceof CommandDescriptor ) {
+					parentCommandDescriptor = (CommandDescriptor<InputType>) o;
+					ad.setParentId(parentCommandDescriptor.getId());
+				}
 
-				if (cd == null){
+				if (parentCommandDescriptor == null){
+					// you could not find a containing parent for that particular command.
+					// see if you can infer the parent from the xml element name
 					if (xmlElementName != null && xmlElementName.startsWith("attach-to-")){
 						// extract the command name from the xml element name
-						String commandId = xmlElementName.substring("attach-to-".length());
-						if(getFlow().getCommandCatalog().containsKey(commandId)){
-							cd = getFlow().getCommandCatalog().get(commandId);
-						} else {
-							throw new OwizConfigException("Attempt to attach a command to a non existent parent in "
-							+ " tag = " + xmlElementName + " command = " + commandDescriptor.getId());
-						}
+						String parentCommandId = xmlElementName.substring("attach-to-".length());
+						ad.setParentId(parentCommandId);
 					}
 				}
-				if (cd == null)
+				if (ad.getParentId() == null)
 					throw new OwizConfigException("Parent ID is mandatory for attachments. XmlElementName = " +
 							xmlElementName + " command = " + commandDescriptor.getId());
-				
-				ad.setParentId(cd.getId());
 			}
 			// Ensure that additional attributes of the attach tag are set in the attachment descriptor
 			// as  properties. These would be available to the containing commands as attachment attributes.
