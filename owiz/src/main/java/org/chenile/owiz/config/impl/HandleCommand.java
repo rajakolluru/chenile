@@ -34,10 +34,12 @@ public class HandleCommand<InputType> extends OwizRule {
 			commandDescriptor.setComponentName(componentName);
 		}
 		if (commandDescriptor.getId() == null) {
-			// try to use the componentName as the ID. This works if the componentName is unique
+			// try to use the xml element name as the ID.
+			// If it is already used, try to use the componentName as the ID.
 			// else use the ID generator to generate a new ID.
 			FlowDescriptor<InputType> flow = getFlow();
-			String id = componentName;
+			String id = xmlElementName;
+			if (flow.getCommandCatalog().containsKey(id)) id = componentName;
 			if (flow.getCommandCatalog().containsKey(id)) id = idGenerator.generateId();
 			commandDescriptor.setId(id);
 		}
