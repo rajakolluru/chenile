@@ -33,17 +33,24 @@ public class HandleCommand<InputType> extends OwizRule {
 		if(componentName != null && commandDescriptor.getComponentName() == null){
 			commandDescriptor.setComponentName(componentName);
 		}
-		if (commandDescriptor.getId() == null)
-			commandDescriptor.setId(idGenerator.generateId());
+		if (commandDescriptor.getId() == null) {
+			// try to use the componentName as the ID. This works if the componentName is unique
+			// else use the ID generator to generate a new ID.
+			FlowDescriptor<InputType> flow = getFlow();
+			String id = componentName;
+			if (flow.getCommandCatalog().containsKey(id)) id = idGenerator.generateId();
+			commandDescriptor.setId(id);
+		}
 		return commandDescriptor;
 	}
 	
+	@SuppressWarnings("unchecked")
+	private FlowDescriptor<InputType> getFlow(){
+		return (FlowDescriptor<InputType>) digester.peek(XmlOrchConfigurator.FLOW_STACK);
+	}
+	
 	protected void addToFlow(CommandDescriptor<InputType> commandDescriptor) {
-		@SuppressWarnings("unchecked")
-		FlowDescriptor<InputType> flowDescriptor = (FlowDescriptor<InputType>)
-					digester.peek(XmlOrchConfigurator.FLOW_STACK);
-		
-		flowDescriptor.addCommand(commandDescriptor);
+		getFlow().addCommand(commandDescriptor);
 	}
 	@Override
 	public void begin(String namespace, String xmlElementName, Attributes attributes)
