@@ -47,9 +47,9 @@ function replaceServiceInName(){
     
     # The pipeline below ensures that awk matches the lines only if the match 
     # happens in the last part of the path (not somewhere in between)
-    # It also reverses the order of the lines using tail -r so that the 
+    # It also reverses the order of the lines using sed '1!G;h;$!d'  so that the 
     # leaves are renamed before the trunks in the tree are renamed
-    find $folder | awk -F/ '($NF ~ /__'$pattern'__/ ){print $0}' | tail -r | 
+    find $folder | awk -F/ '($NF ~ /__'$pattern'__/ ){print $0}' | sed '1!G;h;$!d'  | 
           while read fname
           do
             last_part=${fname##*/}
