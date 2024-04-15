@@ -2,7 +2,7 @@
 
 <flows>
 	<flow id='chenile-highway' defaultFlow="true">
-		<chenile-highway>
+		<chenile-highway first="true">
 			<chenile-interceptor-chain>
 				<!--  This is used only in the return path. This surrounds the return value from the service with a generic response -->
 				<generic-response-builder/>
