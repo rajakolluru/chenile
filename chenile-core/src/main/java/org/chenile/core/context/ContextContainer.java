@@ -1,6 +1,8 @@
 package org.chenile.core.context;
 
 
+import org.springframework.security.core.Authentication;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +30,8 @@ public class ContextContainer {
 		public String userAgent = "";
 		public String batchId = "";
 		private String deviceId = "";
+
+		private Authentication authentication=null;
 	}
 
 	private Context getContext() {
@@ -37,6 +41,14 @@ public class ContextContainer {
 			contexts.set(context);
 		}
 		return context;
+	}
+
+	public void setAuthentication(Authentication authenticationContext){
+		getContext().authentication = authenticationContext;
+	}
+
+	public Authentication getAuthentication(){
+		return getContext().authentication;
 	}
 
 	public void put(String key, String value){
@@ -76,6 +88,7 @@ public class ContextContainer {
 		String tenant = getContext().regionId;
 		return (tenant == null) ? "" : tenant;
 	}
+
 
 	/**
 	 * @return the groupId
@@ -262,6 +275,8 @@ public class ContextContainer {
 		getContext().batchId = batchId;
 
 	}
+
+
 	public String getTenant() {
 		String tenant = getContext().tenant;
 		return (null == tenant) ? "" : tenant;
