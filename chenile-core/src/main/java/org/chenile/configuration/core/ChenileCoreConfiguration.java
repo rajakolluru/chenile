@@ -157,11 +157,6 @@ public class ChenileCoreConfiguration {
     public ConstructServiceReference constructServiceReference() {
     	return new ConstructServiceReference(trajectoryHeaderName);
     }
-
-	@Bean
-	public Chain<ChenileExchange> serviceInvocationChain(){
-		return new Chain<ChenileExchange>();
-	}
     
     @Bean
     public OrchExecutor<ChenileExchange> chenileOrchExecutor() throws Exception {
