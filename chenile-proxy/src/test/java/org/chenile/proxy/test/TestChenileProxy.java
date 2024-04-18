@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.ActiveProfiles;
@@ -24,6 +25,7 @@ public class TestChenileProxy {
 
    @Autowired FooService fooService;
    @Autowired @Qualifier("fooServiceOnlyRemote") FooService fooServiceOnlyRemote;
+
    @Autowired
       
     @Test public void testIt() { 	

@@ -29,7 +29,8 @@ public class SpringConfig extends SpringBootServletInitializer{
 	}
 	
 	@Bean @Primary public FooService fooService() {
-		return proxyBuilder.buildProxy(FooService.class,"fooService", null);
+		return proxyBuilder.buildProxy(FooService.class,"fooService", null,
+				"localhost:8080");
 	}
 }
 
