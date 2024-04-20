@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.owiz.Command;
+import org.chenile.owiz.impl.ChainContext;
 
 /**
  * A generic interceptor for other Chenile Interceptors to override.
@@ -11,7 +12,7 @@ import org.chenile.owiz.Command;
  * If it is a surround interceptor that needs to stop the chain under certaim circumstances then
  * override the {@link #execute(ChenileExchange)} method. For stopping the chain return without
  * calling the doContinue method
- * If you wish to bypass interception then override {@link #bypassInterception()} method.
+ * If you wish to bypass interception then override {@link #bypassInterception(ChenileExchange)} method.
  * @author Raja Shankar Kolluru
  *
  */
@@ -58,6 +59,15 @@ public class BaseChenileInterceptor implements Command<ChenileExchange>{
 	protected final void doContinue(ChenileExchange exchange) throws Exception{
 		exchange.getChainContext().doContinue();
 	}
+
+	protected ChainContext.SavePoint savePoint(ChenileExchange exchange){
+		return exchange.getChainContext().savePoint();
+	}
+
+	protected void resumeFromSavedPoint(ChainContext.SavePoint savePoint, ChenileExchange exchange)
+			throws  Exception{
+		exchange.getChainContext().resumeFromSavedPoint(savePoint);
+	}
 	
 	/**
 	 * Over-ride this to bypass interception in special circumstances
@@ -70,7 +80,6 @@ public class BaseChenileInterceptor implements Command<ChenileExchange>{
 	
 	/**
 	 * See if there is an annotation of type T defined in either the OperationDefinition or ServiceDefinition. Return if it exists
-	 * @param <T> - the type of the annotation
 	 * @param name - the annotation class name
 	 * @param exchange - the context thst is being passed around
 	 * @return the annotation if it exists or null if it does not. Opertion level annotations override service level annotations
