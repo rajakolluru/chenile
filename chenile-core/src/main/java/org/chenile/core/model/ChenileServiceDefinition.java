@@ -39,7 +39,17 @@ public class ChenileServiceDefinition  {
 	// a trajectory ID  to TrajectoryOverride mapping if this service is over-ridden for a particular trajectory
 	// the entry does not exist for trajectories that are not over-riding this particular service
 	private Map<String,TrajectoryOverride> trajectoryOverrides = new HashMap<>();
-	
+
+	public Class<?> getInterfaceClass() {
+		return interfaceClass;
+	}
+
+	public void setInterfaceClass(Class<?> clazz) {
+		this.interfaceClass = clazz;
+	}
+
+	private Class<?> interfaceClass;
+
 
 	public String getBodyTypeSelectorComponentName() {
 		return bodyTypeSelectorComponentName;
@@ -197,6 +207,4 @@ public class ChenileServiceDefinition  {
 	public void setTrajectoryOverrides(Map<String,TrajectoryOverride> trajectoryOverrides) {
 		this.trajectoryOverrides = trajectoryOverrides;
 	}
-
-	
 }

@@ -25,17 +25,20 @@ public class ChenileResponseHandler extends DefaultResponseErrorHandler{
 	
 	@Override
 	public boolean hasError(ClientHttpResponse httpResponse) throws IOException {
+		System.err.println("response error code is " + httpResponse.getStatusCode());
 		return !(httpResponse.getStatusCode().is2xxSuccessful());
 	}
 
 	@Override
-	public void handleError(ClientHttpResponse response) throws IOException {		
+	public void handleError(ClientHttpResponse response) throws IOException {
+		System.err.println("response.getStatusCode().value() is " + response.getStatusCode().value());
 		HttpStatus statusCode = HttpStatus.resolve(response.getStatusCode().value());
 		if (statusCode != null) {
 			byte[] body = getResponseBody(response);
 			if (body.length == 0) {
 				RuntimeException e1 = new ServerException("Error happened in invoking " + getEndpointName() +
-		            response.getRawStatusCode() + response.getStatusText() );
+		            response.getStatusCode().value() + response.getStatusText() + " "  +
+						response.getBody());
 				chenileExchange.setException(e1);
 				return;
 			}

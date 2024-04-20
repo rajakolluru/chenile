@@ -2,6 +2,7 @@ package org.chenile.core.interceptors;
 
 import java.lang.reflect.Method;
 
+import org.chenile.base.exception.ErrorNumException;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
@@ -64,7 +65,12 @@ public class ConstructServiceReference extends BaseChenileInterceptor{
 	private void populateServiceRef(ChenileExchange exchange, String serviceId,Object ref) {
 		exchange.setServiceReference(ref);
 		exchange.setServiceReferenceId(serviceId);
-		Method method = MethodUtils.computeMethod(serviceId, ref, exchange.getOperationDefinition());
+		Method method = MethodUtils.computeMethod(ref.getClass(), exchange.getOperationDefinition());
+		if (method == null){
+			throw new ErrorNumException(500,508,new Object[] {
+				exchange.getServiceDefinition().getId(), exchange.getOperationDefinition().getName()
+			});
+		}
 		exchange.setMethod(method);
 	}
 }

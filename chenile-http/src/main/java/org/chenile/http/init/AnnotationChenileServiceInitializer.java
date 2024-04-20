@@ -11,7 +11,9 @@ import org.chenile.core.annotation.ChenileAnnotation;
 import org.chenile.core.init.AbstractServiceInitializer;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
+import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.service.HealthChecker;
+import org.chenile.core.util.MethodUtils;
 import org.chenile.http.annotation.ChenileController;
 import org.chenile.http.init.od.DeleteMappingProducer;
 import org.chenile.http.init.od.GetMappingProducer;
@@ -23,6 +25,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -59,7 +62,7 @@ public class AnnotationChenileServiceInitializer extends AbstractServiceInitiali
 			String id = chenileController.value();
 			csd.setId(id);
 			String name = chenileController.serviceName();
-			if (name.length() == 0) {
+			if (name.isEmpty()) {
 				name = "_" + id + "_";
 			}
 			Object serviceRef = lookup(name);
@@ -70,7 +73,7 @@ public class AnnotationChenileServiceInitializer extends AbstractServiceInitiali
 				throw new ServerException(506,"Service " + id + " does not have a configured service reference. Did you miss instantiating it?");
 			}
 			String healthCheckerName = chenileController.healthCheckerName();
-			if (healthCheckerName.length() == 0)
+			if (healthCheckerName.isEmpty())
 				healthCheckerName = id + "HealthChecker";
 			
 			Object hcref = lookup(healthCheckerName);
@@ -79,7 +82,7 @@ public class AnnotationChenileServiceInitializer extends AbstractServiceInitiali
 				csd.setHealthChecker((HealthChecker)hcref);
 			}
 			String mockName = chenileController.mockName();
-			if (mockName.length() == 0)
+			if (mockName.isEmpty())
 				mockName = id + "Mock";
 			Object mockRef = lookup(mockName);
 			if (mockRef != null) {
@@ -90,8 +93,31 @@ public class AnnotationChenileServiceInitializer extends AbstractServiceInitiali
 			csd.setOperations(new ArrayList<>());
 			collectChenileAnnotations(bean,csd);
 			configureOperations(bean.getClass(),csd);
+			Class<?> clazz = chenileController.interfaceClass();
+			if (clazz == Object.class ){
+				// Interface class is not specified see if you can compute the interface class
+				clazz = computeInterfaceClass(csd);
+			}
+			csd.setInterfaceClass(clazz);
 			registerService(csd);
 		}
+	}
+
+	private Class<?> computeInterfaceClass(ChenileServiceDefinition csd){
+		Object service = csd.getServiceReference();
+		Class<?>[] interfaces = ClassUtils.getAllInterfaces(service);
+		for (Class<?> inter : interfaces ){
+			boolean found = true;
+			for (OperationDefinition od: csd.getOperations()) {
+				Method m = MethodUtils.computeMethod(inter, od);
+				if (m == null) {
+					found = false;
+					break;
+				}
+			}
+			if(found) return inter;
+		}
+		return null;
 	}
 	
 	protected void collectChenileAnnotations(Object controller, ChenileServiceDefinition csd) {

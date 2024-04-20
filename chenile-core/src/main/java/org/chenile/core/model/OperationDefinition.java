@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.owiz.Command;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -142,6 +143,7 @@ public class OperationDefinition {
 	protected List<String> clientInterceptorComponentNames;
 	@JsonIgnore
 	protected Method method;
+	protected ParameterizedTypeReference<?> outputAsParameterizedReference;
 	/**
 	 * Sometimes it is possible that the output is not specifiable since it can vary depending on the value of some headers. In that case,
 	 * this class would be invoked to select the correct body type (i.e. output) class. 
@@ -239,6 +241,7 @@ public class OperationDefinition {
 
     public void setOutput(Class<?> output) {
         this.output = output;
+
     }
 
     public String getName() {
@@ -386,6 +389,13 @@ public class OperationDefinition {
 	
 	public Map<String,Object> getExtensions() {
 		return this.extensions;
+	}
+
+    public ParameterizedTypeReference<?> getOutputAsParameterizedReference() {
+		return this.outputAsParameterizedReference;
+    }
+	public void setOutputAsParameterizedReference(ParameterizedTypeReference<?> ref) {
+		this.outputAsParameterizedReference = ref;
 	}
 
 }

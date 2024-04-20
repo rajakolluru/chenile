@@ -43,12 +43,13 @@ public class HttpInvoker implements Command<ChenileExchange>{
 					restTemplate.exchange(baseURI + od.getUrl(), 
 							httpMethod(od), entity,exchange.getResponseBodyType());
 		} catch (RestClientException e) {
+			e.printStackTrace();
 			if (exchange.getException() != null)
 				return; // if this has already been handled by the error handler then
 			// the exception has already been set. So we can return
 			RuntimeException exc = new ServerException("Cannot invoke service " + 
 					exchange.getServiceDefinition().getId() + "." + 
-					exchange.getOperationDefinition().getName(), e);
+					exchange.getOperationDefinition().getName() + ".Error is " + e.getMessage(), e);
 			exchange.setException(exc);
 			return;
 		}

@@ -123,7 +123,12 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
     	}
     	// find if method exists in the service. 
     	// cache the method within OperationDefinition so it does not need to be recomputed.
-    	Method method = MethodUtils.computeMethod(csd.getId(), csd.getServiceReference(), od);
+    	Method method = MethodUtils.computeMethod(csd.getServiceReference().getClass(), od);
+		if (method == null){
+			throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),
+					"Operation " + csd.getId() + "." + od.getName() +
+							 "() is not found. Did you define the paramClass properly?");
+		}
     	od.setMethod(method);    	
     }
 
