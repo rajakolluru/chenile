@@ -20,7 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 /**
- * <p>A bidirectional exchange that is supposed to navigate between different {@link ChenileInterceptor}s. 
+ * <p>A bidirectional exchange that is supposed to navigate between different Chenile Interceptors.
  * The exchange contains a body which is the incoming request along with headers. </p>
  * <p>Commands will set the response or response in the return journey.</p>
  * 
@@ -223,6 +223,10 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	}
 	
 	public void setException(Throwable e) {
+		if (e == null) {
+			this.exception = null;
+			return;
+		}
 		if ( e instanceof RuntimeException) {
 			this.exception = (RuntimeException)e;
 			return;
