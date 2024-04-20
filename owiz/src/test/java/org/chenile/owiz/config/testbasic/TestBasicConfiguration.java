@@ -3,6 +3,7 @@ package org.chenile.owiz.config.testbasic;
 import static org.junit.Assert.assertEquals;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.chenile.owiz.BeanFactoryAdapter;
@@ -104,4 +105,5 @@ public class TestBasicConfiguration {
 		assertEquals("mock12 not invoked properly", "mock12",mc.getLog(2));
 		assertEquals("mock13 not invoked properly", "mock13",mc.getLog(3));
 	}
+
 }

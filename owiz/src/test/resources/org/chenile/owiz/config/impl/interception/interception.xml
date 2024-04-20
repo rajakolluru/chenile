@@ -1,0 +1,9 @@
+<flows>
+    <flow>
+        <interception-chain>
+            <interceptor1/>
+            <interceptor2/>
+            <final-command/>
+        </interception-chain>
+    </flow>
+</flows>
