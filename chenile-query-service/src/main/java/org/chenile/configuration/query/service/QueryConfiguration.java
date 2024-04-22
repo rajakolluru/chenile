@@ -11,12 +11,10 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.chenile.query.service.QueryStore;
 import org.chenile.query.service.SearchService;
@@ -25,10 +23,7 @@ import org.chenile.query.service.impl.QueryDefinitions;
 import org.chenile.query.service.interceptor.QuerySAASInterceptor;
 import org.chenile.query.service.interceptor.QueryUserFilterInterceptor;
 
-import liquibase.integration.spring.SpringLiquibase;
-
 @Configuration
-@PropertySource(value = { "classpath:properties/query/${spring.profiles.active}/datasource.properties" })
 public class QueryConfiguration {
 
 	@Value("${query.mapperFiles}")
@@ -75,30 +70,5 @@ public class QueryConfiguration {
     @Bean
     QueryUserFilterInterceptor queryUserFilterInterceptor() {
 		return new QueryUserFilterInterceptor();
-	}
-
-    @Bean
-    @ConfigurationProperties(prefix = "query.datasource.liquibase")
-    LiquibaseProperties queryLiquibaseProperties() {
-		return new LiquibaseProperties();
-	}
-
-    @Bean("queryLiquibase")
-    SpringLiquibase queryLiquibase(@Autowired @Qualifier("queryDatasource") DataSource dataSource) {
-		return springLiquibase(dataSource, queryLiquibaseProperties());
-	}
-	
-	private SpringLiquibase springLiquibase(DataSource dataSource, LiquibaseProperties properties) {
-		SpringLiquibase liquibase = new SpringLiquibase();
-		liquibase.setDataSource(dataSource);
-		liquibase.setChangeLog(properties.getChangeLog());
-		liquibase.setContexts(properties.getContexts());
-		liquibase.setDefaultSchema(properties.getDefaultSchema());
-		// liquibase.setDropFirst(false);
-		liquibase.setShouldRun(properties.isEnabled());
-		// liquibase.setLabels(properties.getLabels());
-		liquibase.setChangeLogParameters(properties.getParameters());
-		liquibase.setRollbackFile(properties.getRollbackFile());
-		return liquibase;
 	}
 }
