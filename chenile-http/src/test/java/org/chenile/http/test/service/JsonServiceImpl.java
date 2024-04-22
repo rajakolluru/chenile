@@ -7,11 +7,7 @@ public class JsonServiceImpl implements JsonService{
 
     @Override
     public JsonData getOne(String id) {
-    	System.out.println("At getOne() Id is " + id);
-        JsonData j=new JsonData();
-        j.setName("Hello");
-        j.setId(id);
-        return j;
+        return new JsonData(id,"Hello");
     }
 
     @Override
@@ -28,10 +24,26 @@ public class JsonServiceImpl implements JsonService{
 	@Override
 	public JsonData throwWarning(JsonData jsonData) {
 		ResponseMessage rm = new ResponseMessage();
+        rm.setCode(200);
 		rm.setSeverity(ErrorType.WARN);
 		rm.setSubErrorCode(jsonData.getErrorNum());
 		rm.setDescription(jsonData.getExceptionMessage());
 		jsonData.addWarningMessage(rm);
 		return jsonData;
 	}
+
+    @Override
+    public JsonData throwMultipleErrorsInException(JsonData jsonData) {
+        ServerException serverException = new ServerException
+                (jsonData.getErrorNum(), jsonData.getExceptionMessage());
+        ResponseMessage r = new ResponseMessage();
+        r.setCode(501);
+        r.setSeverity(ErrorType.ERROR);
+        r.setSubErrorCode(jsonData.getErrorNum());
+        r.setDescription(jsonData.getExceptionMessage());
+        serverException.addError(r);
+        throw serverException;
+    }
+    @Override
+    public JsonData ping(JsonData jsonData){ return jsonData;}
 }

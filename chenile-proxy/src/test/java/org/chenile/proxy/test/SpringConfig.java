@@ -6,6 +6,7 @@ import org.chenile.proxy.test.service.FooInterceptor;
 import org.chenile.proxy.test.service.FooService;
 import org.chenile.proxy.test.service.FooServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -18,17 +19,21 @@ import org.springframework.test.context.ActiveProfiles;
 @Configuration
 @SpringBootApplication(scanBasePackages = { "org.chenile.configuration" })
 @PropertySource("classpath:org/chenile/proxy/test/TestChenileProxy.properties")
+@PropertySource("classpath:application-fixedport.properties")
 @ActiveProfiles("unittest")
 public class SpringConfig extends SpringBootServletInitializer{
 	
 	@Autowired ProxyBuilder proxyBuilder;
+	@Value("${server.port}") String serverPort;
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringConfig.class, args);
 	}
 	
 	@Bean @Primary public FooService fooService() {
-		return proxyBuilder.buildProxy(FooService.class, "fooService",null);
+		return proxyBuilder.buildProxy(FooService.class, "fooService",null,
+				"localhost:" + serverPort);
 	}
 	
 	@Bean("_fooService_") public FooService _fooService_() {
@@ -41,7 +46,7 @@ public class SpringConfig extends SpringBootServletInitializer{
 	
 	@Bean public FooService fooServiceOnlyRemote() {
 		return proxyBuilder.buildProxy(FooService.class, "fooService",null,
-				ProxyMode.REMOTE);
+				ProxyMode.REMOTE, "localhost:" + serverPort);
 	}
 }
 

@@ -42,4 +42,17 @@ public class JsonController extends ControllerSupport{
 			 HttpServletRequest request, @RequestBody JsonData jsonData) {
 		 return process("throwWarning",request,jsonData);
 	 }
+
+	@PostMapping("/c/throw-multiple-exceptions")
+	public ResponseEntity<GenericResponse<JsonData>> throwMultipleErrorsInException(
+			HttpServletRequest request, @RequestBody JsonData jsonData) {
+		return process("throwMultipleErrorsInException",request,jsonData);
+	}
+
+	@PostMapping("/c/ping")
+	@InterceptedBy({"jsonInterceptor","jsonInterceptor1"})
+	public ResponseEntity<GenericResponse<JsonData>> ping(
+			HttpServletRequest request, @RequestBody JsonData jsonData) {
+		return process("ping",request,jsonData);
+	}
 }

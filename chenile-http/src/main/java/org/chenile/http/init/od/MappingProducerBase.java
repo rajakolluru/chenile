@@ -3,6 +3,8 @@ package org.chenile.http.init.od;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.Map;
 import jakarta.servlet.http.HttpServletRequest;
 
 import org.chenile.base.exception.ServerException;
+import org.chenile.base.response.GenericResponse;
 import org.chenile.core.annotation.ChenileAnnotation;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.model.ChenileServiceDefinition;
@@ -25,7 +28,10 @@ import org.chenile.http.annotation.ChenileResponseCodes;
 import org.chenile.http.annotation.InterceptedBy;
 import org.chenile.owiz.Command;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 public abstract class MappingProducerBase {
@@ -148,17 +154,25 @@ public abstract class MappingProducerBase {
 		}
 		od.setHttpMethod(httpMethod());
 		String[] c = consumes(method);
-		if (c != null && c.length > 0 && c[0].length() > 0) {
+		if (c != null && c.length > 0 && !c[0].isEmpty()) {
 			od.setConsumes(MimeType.valueOf(c[0]));
 		}
 		c = produces(method);
-		if (c != null && c.length > 0 && c[0].length() > 0) {
+		if (c != null && c.length > 0 && !c[0].isEmpty()) {
 			od.setProduces(MimeType.valueOf(c[0]));
 		}
 		
-		od.setOutput(method.getReturnType());
+		od.setOutputAsParameterizedReference(findOutputType(ResolvableType.forMethodReturnType(method)));
 		od.setUrl(url);
 		populateParams(csd,method,od);
 		csd.getOperations().add(od);
+	}
+
+	private static ParameterizedTypeReference<?> findOutputType(ResolvableType genericType){
+		// output type needs to be calculated by removing the surrounding ResponseEntity and
+		// GenericResponse. That is why we call getGeneric() twice to remove the two of them
+		ResolvableType t = genericType.getGeneric();
+		t = t.getGeneric();
+		return ParameterizedTypeReference.forType(t.getType());
 	}
 }

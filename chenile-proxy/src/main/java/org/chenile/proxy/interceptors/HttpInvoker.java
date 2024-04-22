@@ -9,6 +9,7 @@ import org.chenile.base.response.GenericResponse;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.owiz.Command;
+import org.chenile.proxy.builder.ProxyBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -33,7 +34,8 @@ public class HttpInvoker implements Command<ChenileExchange>{
 		HttpHeaders headers = extractHeaders(exchange);
 	    HttpEntity<Object> entity = new HttpEntity<Object>(exchange.getBody(),headers);
 	      
-	    String baseURI = "http://localhost:8080"; // TODO take away the hard-coding.
+	    String baseURI = (String)exchange.getHeader(ProxyBuilder.REMOTE_URL_BASE);
+		if (!baseURI.startsWith("http://")) baseURI = "http://" + baseURI;
 	    ResponseEntity<GenericResponse<?>> httpResponse = null;
 	    RestTemplate restTemplate = getRestTemplate(exchange);
 		try {
@@ -46,7 +48,7 @@ public class HttpInvoker implements Command<ChenileExchange>{
 			// the exception has already been set. So we can return
 			RuntimeException exc = new ServerException("Cannot invoke service " + 
 					exchange.getServiceDefinition().getId() + "." + 
-					exchange.getOperationDefinition().getName(), e);
+					exchange.getOperationDefinition().getName() + ".Error is " + e.getMessage(), e);
 			exchange.setException(exc);
 			return;
 		}

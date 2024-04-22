@@ -26,7 +26,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
  */
 public class ProxyBuilder {
 	public static final String PROXYMODE = "PROXYMODE"; // this key is used to store in the proxy mode in ChenileExchange
-	// Needed for test cases. 
+	// Needed for test cases.
+	public static final String REMOTE_URL_BASE = "REMOTE_URL_BASE";
 
 	/**
 	 * Build proxy for an interface. The headers from the current request are copied using 
@@ -37,8 +38,9 @@ public class ProxyBuilder {
 	 * @param headerCopier
 	 * @return
 	 */
-	public <T> T buildProxy(Class<T> interfaceToProxy, String serviceName, HeaderCopier headerCopier) {
-		return buildProxy(interfaceToProxy,serviceName,headerCopier,ProxyMode.COMPUTE_DYNAMICALLY);
+	public <T> T buildProxy(Class<T> interfaceToProxy, String serviceName, HeaderCopier headerCopier,
+							String baseUrl) {
+		return buildProxy(interfaceToProxy,serviceName,headerCopier,ProxyMode.COMPUTE_DYNAMICALLY,baseUrl);
 	}
 	/**
 	 * This is used for testing purposes. For production, please make sure that 
@@ -51,8 +53,8 @@ public class ProxyBuilder {
 	 * @return
 	 */
 	public <T> T buildProxy(Class<T> interfaceToProxy, String serviceName, HeaderCopier headerCopier,
-			ProxyMode proxyMode) {
-		ProxyClass proxyClass = new ProxyClass(interfaceToProxy,serviceName,headerCopier,proxyMode);
+			ProxyMode proxyMode, String baseUrl) {
+		ProxyClass proxyClass = new ProxyClass(interfaceToProxy,serviceName,headerCopier,proxyMode, baseUrl);
 		@SuppressWarnings("unchecked")
 		T proxy = (T) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
 				new Class[] { interfaceToProxy }, proxyClass);
@@ -76,13 +78,15 @@ public class ProxyBuilder {
 		private HeaderCopier headerCopier;
 		private Class<?> interfaceToProxy;
 		private ProxyMode proxyMode;
+		private String baseUrl;
 
 		public ProxyClass(Class<?> interfaceToProxy, String serviceName, HeaderCopier headerCopier,
-				ProxyMode proxyMode) {
+				ProxyMode proxyMode, String baseUrl) {
 			this.headerCopier = headerCopier;
 			this.serviceName = serviceName;
 			this.interfaceToProxy = interfaceToProxy;
 			this.proxyMode = proxyMode;
+			this.baseUrl = baseUrl;
 		}
 
 		@Override
@@ -97,6 +101,7 @@ public class ProxyBuilder {
 			if (args != null)
 				populateArgs(exchange, args);
 			exchange.setHeader(PROXYMODE, proxyMode);
+			exchange.setHeader(REMOTE_URL_BASE, baseUrl);
 			
 			chenileProxyOrchExecutor.execute(exchange);
 			if (exchange.getException() != null) {

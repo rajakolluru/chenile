@@ -9,4 +9,7 @@ public interface JsonService {
 	JsonData throwException(JsonData jsonData);
 
 	JsonData throwWarning(JsonData jsonData);
+
+    JsonData throwMultipleErrorsInException(JsonData jsonData);
+    JsonData ping(JsonData data);
 }

@@ -11,7 +11,6 @@ public class ChenileEntryPoint {
 		try {
 			chenileOrchExecutor.execute(chenileExchange);
 		}catch(Exception e) {
-			e.printStackTrace();
 			chenileExchange.setException(e);
 		}
 	}

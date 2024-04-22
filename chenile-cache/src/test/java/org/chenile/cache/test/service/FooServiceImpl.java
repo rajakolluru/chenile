@@ -14,7 +14,6 @@ public class FooServiceImpl implements FooService {
 
 	@Override
 	public int sum2() {
-		System.out.println("Sum2 called and returning " + this.sum(1, 1));
 		return this.sum(1, 1);
 	}
 	

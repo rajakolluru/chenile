@@ -7,12 +7,25 @@ import org.chenile.core.model.OperationDefinition;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.ResolvableType;
 
+/**
+ * This class calculates the correct type for the response body. It will be of type GenericResponse<T> where
+ * T is the return type of the underlying service. The underlying service return type can be represented as
+ * a ParameterizedType of as a Class object, The treatment differs depending on what got specifid
+ */
 public class ResponseBodyTypeSelector extends BaseChenileInterceptor {
 
 	@Override
-	protected void doPreProcessing(ChenileExchange exchange) {		
+	protected void doPreProcessing(ChenileExchange exchange) {
 		OperationDefinition od = exchange.getOperationDefinition();
-		if (od.getOutput() != null) {
+		if (od.getOutputAsParameterizedReference() != null){
+			ParameterizedTypeReference<?> ref = od.getOutputAsParameterizedReference();
+			ResolvableType rt1 = ResolvableType.forType(ref);
+			ResolvableType rt = ResolvableType.forClassWithGenerics(GenericResponse.class, rt1);
+			ref = ParameterizedTypeReference.forType(rt.getType());
+			exchange.setResponseBodyType(ref);
+		}
+		else if (od.getOutput() != null) {
+			System.out.println("od.getOutput() is " + od.getOutput());
 			ResolvableType rt = ResolvableType.forClassWithGenerics(GenericResponse.class, od.getOutput());
 			ParameterizedTypeReference<?> ref = ParameterizedTypeReference.forType(rt.getType());
 			exchange.setResponseBodyType(ref);

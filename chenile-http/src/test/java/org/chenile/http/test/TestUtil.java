@@ -24,14 +24,14 @@ public class TestUtil {
 	   String id = "myid";
 	   String headerValue = "my.value";
         mvc.perform( MockMvcRequestBuilders
-                .get(url + id)
-                .header(JsonInterceptor.SOME_SPECIAL_HEADER, headerValue)
-                .accept(MediaType.APPLICATION_JSON))
-                // .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.someSpecialHeaderValue").value(headerValue + JsonInterceptor.SOME_CONSTANT))
-                .andExpect(jsonPath("$.payload.id",is(id))) //a variant for using jsonpath
-                .andExpect(jsonPath("$.payload.name").value("Hello"));
+            .get(url + id)
+            .header(JsonInterceptor.SOME_SPECIAL_HEADER, headerValue)
+            .accept(MediaType.APPLICATION_JSON))
+            // .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.payload.someSpecialHeaderValue").value(headerValue + JsonInterceptor.SOME_CONSTANT))
+            .andExpect(jsonPath("$.payload.id",is(id))) //a variant for using jsonpath
+            .andExpect(jsonPath("$.payload.name").value("Hello"));
     }
 
 
@@ -41,15 +41,15 @@ public class TestUtil {
 	    String headerValue = "my.value";
 	    JsonData jsondata = new JsonData(id,name);
         mvc.perform( MockMvcRequestBuilders
-                .post(url)
-                .header(JsonInterceptor.SOME_SPECIAL_HEADER, headerValue)
-                .content(asJsonString(jsondata))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.payload.someSpecialHeaderValue").value(headerValue + JsonInterceptor.SOME_CONSTANT))
-                .andExpect(jsonPath("$.payload.id").value(id))
-        		.andExpect(jsonPath("$.payload.name").value(name));
+            .post(url)
+            .header(JsonInterceptor.SOME_SPECIAL_HEADER, headerValue)
+            .content(asJsonString(jsondata))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.payload.someSpecialHeaderValue").value(headerValue + JsonInterceptor.SOME_CONSTANT))
+            .andExpect(jsonPath("$.payload.id").value(id))
+            .andExpect(jsonPath("$.payload.name").value(name));
     }
 
    
@@ -61,12 +61,12 @@ public class TestUtil {
 	    jsondata.setMessage(exceptionMessage);
 	    jsondata.setErrorNum(errorNum);
         ResultActions actions = mvc.perform( MockMvcRequestBuilders
-               .post(url)
-               .content(asJsonString(jsondata))
-               .contentType(MediaType.APPLICATION_JSON)
-               .accept(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpect(status().is5xxServerError());
+           .post(url)
+           .content(asJsonString(jsondata))
+           .contentType(MediaType.APPLICATION_JSON)
+           .accept(MediaType.APPLICATION_JSON))
+           // .andDo(print())
+           .andExpect(status().is5xxServerError());
         assertErrors(actions,500,errorNum,exceptionMessage);
    }
    
@@ -80,17 +80,101 @@ public class TestUtil {
 	    jsondata.setMessage(warningMessage);
 	    jsondata.setErrorNum(errorNum);
        ResultActions actions = mvc.perform( MockMvcRequestBuilders
-               .post(url)
-               .content(asJsonString(jsondata))
-               .contentType(MediaType.APPLICATION_JSON)
-               .accept(MediaType.APPLICATION_JSON))
-               .andDo(print())
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.payload").exists())
-    		   .andExpect(jsonPath("$.payload.id").value(id))
-       		   .andExpect(jsonPath("$.payload.name").value(name));
+           .post(url)
+           .content(asJsonString(jsondata))
+           .contentType(MediaType.APPLICATION_JSON)
+           .accept(MediaType.APPLICATION_JSON))
+           // .andDo(print())
+           .andExpect(status().isOk())
+           .andExpect(jsonPath("$.payload").exists())
+           .andExpect(jsonPath("$.payload.id").value(id))
+           .andExpect(jsonPath("$.payload.name").value(name));
        assertWarnings(actions,errorNum,warningMessage);
    }
+
+    public void testPostProcessInterceptionException(String url) throws Exception {
+        String id = "foo"; String name = "bar";
+        String exceptionMessage = "interceptor-exception-post-process";
+        int errorNum = 2000;
+        JsonData jsondata = new JsonData(id,name);
+        jsondata.setMessage(exceptionMessage);
+        jsondata.setErrorNum(errorNum);
+        ResultActions actions = mvc.perform( MockMvcRequestBuilders
+            .post(url)
+            .header(JsonInterceptor.SOME_SPECIAL_HEADER, "throw-exception-post-process")
+            .content(asJsonString(jsondata))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            // .andDo(print())
+            .andExpect(status().is5xxServerError())
+            .andExpect(jsonPath("$.errors[0]").exists());
+        assertErrors(actions,500,errorNum,exceptionMessage);
+    }
+
+    public void testPreProcessInterceptionException(String url) throws Exception {
+        String id = "foo"; String name = "bar";
+        String exceptionMessage = "interceptor-exception-pre-process";
+        int errorNum = 2000;
+        JsonData jsondata = new JsonData(id,name);
+        jsondata.setMessage(exceptionMessage);
+        jsondata.setErrorNum(errorNum);
+        ResultActions actions = mvc.perform( MockMvcRequestBuilders
+            .post(url)
+            .header(JsonInterceptor.SOME_SPECIAL_HEADER, "throw-exception-pre-process")
+            .content(asJsonString(jsondata))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            //.andDo(print())
+            .andExpect(status().is5xxServerError());
+        assertErrors(actions,500,errorNum,exceptionMessage);
+    }
+
+    public void testMultipleExceptions(String url) throws Exception {
+        String id = "foo"; String name = "bar";
+        String exceptionMessage = "chenile-http-test";
+        int errorNum = 2000;
+        JsonData jsondata = new JsonData(id,name);
+        jsondata.setMessage(exceptionMessage);
+        jsondata.setErrorNum(errorNum);
+        ResultActions actions = mvc.perform( MockMvcRequestBuilders
+            .post(url)
+            .content(asJsonString(jsondata))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            //.andDo(print())
+            .andExpect(status().is5xxServerError())
+            .andExpect(jsonPath("$.errors[0].code").value(500))
+            .andExpect(jsonPath("$.errors[0].subErrorCode").value(errorNum))
+            .andExpect(jsonPath("$.errors[0].description").value(exceptionMessage))
+            .andExpect(jsonPath("$.errors[1].code").value(501))
+            .andExpect(jsonPath("$.errors[1].subErrorCode").value(errorNum))
+            .andExpect(jsonPath("$.errors[1].description").value(exceptionMessage));
+        assertErrors(actions,500,errorNum,exceptionMessage);
+    }
+
+    public void testDoubleInterceptorException(String url) throws Exception {
+        String id = "foo"; String name = "bar";
+        String exceptionMessage = "chenile-http-test";
+        int errorNum = 2000;
+        JsonData jsondata = new JsonData(id,name);
+        jsondata.setMessage(exceptionMessage);
+        jsondata.setErrorNum(errorNum);
+        ResultActions actions = mvc.perform( MockMvcRequestBuilders
+            .post(url)
+            .header(JsonInterceptor.SOME_SPECIAL_HEADER, "throw-exception-post-process")
+            .content(asJsonString(jsondata))
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            // .andDo(print())
+            .andExpect(status().is5xxServerError())
+            .andExpect(jsonPath("$.errors[0].code").value(501))
+            .andExpect(jsonPath("$.errors[0].subErrorCode").value(errorNum+1))
+            .andExpect(jsonPath("$.errors[0].description").value(exceptionMessage +"1"))
+            .andExpect(jsonPath("$.errors[1].code").value(500))
+            .andExpect(jsonPath("$.errors[1].subErrorCode").value(errorNum))
+            .andExpect(jsonPath("$.errors[1].description").value(exceptionMessage));
+        assertErrors(actions,501,errorNum + 1,exceptionMessage + "1");
+    }
    
     static String asJsonString(final Object obj) {
         try {

@@ -23,4 +23,5 @@ public @interface ChenileController {
 	String serviceName() default "";
 	String healthCheckerName() default "";
 	String mockName() default "";
+	Class<?> interfaceClass() default Object.class;
 }

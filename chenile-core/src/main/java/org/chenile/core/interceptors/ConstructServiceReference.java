@@ -2,6 +2,8 @@ package org.chenile.core.interceptors;
 
 import java.lang.reflect.Method;
 
+import org.chenile.base.exception.ErrorNumException;
+import org.chenile.base.exception.ServerException;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
@@ -44,9 +46,8 @@ public class ConstructServiceReference extends BaseChenileInterceptor{
 		if (exchange.isInvokeMock()) return true;
 		Object o = exchange.getHeader(MOCK_HEADER);
 		if (o == null) return false;
-		if (o.toString().equalsIgnoreCase("true"))return true;
-		return false;
-	}
+        return o.toString().equalsIgnoreCase("true");
+    }
 	
 	private boolean trajectoryDoesNotOverrideService(ChenileExchange exchange) {
 		String trajectoryId = exchange.getHeader(trajectoryHeaderName,String.class);
@@ -64,7 +65,12 @@ public class ConstructServiceReference extends BaseChenileInterceptor{
 	private void populateServiceRef(ChenileExchange exchange, String serviceId,Object ref) {
 		exchange.setServiceReference(ref);
 		exchange.setServiceReferenceId(serviceId);
-		Method method = MethodUtils.computeMethod(serviceId, ref, exchange.getOperationDefinition());
+		Method method = MethodUtils.computeMethod(ref.getClass(), exchange.getOperationDefinition());
+		if (method == null){
+			throw new ServerException(508,new Object[] {
+				exchange.getServiceDefinition().getId(), exchange.getOperationDefinition().getName()
+			});
+		}
 		exchange.setMethod(method);
 	}
 }
