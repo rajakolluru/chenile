@@ -1,15 +1,14 @@
 package org.chenile.core.interceptors;
 
-import java.util.List;
-
 import org.chenile.base.exception.ErrorNumException;
-import org.chenile.base.response.ErrorType;
 import org.chenile.base.response.GenericResponse;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.base.response.WarningAware;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.model.OperationDefinition;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 /**
  * Constructs a generic response from the response and exception that has been thrown. 
@@ -19,55 +18,62 @@ import org.springframework.http.HttpStatus;
  * @author Raja Shankar Kolluru
  *
  */
-public class GenericResponseBuilder extends BaseChenileInterceptor{
+public class GenericResponseBuilder extends BaseChenileInterceptor {
 
 	@Override
 	protected void doPostProcessing(ChenileExchange chenileExchange) {
 		if (chenileExchange.getException() != null) {
 			processFailure(chenileExchange);
-		}else {
+		} else {
 			processSuccess(chenileExchange);
 		}
 	}
-	
+
 	private HttpStatus getSuccessHttpStatus(ChenileExchange exchange) {
 		Object response = exchange.getResponse();
 		OperationDefinition operationDefinition = exchange.getOperationDefinition();
 		List<ResponseMessage> x = WarningAware.obtainWarnings(response);
-		if (x == null || x.size() == 0)
+		if (x == null || x.isEmpty())
 			return HttpStatus.valueOf(operationDefinition.getSuccessHttpStatus());
-		else 
+		else
 			return HttpStatus.valueOf(operationDefinition.getWarningHttpStatus());
 	}
-	
-	private void processFailure(ChenileExchange exchange)  {
-		Throwable exception = exchange.getException();
-		ErrorNumException errorNumException;
-		GenericResponse<Object> genericResponse;
 
-		if (exception instanceof ErrorNumException) {
-			errorNumException = (ErrorNumException) exception;
-		} else {
-			errorNumException = new ErrorNumException(500, exception.getMessage());			
-		}
-		genericResponse = new GenericResponse<Object>(errorNumException, ErrorType.ERROR);
+	private void processFailure(ChenileExchange exchange) {
+		ErrorNumException errorNumException = exchange.getException();
+		GenericResponse<Object> genericResponse = new
+				GenericResponse<Object>(errorNumException.getResponseMessage());
 		exchange.setResponse(genericResponse);
 		exchange.setHttpResponseStatusCode(errorNumException.getErrorNum());
-		exchange.setResponseMessages(errorNumException.getErrors());
+		populateResponseMessages(genericResponse, exchange);
 	}
-	
-	private void processSuccess(ChenileExchange exchange)  {
+
+	private void populateResponseMessages(GenericResponse<Object> genericResponse, ChenileExchange exchange) {
+		List<ResponseMessage> errorMessages = exchange.getResponseMessages();
+		if (errorMessages == null || errorMessages.isEmpty()) return;
+		int index = 0;
+		for (ResponseMessage m : errorMessages) {
+			if (index++ == 0) {
+				genericResponse.setCode(m.getCode());
+				exchange.setHttpResponseStatusCode(m.getCode());
+				genericResponse.setSeverity(m.getSeverity());
+				genericResponse.setSubErrorCode(m.getSubErrorCode());
+				genericResponse.setDescription(m.getDescription());
+			}
+			genericResponse.addWarningMessage(m);
+		}
+	}
+
+	private void processSuccess(ChenileExchange exchange) {
 		Object response = exchange.getResponse();
 		int httpResponseCode = getSuccessHttpStatus(exchange).value();
 		GenericResponse<Object> genericResponse = new GenericResponse<Object>(response);
 		genericResponse.setCode(httpResponseCode);
 		exchange.setResponse(genericResponse);
 		exchange.setHttpResponseStatusCode(httpResponseCode);
-		List<ResponseMessage> x =  WarningAware.obtainWarnings(response);
-		if (x == null) return;
-		WarningAware.removeAllWarnings(response); // warnings can be removed from the response since
-		// GenericResponse already has warnings inside.
-		exchange.setResponseMessages(x);
+		populateResponseMessages(genericResponse, exchange);
+		List<ResponseMessage> x = WarningAware.obtainWarnings(response);
+		if (x != null)
+			WarningAware.removeAllWarnings(response);
 	}
-	
 }

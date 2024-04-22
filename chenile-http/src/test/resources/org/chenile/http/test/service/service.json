@@ -64,6 +64,26 @@
 
   },
   {
+    "name": "throwMultipleErrorsInException",
+    "auditable": "false",
+    "url": "/throw-multiple-exceptions",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "input": "org.chenile.http.test.service.JsonData",
+    "secure":false,
+    "output": "",
+    "params":
+    [
+      {
+        "name": "jsonData",
+        "type": "BODY",
+        "description": "Contains the exception message and error number to throw"
+      }
+    ]
+
+  },
+  {
     "name": "throwWarning",
     "auditable": "false",
     "url": "/throw-warning",
@@ -82,6 +102,27 @@
       }
     ]
 
-  }
+  },
+    {
+      "name": "ping",
+      "auditable": "false",
+      "url": "/ping",
+      "httpMethod": "POST",
+      "produces": "JSON",
+      "consumes": "JSON",
+      "input": "org.chenile.http.test.service.JsonData",
+      "secure":false,
+      "output": "",
+      "interceptorComponentNames":["jsonInterceptor","jsonInterceptor1"],
+      "params":
+      [
+        {
+          "name": "jsonData",
+          "type": "BODY",
+          "description": "System property multi key value."
+        }
+      ]
+
+    }
   ]
 }

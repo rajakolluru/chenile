@@ -1,14 +1,14 @@
 package org.chenile.core.context;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
+import org.chenile.base.exception.ErrorNumException;
 import org.chenile.base.exception.ServerException;
 import org.chenile.base.response.ResponseMessage;
+import org.chenile.base.response.WarningAware;
 import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.OperationDefinition;
@@ -20,9 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 /**
- * <p>A bidirectional exchange that is supposed to navigate between different Chenile Interceptors.
+ * <p>A bidirectional exchange that navigates between different Chenile Interceptors.
  * The exchange contains a body which is the incoming request along with headers. </p>
- * <p>Commands will set the response or response in the return journey.</p>
+ * <p>Commands will set the response or exception in the return journey.</p>
  * 
  * <p>There can be transformers that convert the body to the type acceptable by the service. </p>
  * 
@@ -34,54 +34,109 @@ import com.fasterxml.jackson.core.type.TypeReference;
  * @author Raja Shankar Kolluru
  *
  */
-public class ChenileExchange implements Serializable, ChainContextContainer<ChenileExchange> {
+public class ChenileExchange implements Serializable, ChainContextContainer<ChenileExchange>,
+		WarningAware {
+	@Serial
 	private static final long serialVersionUID = -8886041051244601433L;
+	/**
+	 * Incoming request headers. Some headers can be added as we navigate through the interception chain
+	 */
 	private Map<String, Object> headers = new HashMap<>();
-	
+	/**
+	 * This is used to handle multipart messages from HTTP.
+	 */
+	private Map<String, MultipartFile> multiPartMap;
+	/**
+	 * The converted body of the incoming message. This will be set to the actual payload expected by the service. It
+	 * may be a JSON string to begin with before the transformation framework converts it to the desired payload type
+	 */
 	private Object body = null;
 	/**
-	 * An object internally used by Chenile to invoke the API. 
-	 * Touch this at your own risk!
+	 * bodyType is populated by the Chenile Transformation framework. The bodyType might vary depending on the
+	 * URL of the incoming request and also some headers. A body type selector is a special
+	 * {@link org.chenile.owiz.Command<ChenileExchange>} that determines the body type depending on the
+	 * context of the request. (like headers, URL , locale etc.)
+	 * All incoming JSONs (and other type of strings) are converted into the body type specified here
+	 */
+	private TypeReference<?> bodyType;
+	/**
+	 * An object internally used by {@link org.chenile.core.interceptors.ServiceInvoker} to invoke the API.
 	 */
 	private List<Object> apiInvocation;
 	/**
+	 * This is a very important metadata to handle the request. It contains the definition of the Service
+	 * and the Operation within it. All operations are performed using these data structures. For example this
+	 * metadata will be used to determine the service that needs to be invoked and the method within the
+	 * service. This metadata is also used to determine the interceptors that are applicable etc.
 	 * ChenileServiceDefinition & OperationDefinition are expected to be set by the protocol specific end point.
 	 * Example: in chenile-http the URL called will be mapped to the ChenileServiceDefinition and OperationDefinition.
 	 */ 
 	private OperationDefinition operationDefinition;
 	private ChenileServiceDefinition serviceDefinition;
 	
+
 	/**
-	 * This is needed by the Chenile Transformation framework for setting the type of the body.
-	 * All incoming JSONs (and other type of strings) are converted into the body type specified here
+	 * used (by chenile-proxy) to convert the response JSON to a response body.
 	 */
-	private TypeReference<?> bodyType;
+	private ParameterizedTypeReference<?>  responseBodyType;
 	/**
-	 * used (by chenile-proxy) to convert the 
-	 * response JSON to a response body. This will typically be the class for the
-	 * response. However this can also be a Type reference
+	 * The actual response returned by the service or any interceptor. (for example a caching interceptor
+	 * might set the response and return)
 	 */
-	private ParameterizedTypeReference<?>  responseBodyType; 
-	
 	private Object response;
-	private RuntimeException exception;
-	private int httpResponseStatusCode; // contains the http response status code
-	private List<ResponseMessage> responseMessages; // contains all errors and warnings
+	/**
+	 * The exception thrown by the service or any of the interceptors
+	 */
+	private ErrorNumException exception;
+	/**
+	 * contains the http response status code
+	 */
+	private int httpResponseStatusCode;
+	/**
+	 * contains all errors and warnings
+ 	 */
+	private List<ResponseMessage> responseMessages;
 	
 	/**
-	 * Internal field for the purpose of continuing the interceptor chain. The interceptors must not manipulate this.
-	 * Instead, they will just call the {@link ChainContext#doContinue()} method if the request needs to proceed beyond.
+	 * Internal field for the purpose of continuing the interceptor chain. The interceptors can use this
+	 * to pass control to the next in the line by calling the {@link ChainContext#doContinue()} method.
+	 * Interceptors can also use the {@link ChainContext#savePoint()} to save the current point and
+	 * using {@link ChainContext#resumeFromSavedPoint(ChainContext.SavePoint)}
+	 * to continue the chain from the saved point. This is useful if the rest of the interceptor chain
+	 * needs to be called multiple times as part of some retry logic.
 	 */
 	private ChainContext<ChenileExchange> chainContext;
 	private boolean localInvocation;
+	/**
+	 * Calculated locale. This should be populated from the incoming request as per the headers passed
+	 * to it.
+	 */
 	private Locale locale;
+	/**
+	 * This is useful if this request is determined to be a mock request. Hence a mock service
+	 * may have to be invoked instead of the actual service. In case of HTTP a special header (x-chenile-mock)
+	 * will be passed for mock requests.
+	 */
 	private boolean invokeMock;
-	private Object serviceReference; // the service which will be invoked. This would be 
-	// populated by the ConstructServiceReference interceptor and invoked by ServiceInvoker
-	private String serviceReferenceId; // an ID that depicts what kind of service is being invoked
-	private Map<String, MultipartFile> multiPartMap;
+	/**
+	 * the service which will be invoked. This would be
+	 * populated by the {@link org.chenile.core.interceptors.ConstructServiceReference} interceptor
+	 * and invoked by {@link org.chenile.core.interceptors.ServiceInvoker}.
+	 * By switching the serviceReference, any interceptor can change the target service that will be
+	 * invoked. But please be sure to recompute the method by calling {@link org.chenile.core.util.MethodUtils}
+	 */
+	private Object serviceReference;
+	/**
+	 * This field just uses a cached method object for optimization purposes. This needs to be
+	 * recalculated if the serviceReference is changed by an interceptor.
+	 */
 	private Method method;
-	// populated by the ConstructServiceReference interceptor
+	/**
+	 * the spring bean ID of the service being invoked.
+	 */
+	private String serviceReferenceId;
+
+
 	
 	public ChenileExchange() {}
 	
@@ -181,7 +236,19 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	}
 	
 	public void setResponse(Object response) {
+		if (response == null){
+			this.response = null;
+			this.responseMessages = new ArrayList<>();
+			return;
+		}
 		this.response = response;
+		// empty the warnings from the response and copy them into ChenileExchange
+		List<ResponseMessage> x = WarningAware.obtainWarnings(response);
+		if (x != null && !x.isEmpty()) {
+			if (this.responseMessages == null)this.responseMessages = x;
+			else this.responseMessages.addAll(x);
+		}
+		WarningAware.removeAllWarnings(response);
 	}
 	
 	public Object getResponse() {
@@ -221,21 +288,43 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	public boolean isLocalInvocation() {
 		return localInvocation;
 	}
-	
+
+	/**
+	 * Call this to set exception in the exchange. This method has side effects! It modifies the
+	 * {@link #responseMessages} in the exchange. <br/>
+	 * If the exception is null then it removes all traces of errors so far! It empties the response messages
+	 * in the exchange. <br/>
+	 * If the exception is set for the first time, then all the errors in the exception get copied as
+	 * response messages in the exchange. <br/>
+	 * If the exception is already present, then the exception is not over-ridden. Instead, the response
+	 * messages are added from this exception.
+	 *
+	 * @param e the exception that needs to be set in Chenile Exchange
+	 */
 	public void setException(Throwable e) {
 		if (e == null) {
 			this.exception = null;
+			this.responseMessages = new ArrayList<>();
 			return;
 		}
-		if ( e instanceof RuntimeException) {
-			this.exception = (RuntimeException)e;
-			return;
+		ErrorNumException ene = createErrorNumExceptionIfRequired(e);
+		if (this.responseMessages == null){
+			this.responseMessages = new ArrayList<>();
 		}
-		this.exception = new ServerException(ErrorCodes.SERVICE_EXCEPTION.getSubError(),
+		// use this as the exception only if an existing exception does not exist
+		// do not replace the existing exception with this
+		if (this.exception == null) this.exception = ene;
+		// However, copy the errors from this exception to the current collection of errors
+		this.responseMessages.addAll(ene.getErrors());
+	}
+
+	private ErrorNumException createErrorNumExceptionIfRequired(Throwable e){
+		if ( e instanceof ErrorNumException errorNumException)  return errorNumException;
+		return new ServerException(ErrorCodes.SERVICE_EXCEPTION.getSubError(),
 				ErrorCodes.SERVICE_EXCEPTION.name() + ":" + e.getMessage(),e);
 	}
 	
-	public RuntimeException getException() {
+	public ErrorNumException getException() {
 		return this.exception;
 	}
 
@@ -309,5 +398,23 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 
 	public void setResponseMessages(List<ResponseMessage> responseMessages) {
 		this.responseMessages = responseMessages;
+	}
+
+	@Override
+	public List<ResponseMessage> getWarningMessages() {
+		return responseMessages;
+	}
+
+	@Override
+	public void addWarningMessage(ResponseMessage m) {
+		if (responseMessages == null){
+			responseMessages = new ArrayList<>();
+		}
+		responseMessages.add(m);
+	}
+
+	@Override
+	public void removeAllWarnings() {
+		responseMessages = new ArrayList<>();
 	}
 }

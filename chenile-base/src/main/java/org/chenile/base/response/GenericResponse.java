@@ -1,20 +1,22 @@
 package org.chenile.base.response;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.chenile.base.exception.ErrorNumException;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * A generic response that would be returned for all the requests made 
+ * A generic response that would be returned for all the services. It includes the payload
+ * returned by the service along with other information such as Http Status code, warnings and errors.
+ * This allows a comprehensive and consistent way of communicating with the rest of the world.<br/>
+ * This can be used across protocols though it uses the Http status code
  * 
  * @author Raja Shankar Kolluru
  *
- * @param <T>
+ * @param <T> - the Generic for the actual payload returned by the service
  */
 public class GenericResponse<T> implements WarningAware{
 
@@ -24,22 +26,13 @@ public class GenericResponse<T> implements WarningAware{
 	
 	@JsonProperty("payload") private T data;
 	public GenericResponse() {}
-	public GenericResponse(ErrorNumException e, ErrorType errorType) {
-		this.responseMessage = e.getResponseMessage();
-		if (e.getErrors() != null && e.getErrors().size() > 0) {
-			this.errors = e.getErrors();
-		}else
-			this.addWarningMessage(e.getResponseMessage());
+	public GenericResponse(ResponseMessage message) {
+		this.responseMessage = message;
 	}
 
 	public GenericResponse(T data) {
 		this.data = data;
 		success = true;
-		List<ResponseMessage> x = WarningAware.obtainWarnings(data);
-		if (x != null && x.size() > 0) {
-			this.errors = x;
-			this.responseMessage = x.get(0).clone();		
-		}
 		// By default set it to OK. It will be over-ridden later if required
 		// from the warning error code set in operation definition
 		setCode(200); 
@@ -106,7 +99,7 @@ public class GenericResponse<T> implements WarningAware{
 			errors = new ArrayList<>();
 		errors.add(m);
 	}
-	@Override
+	@Override @JsonIgnore
 	public List<ResponseMessage> getWarningMessages() {
 		return errors;
 	}
@@ -114,5 +107,4 @@ public class GenericResponse<T> implements WarningAware{
 	public void removeAllWarnings() {
 		errors = null;		
 	}
-
 }

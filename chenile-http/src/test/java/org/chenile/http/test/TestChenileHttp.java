@@ -1,6 +1,7 @@
 package org.chenile.http.test;
 
 import org.chenile.http.test.service.JsonInterceptor;
+import org.chenile.http.test.service.JsonInterceptor1;
 import org.chenile.http.test.service.JsonService;
 import org.chenile.http.test.service.JsonServiceImpl;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +28,9 @@ public class TestChenileHttp extends SpringBootServletInitializer{
 	
 	@Bean public JsonInterceptor jsonInterceptor() {
 		return new JsonInterceptor();
+	}
+	@Bean public JsonInterceptor1 jsonInterceptor1() {
+		return new JsonInterceptor1();
 	}
 	
 	@Bean public TestUtil testUtil() {

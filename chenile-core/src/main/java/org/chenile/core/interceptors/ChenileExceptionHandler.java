@@ -25,11 +25,21 @@ public class ChenileExceptionHandler extends BaseChenileInterceptor{
 	@Autowired MessageSource messageSource;
 	@Override
 	protected void doPostProcessing(ChenileExchange exchange) {
-		translateErrors(exchange);
-		translateWarnings(exchange);
+		// translateErrors(exchange);
+		// translateWarnings(exchange);
+		translateResponseMessages(exchange);
 	}
-	
-	
+
+	private void translateResponseMessages(ChenileExchange exchange) {
+		if(exchange.getResponseMessages() == null) return;
+		for(ResponseMessage m: exchange.getResponseMessages()) {
+			if (m.getDescription() != null)
+				continue;
+			m.setDescription(translate(m.getSubErrorCode(),m.getParams(),exchange.getLocale()));
+		}
+	}
+
+
 	protected void translateErrors(ChenileExchange exchange) {
 		RuntimeException e = exchange.getException();
 		if (e == null) return;

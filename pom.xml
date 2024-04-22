@@ -26,7 +26,7 @@
 		<module>workflow-api</module>
 		<module>workflow-service</module>
 		<module>query-api</module>
-		<module>query-service</module>
+		<!-- module>query-service</module -->
 		<module>security-api</module>
 		<module>security-service</module>
 		<module>chenile-query-service</module>

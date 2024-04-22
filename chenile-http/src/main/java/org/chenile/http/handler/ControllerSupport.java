@@ -1,15 +1,10 @@
 package org.chenile.http.handler;
 
-import java.util.Arrays;
-import java.util.List;
-
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.ChenileExchangeBuilder;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
-import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.HttpBindingType;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.ParamDefinition;
@@ -21,6 +16,9 @@ import org.springframework.http.ResponseEntity.BodyBuilder;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * This class can support a spring controller. It constructs a ResponseEntity for 
  * the response returned by the Chenile Entry point
@@ -28,10 +26,9 @@ import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
  *
  */
 public class ControllerSupport {
-	@Autowired ChenileConfiguration chenileConfiguration;
 	@Autowired ChenileExchangeBuilder chenileExchangeBuilder;
 	@Autowired ChenileEntryPoint chenileEntryPoint;
-	private LocaleResolver localeResolver = new AcceptHeaderLocaleResolver();	
+	private final LocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
 	protected String service;	
 	public ControllerSupport() {
 		ChenileController cc = this.getClass().getAnnotation(ChenileController.class);
