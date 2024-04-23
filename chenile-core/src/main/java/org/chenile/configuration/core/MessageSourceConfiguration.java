@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.chenile.core.event.EventLogger;
 import org.chenile.core.context.EventLog;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
 /**
  * 
@@ -25,8 +26,8 @@ public class MessageSourceConfiguration {
 	private String resourceBundle;
 	
 	@Bean public MessageSource messageSource() {
-		MultipleMessageSource mms = new MultipleMessageSource();
-		mms.setBasename("classpath*:" + resourceBundle);
+		ReloadableResourceBundleMessageSource mms = new ReloadableResourceBundleMessageSource();
+		mms.setBasename("classpath:messages");
 		return mms;
 	}
 	
