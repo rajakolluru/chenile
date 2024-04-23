@@ -25,7 +25,6 @@ public class ResponseBodyTypeSelector extends BaseChenileInterceptor {
 			exchange.setResponseBodyType(ref);
 		}
 		else if (od.getOutput() != null) {
-			System.out.println("od.getOutput() is " + od.getOutput());
 			ResolvableType rt = ResolvableType.forClassWithGenerics(GenericResponse.class, od.getOutput());
 			ParameterizedTypeReference<?> ref = ParameterizedTypeReference.forType(rt.getType());
 			exchange.setResponseBodyType(ref);

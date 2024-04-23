@@ -45,12 +45,12 @@ public class ProxyBuilder {
 	/**
 	 * This is used for testing purposes. For production, please make sure that 
 	 * proxy mode is set to COMPUTE_DYNAMICALLY
-	 * @param <T>
-	 * @param interfaceToProxy
-	 * @param serviceName
-	 * @param headerCopier
+	 * @param <T> Interface to proxy class
+	 * @param interfaceToProxy  the interface that needs to be proxied
+	 * @param serviceName - name of the service
+	 * @param headerCopier this copies headers from the source to the target CHenile exchange
 	 * @param proxyMode - can be set to always proxy local or remote for testing purposes
-	 * @return
+	 * @return the proxy that can be used in lieu of the service
 	 */
 	public <T> T buildProxy(Class<T> interfaceToProxy, String serviceName, HeaderCopier headerCopier,
 			ProxyMode proxyMode, String baseUrl) {

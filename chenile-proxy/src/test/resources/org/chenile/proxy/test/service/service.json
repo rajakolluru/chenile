@@ -29,6 +29,31 @@
     ]
   },
   {
+    "name": "increment1",
+    "auditable": "false",
+    "url": "/increment1/{inc}",
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "input": "org.chenile.proxy.test.service.FooModel",
+    "output": "org.chenile.proxy.test.service.FooModel",
+    "clientInterceptorComponentNames": ["fooInterceptor"],
+    "params":
+    [
+      {
+        "name": "inc",
+        "type": "HEADER",
+        "paramClass": "int",
+        "description": "Specifies the number that we should increment by"
+      },
+      {
+        "name": "model",
+        "type": "BODY",
+        "description": "saves the model object"
+      }
+    ]
+  },
+  {
     "name": "throwException",
     "url": "/throw-exception",
     "httpMethod": "POST",

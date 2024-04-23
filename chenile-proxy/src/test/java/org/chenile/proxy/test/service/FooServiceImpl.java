@@ -14,4 +14,10 @@ public class FooServiceImpl implements FooService {
 	public FooModel throwException(FooExceptionModel foo) {
 		throw new ErrorNumException(foo.errorCode,foo.subErrorCode,foo.message);
 	}
+
+	@Override
+	public FooModel increment1(int inc, FooModel foo) {
+		System.out.println("increment1 called with inc=" + inc);
+		return increment(inc,foo);
+	}
 }

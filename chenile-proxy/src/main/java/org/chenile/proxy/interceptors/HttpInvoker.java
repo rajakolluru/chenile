@@ -2,6 +2,8 @@ package org.chenile.proxy.interceptors;
 
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.chenile.base.exception.ServerException;
@@ -40,7 +42,7 @@ public class HttpInvoker implements Command<ChenileExchange>{
 	    RestTemplate restTemplate = getRestTemplate(exchange);
 		try {
 			httpResponse = (ResponseEntity<GenericResponse<?>>)
-					restTemplate.exchange(baseURI + od.getUrl(), 
+					restTemplate.exchange(baseURI + constructUrl(od.getUrl(),exchange),
 							httpMethod(od), entity,exchange.getResponseBodyType());
 		} catch (RestClientException e) {
 			if (exchange.getException() != null)
@@ -59,6 +61,23 @@ public class HttpInvoker implements Command<ChenileExchange>{
 			String message = "No body returned for " + httpResponse.toString();
 			exchange.setException(new ServerException(0,message));
 		}
+	}
+
+	/**
+	 * Constructs the URL taking care of path variables
+	 * @param url - the url inclusive of path variable
+	 * @param exchange - the chenile exchange
+	 * @return the new URL with paths substituted if required
+	 */
+	private static String constructUrl(String url, ChenileExchange exchange){
+		while (url.contains("/{")) {
+			int startIndex = url.indexOf("/{");
+			int endIndex = url.indexOf("}");
+			String pathVarName = url.substring(startIndex+2,endIndex);
+			Object pathValue  = exchange.getHeader(pathVarName);
+			url = url.substring(0,startIndex+1) + pathValue + url.substring(endIndex+1);
+		}
+		return url;
 	}
 	
 	private HttpHeaders extractHeaders(ChenileExchange exchange) {
