@@ -30,6 +30,7 @@
 		<module>security-api</module>
 		<module>security-service</module>
 		<module>chenile-query-service</module>
+		<module>chenile-mqtt</module>
 	</modules>
 
 	<packaging>pom</packaging>
@@ -59,6 +60,7 @@
 		<mybatis.spring.version>3.0.3</mybatis.spring.version>
 		<revision>1.2.3</revision>
 		<spring-boot.version>3.2.4</spring-boot.version>
+		<mqtt.paho.version>1.2.5</mqtt.paho.version>
 	</properties>
 
 	<dependencyManagement>
@@ -228,6 +230,12 @@
 				<groupId>org.mybatis.spring.boot</groupId>
 				<artifactId>mybatis-spring-boot-starter</artifactId>
 				<version>${mybatis.spring.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.eclipse.paho</groupId>
+				<artifactId>org.eclipse.paho.mqttv5.client</artifactId>
+				<version>${mqtt.paho.version}</version>
 			</dependency>
 
 
