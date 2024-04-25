@@ -13,6 +13,8 @@ import org.chenile.core.model.HttpBindingType;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.ParamDefinition;
 import org.chenile.owiz.Command;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -23,6 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
  * 
  */
 public class ServiceInvoker implements Command<ChenileExchange>{
+
+	private static final Logger LOG = LoggerFactory
+			.getLogger(ServiceInvoker.class);
     @Override
 	public void execute(ChenileExchange chenileExchange) {
 		Throwable retException = null;
@@ -30,8 +35,10 @@ public class ServiceInvoker implements Command<ChenileExchange>{
 			constructApiInvocation(chenileExchange);
 			invokeApi(chenileExchange);
 		} catch (InvocationTargetException e) {
+			LOG.error("Error while executing service",e);
 			retException = e.getCause();
 		} catch(Throwable e) {
+			LOG.error("Error while executing service",e);
 			retException = e;
 		}
 		if (retException != null){
