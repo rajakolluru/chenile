@@ -18,75 +18,89 @@ public class HeaderUtils {
 	public static final String BATCH_ID = "x-batchId";
 	public static final String DEVICE_ID = "x-chenile-deviceid";
 	public static final String TENANT_TYPE = "x-chenile-tenanttype";
+	public static final String CHANNEL = "x-chenile-channel";
+	public static final String ENTRY_POINT = "x-chenile-entry-point";
 	
 	private static String convertToString(Object o) {
 		return (o == null) ? null: o.toString();
 	}
-	public static final String getRegion(Map<String,Object> headers) {
+	public static String getRegion(Map<String, Object> headers) {
 		return convertToString(headers.get(REGION_ID_KEY));
 	}
 	
-	public static final String getTenant(Map<String,Object> headers) {
+	public static String getTenant(Map<String, Object> headers) {
 		return convertToString(headers.get(TENANT_ID_KEY));
 	}
 
-	public static final String getUserId(Map<String,Object> headers) {
+	public static String getUserId(Map<String, Object> headers) {
 		return convertToString(headers.get(USER_ID_KEY));
 	}
 	
-	public static final String getEmployeeId(Map<String,Object> headers) {
+	public static String getEmployeeId(Map<String, Object> headers) {
 		return convertToString(headers.get(EMPLOYEE_ID_KEY));
 	}
-	public static final String getGroupId(Map<String,Object> headers) {
+	public static String getGroupId(Map<String, Object> headers) {
 		return convertToString(headers.get(GROUP_ID_KEY));
 	}
-	public static final String getAppType(Map<String,Object> headers) {
+	public static String getAppType(Map<String, Object> headers) {
 		return convertToString(headers.get(APP_TYPE_KEY));
 	}
-	public static final String getUserAgent(Map<String,Object> headers) {
+	public static String getUserAgent(Map<String, Object> headers) {
 		return convertToString(headers.get(USER_AGENT_KEY));
 	}
-	public static final String getDeviceId(Map<String,Object> headers) {
+	public static String getDeviceId(Map<String, Object> headers) {
 		return convertToString(headers.get(DEVICE_ID));
 	}
-	public static final String getBatchId(Map<String,Object> headers) {
+	public static String getBatchId(Map<String, Object> headers) {
 		return convertToString(headers.get(BATCH_ID));
 	}
-	public static final String getTenantType(Map<String,Object> headers) {
+	public static String getTenantType(Map<String, Object> headers) {
 		return convertToString(headers.get(TENANT_TYPE));
 	}
-	
-	public static final void setRegion(Map<String,Object> headers, String regionId) {
+	public static String getChannel(Map<String, Object> headers) {
+		return convertToString(headers.get(CHANNEL));
+	}
+	public static String getEntryPoint(Map<String, Object> headers) {
+		return convertToString(headers.get(ENTRY_POINT));
+	}
+
+	public static void setRegion(Map<String, Object> headers, String regionId) {
 		headers.put(REGION_ID_KEY,regionId);
 	}
 	
-	public static final void setTenant(Map<String,Object> headers, String tenantId) {
+	public static void setTenant(Map<String, Object> headers, String tenantId) {
 		headers.put(TENANT_ID_KEY,tenantId);
 	}
 
-	public static final void setUserId(Map<String,Object> headers, String userId) {
+	public static void setUserId(Map<String, Object> headers, String userId) {
 		headers.put(USER_ID_KEY,userId);
 	}
 	
-	public static final void setEmployeeId(Map<String,Object> headers,String empId) {
+	public static void setEmployeeId(Map<String, Object> headers, String empId) {
 		headers.put(EMPLOYEE_ID_KEY,empId);
 	}
-	public static final void setGroupId(Map<String,Object> headers,String groupId) {
+	public static void setGroupId(Map<String, Object> headers, String groupId) {
 		headers.put(GROUP_ID_KEY,groupId);
 	}
-	public static final void setAppType(Map<String,Object> headers, String appType) {
+	public static void setAppType(Map<String, Object> headers, String appType) {
 		headers.put(APP_TYPE_KEY,appType);
 	}
-	public static final void setUserAgent(Map<String,Object> headers, String userAgent) {
+	public static void setUserAgent(Map<String, Object> headers, String userAgent) {
 		headers.put(USER_AGENT_KEY,userAgent);
 	}
-	public static final void setDeviceId(Map<String,Object> headers,String deviceId) {
+	public static void setDeviceId(Map<String, Object> headers, String deviceId) {
 		headers.put(DEVICE_ID,deviceId);
 	}
-	public static final void setBatchId(Map<String,Object> headers,String batchId) {
+	public static void setBatchId(Map<String, Object> headers, String batchId) {
 		headers.put(BATCH_ID,batchId);
 	}
-	public static final void setTenantType(Map<String,Object> headers,String tenantType) {
+	public static void setTenantType(Map<String, Object> headers, String tenantType) {
 		headers.put(TENANT_TYPE,tenantType);
+	}
+	public static void setChannel(Map<String, Object> headers, String channel) {
+		headers.put(CHANNEL,channel);
+	}
+	public static void setEntryPoint(Map<String, Object> headers, String entryPoint) {
+		headers.put(ENTRY_POINT,entryPoint);
 	}
 }

@@ -15,10 +15,12 @@ import org.chenile.base.exception.ServerException;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.base.response.WarningAware;
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.context.HeaderUtils;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.OperationDefinition;
+import org.chenile.http.Constants;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.HttpRequestHandler;
@@ -53,6 +55,7 @@ public class HttpEntryPoint implements HttpRequestHandler {
 			throws ServletException, IOException {
 		ChenileExchange exchange = new ChenileExchange();
 		exchange.setServiceDefinition(serviceDefinition);
+		exchange.setHeader(HeaderUtils.CHANNEL, Constants.HTTP_ENTRY_POINT);
 		exchange.setOperationDefinition(operationDefinition);
 		exchange.setHeaders(getHeaders(operationDefinition,httpServletRequest));
 		exchange.setMultiPartMap(getMultiPartMap(httpServletRequest));

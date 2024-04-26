@@ -8,13 +8,18 @@ import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 import org.eclipse.paho.mqttv5.common.packet.UserProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class MqttSubscriber implements MqttCallback {
+    Logger logger = LoggerFactory.getLogger(MqttSubscriber.class);
     @Autowired
     MqttEntryPoint mqttEntryPoint;
+    @Autowired
+    MqttPublisher publisher;
     private void log(String message){
-        System.out.println(message);
+        logger.info(message);
     }
     @Override
     public void disconnected(MqttDisconnectResponse disconnectResponse) {
@@ -37,6 +42,7 @@ public class MqttSubscriber implements MqttCallback {
         String messageContent = new String(message.getPayload());
         log("Received at topic = " + topic + "message = " + messageContent);
         mqttEntryPoint.process(topic,message);
+        publisher.sendAck(message);
     }
 
     @Override

@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-@PropertySource("classpath:application-mqtt.properties")
+// @PropertySource("classpath:application-mqtt.properties")
 public class MqttConfiguration {
     @Value("${mqtt.connection.ServerURIs}") private String hostURI;
     @Value("${mqtt.will.payload}") private String willPayload;

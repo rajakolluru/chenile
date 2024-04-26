@@ -53,7 +53,7 @@ public class ConfigMojo extends AbstractMojo {
 	private String serviceInfoUrlPrefix;
 
 	/**
-	 * Output directory for the generated Aurora registry JSON.
+	 * Output directory for the generated Service registry JSON.
 	 */
 	@Parameter(defaultValue = "${project.build.directory}/service-registry", property = "org.chenile.config.plugin.outputDir", required = true)
 	private File outputDir;

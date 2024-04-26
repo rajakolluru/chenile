@@ -4,10 +4,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.ChenileExchangeBuilder;
+import org.chenile.core.context.HeaderUtils;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.model.HttpBindingType;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.ParamDefinition;
+import org.chenile.http.Constants;
 import org.chenile.http.annotation.ChenileController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -41,6 +43,7 @@ public class ControllerSupport {
 	protected<T> ResponseEntity<T> process(String opName, 
 			HttpServletRequest request,Object...args ){
 		ChenileExchange chenileExchange = makeExchange(request,opName,args);
+		chenileExchange.setHeader(HeaderUtils.CHANNEL, Constants.HTTP_ENTRY_POINT);
 		chenileExchange.setApiInvocation(Arrays.asList(args));
 		chenileEntryPoint.execute(chenileExchange);
 		T response = (T) chenileExchange.getResponse();

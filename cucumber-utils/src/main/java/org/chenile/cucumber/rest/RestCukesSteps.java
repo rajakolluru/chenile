@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.jayway.jsonpath.JsonPath;
+import cucumber.api.java.en.Given;
+import org.apache.commons.text.StringSubstitutor;
 import org.chenile.base.response.GenericResponse;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.cucumber.CukesContext;
@@ -29,8 +32,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.springframework.util.StringUtils;
 
-	/**
+/**
 	 * Since Cucumber does not allow inheritance we need to use composition with CukesSteps (from cucumber-utils)
 	 * @author Raja Shankar Kolluru
 	 *
@@ -42,6 +46,10 @@ import cucumber.api.java.en.When;
 		private ObjectMapper objectMapper = new ObjectMapper();
 		
 		CukesContext context = CukesContext.CONTEXT;
+	/**
+	 * varMap spans scenarios and hence needs to be stored outside the context
+	 */
+	private static Map<String,String> varMap = new HashMap <String,String>();
 		
 		@Before public void before(){
 			context.reset();
@@ -63,13 +71,13 @@ import cucumber.api.java.en.When;
 		public void i_POST_REST_request_with_payload(String url, String docString)throws Exception{
 			Map<String,String> headers = context.get("headers");
 			MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-					.post(url)
-					.content(docString)
+					.post(substituteVariables(url))
+					.content(substituteVariables(docString))
 	                .contentType(MediaType.APPLICATION_JSON)
 	                .accept(MediaType.APPLICATION_JSON);
 			if (headers != null) {
 				for (Entry<String, String> entry: headers.entrySet()) {
-					request.header(entry.getKey(),entry.getValue());
+					request.header(substituteVariables(entry.getKey()),substituteVariables(entry.getValue()));
 				}
 			}
 			ResultActions actions = mvc.perform(request)
@@ -81,12 +89,12 @@ import cucumber.api.java.en.When;
 		public void i_GET_a_REST_request_to_URL(String url) throws Exception{
 			Map<String,String> headers = context.get("headers");
 			MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-					.get(url)
+					.get(substituteVariables(url))
 	                .contentType(MediaType.APPLICATION_JSON)
 	                .accept(MediaType.APPLICATION_JSON);
 			if (headers != null) {
 				for (Entry<String, String> entry: headers.entrySet()) {
-					request.header(entry.getKey(),entry.getValue());
+					request.header(substituteVariables(entry.getKey()),substituteVariables(entry.getValue()));
 				}
 			}
 			ResultActions actions = mvc.perform(request)
@@ -98,13 +106,13 @@ import cucumber.api.java.en.When;
 		public void i_PUT_a_REST_request_to_URL(String url,String docString) throws Exception{
 			Map<String,String> headers = context.get("headers");
 			MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-					.put(url)
-					.content(docString)
+					.put(substituteVariables(url))
+					.content(substituteVariables(docString))
 	                .contentType(MediaType.APPLICATION_JSON)
 	                .accept(MediaType.APPLICATION_JSON);
 			if (headers != null) {
 				for (Entry<String, String> entry: headers.entrySet()) {
-					request.header(entry.getKey(),entry.getValue());
+					request.header(substituteVariables(entry.getKey()),substituteVariables(entry.getValue()));
 				}
 			}
 			ResultActions actions = mvc.perform(request)
@@ -149,15 +157,16 @@ import cucumber.api.java.en.When;
 		}
 		
 		@Then("the REST response key {string} is {string}")
-		public void the_REST_response_key_is(String string, String string2) throws Exception{
+		public void the_REST_response_key_is(String key, String value) throws Exception{
 			ResultActions response = (ResultActions)context.get("actions");
-			response.andExpect(jsonPath("$.payload." + string).value(string2));
+			response.andExpect(jsonPath("$.payload." + key).
+					value(substituteVariables(value)));
 		}
 		
 		@Then("the REST response does not contain key {string}")
-		public void the_REST_response_does_not_contain_key(String string) throws Exception {
+		public void the_REST_response_does_not_contain_key(String key) throws Exception {
 			ResultActions response = (ResultActions)context.get("actions");
-			response.andExpect(jsonPath("$.payload." + string).doesNotExist());
+			response.andExpect(jsonPath("$.payload." + key).doesNotExist());
 		}
 		
 		// check the top level elements errors, code, errorCode 
@@ -182,13 +191,15 @@ import cucumber.api.java.en.When;
 		@Then("the top level description is {string}")
 		public void the_top_level_description_is(String description) throws Exception {
 			ResultActions response = (ResultActions)context.get("actions");
-			response.andExpect(jsonPath("$.description").value(description));
+			response.andExpect(jsonPath("$.description").
+					value(substituteVariables(description)));
 		}
 
 		
 		// Warnings Check
 		@Then("a REST warning must be thrown that says {string} with code {int}")
 		public void a_REST_warning_must_be_thrown_that_says_with_code(String warningMessage, Integer errorNum) throws Exception {
+			warningMessage = substituteVariables(warningMessage);
 			GenericResponse<?> response = extractGenericResponse();
 			for(ResponseMessage m: response.getErrors()) {
 				if (m.getSubErrorCode() == errorNum && m.getDescription().equals(warningMessage)) {
@@ -201,6 +212,7 @@ import cucumber.api.java.en.When;
 		@Then("a REST warning must be thrown that says {string} with code {int} and http status {int}")
 		public void a_REST_warning_must_be_thrown_that_says_with_code_and_http_status
 			(String warningMessage, Integer subErrorCode, Integer httpStatus) throws Exception {
+			warningMessage = substituteVariables(warningMessage);
 			GenericResponse<?> response = extractGenericResponse();
 			for(ResponseMessage m: response.getErrors()) {
 				if (m.getSubErrorCode() == subErrorCode && 
@@ -227,19 +239,21 @@ import cucumber.api.java.en.When;
 
 		@Then("a REST warning must be thrown with param number {int} value {string}")
 		public void a_REST_warning_must_be_thrown_with_param_number_value
-				(Integer pos, String string)  throws Exception{
+				(Integer pos, String message)  throws Exception{
+			message = substituteVariables(message);
 			GenericResponse<?> response = extractGenericResponse();
 			for(ResponseMessage m: response.getErrors()) {
 				Object[] params = m.getParams();
 				if (params != null && params.length >= pos && 
-						string.equals(params[pos-1].toString()) )
+						message.equals(params[pos-1].toString()) )
 						return;
 			}
-			fail("Unable to find " + string + " at position " + pos + " in warnings");
+			fail("Unable to find " + message + " at position " + pos + " in warnings");
 		}
 		
 		@Then("a REST warning must be thrown that has field {string}")
 		public void a_warning_must_be_thrown_that_has_field(String fieldValue) throws Exception{
+			fieldValue = substituteVariables(fieldValue);
 			GenericResponse<?> response = extractGenericResponse();		
 			for (ResponseMessage m: response.getErrors()) {
 				if (fieldValue.equals(m.getField())) return;
@@ -262,15 +276,17 @@ import cucumber.api.java.en.When;
 		}
 
 		@Then("a REST exception is thrown with param number {int} value {string}")
-		public void a_REST_exception_is_thrown_with_param_number_value(Integer pos, String string)
+		public void a_REST_exception_is_thrown_with_param_number_value(Integer pos, String message)
 				throws Exception {
+			message = substituteVariables(message);
 			ResultActions actions = (ResultActions)context.get("actions");
-			actions.andExpect(jsonPath("$.errors[0].params[" + (pos-1) + "]").value(string));
+			actions.andExpect(jsonPath("$.errors[0].params[" + (pos-1) + "]").value(message));
 		}
 		
 		@Then("a REST exception is thrown with message {string}")
 		public void a_REST_exception_is_thrown_with_message(String exceptionMessage)
 				throws Exception {
+			exceptionMessage = substituteVariables(exceptionMessage);
 			ResultActions actions = (ResultActions)context.get("actions");
 			actions.andExpect(jsonPath("$.description").value(exceptionMessage));
 		}
@@ -278,14 +294,33 @@ import cucumber.api.java.en.When;
 		
 		// extract the response for checking purposes
 		private GenericResponse<?> extractGenericResponse() throws Exception {
-			ResultActions actions = (ResultActions)context.get("actions");
-			MvcResult result = actions.andReturn();
-			String contentAsString = result.getResponse().getContentAsString();
-			
+			String contentAsString = extractStringFromResponse();
 			return objectMapper.readValue(contentAsString, GenericResponse.class);
 		}
-		
-		
-		 
+
+		private String extractStringFromResponse() throws Exception{
+			ResultActions actions = (ResultActions)context.get("actions");
+			MvcResult result = actions.andReturn();
+			return result.getResponse().getContentAsString();
+		}
+
+		@Then("store {string} from  response to {string}")
+		public void store_from_response_to(String expression, String varName) throws Exception{
+			String content = extractStringFromResponse();
+			String varValue = JsonPath.parse(content).read(expression,String.class);
+			// store this value against the name in the context
+			varMap.put(varName,varValue);
+		}
+
+		private String substituteVariables(String s){
+			if (varMap == null || varMap.isEmpty()) return s;
+			StringSubstitutor sub = new StringSubstitutor(varMap);
+			return sub.replace(s);
+		}
+
+		@Given("that {string} equals {string}")
+		public void that_equals(String varName, String varValue) {
+			varMap.put(varName,varValue);
+		}
 	}
 

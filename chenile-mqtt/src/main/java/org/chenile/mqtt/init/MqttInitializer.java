@@ -1,6 +1,8 @@
 package org.chenile.mqtt.init;
 
 import org.chenile.base.exception.ConfigurationException;
+import org.chenile.core.model.ChenileConfiguration;
+import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.http.annotation.ChenileController;
 import org.chenile.mqtt.model.ChenileMqtt;
 import org.eclipse.paho.mqttv5.client.MqttAsyncClient;
@@ -10,6 +12,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,6 +22,8 @@ import java.util.Map;
  * subscribed automatically.
  */
 public class MqttInitializer {
+    @Autowired
+    ChenileConfiguration chenileConfiguration;
     @Autowired
     MqttAsyncClient mqttV5Client;
 
@@ -46,10 +51,21 @@ public class MqttInitializer {
                 serviceTopic = BASE_TOPIC_NAME + "/" + serviceId;
             }
             int qos = chenileMqtt.qos();
+            // since we might have changed the definitions, we need to put the updated values back
+            // into the data structure
+            putBackIntoServiceDefinition(serviceTopic,qos,serviceId);
             mqttConfig.put(serviceTopic,serviceId);
+            System.out.println("Subscribing to topic " + serviceTopic + "/+");
             // subscribe to this topic and all the topics underneath it
             // We use a single level filter since all operations are supported under it
             mqttV5Client.subscribe(serviceTopic +"/+" ,qos);
         }
+    }
+    private void putBackIntoServiceDefinition(String topic, int qos, String serviceId){
+        ChenileServiceDefinition csd = chenileConfiguration.getServices().get(serviceId);
+        Map<String,Object> map = new HashMap<>();
+        map.put("topic", topic);
+        map.put("qos",qos);
+        csd.putExtension("ChenileMqtt",map);
     }
 }

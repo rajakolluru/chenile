@@ -92,6 +92,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.chenile</groupId>
+				<artifactId>chenile-mqtt</artifactId>
+				<version>${chenile.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.chenile</groupId>
 				<artifactId>chenile-proxy</artifactId>
 				<version>${chenile.version}</version>
 			</dependency>

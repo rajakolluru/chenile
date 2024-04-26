@@ -1,14 +1,21 @@
 package org.chenile.mqtt.entry;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.chenile.base.exception.ServerException;
+import org.chenile.base.response.GenericResponse;
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.context.HeaderUtils;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.OperationDefinition;
+import org.chenile.mqtt.Constants;
+import org.chenile.mqtt.pubsub.MqttPublisher;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 import org.eclipse.paho.mqttv5.common.packet.UserProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -24,22 +31,27 @@ import java.util.Map;
  *
  */
 public class MqttEntryPoint {
+	private static final Logger logger = LoggerFactory.getLogger(MqttEntryPoint.class);
 	@Autowired
 	private ChenileConfiguration chenileConfiguration;
 	@Autowired @Qualifier("mqttConfig")
 	Map<String,String> mqttConfig;
 	@Autowired
 	ChenileEntryPoint chenileEntryPoint;
-
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	 public void process(String topic, MqttMessage message) throws Exception{
 		 ChenileExchange exchange = makeExchange(topic);
 		 String messageContent = new String(message.getPayload());
+		 exchange.setHeader(HeaderUtils.ENTRY_POINT, Constants.MQTT_ENTRY_POINT);
 		 exchange.setBody(messageContent);
 		 populateHeaders(message,exchange);
 		 chenileEntryPoint.execute(exchange);
-		 System.out.println("Received message " + messageContent + " and handled it. Response = "
-		 + exchange.getResponse());
+		 Object response = exchange.getResponse();
+		 if (logger.isDebugEnabled()) {
+			 logger.debug("Received message " + messageContent + " and handled it. Response = "
+					 + objectMapper.writeValueAsString(response));
+		 }
 	}
 
 	private void populateHeaders(MqttMessage message, ChenileExchange exchange){
