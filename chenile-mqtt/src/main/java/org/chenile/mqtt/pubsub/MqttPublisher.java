@@ -10,6 +10,8 @@ import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.eclipse.paho.mqttv5.common.MqttPersistenceException;
 import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 import org.eclipse.paho.mqttv5.common.packet.UserProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ import java.util.Map;
  * Used to publish MQTT messages. Defaults are picked up from application properties.
  */
 public class MqttPublisher {
+    Logger logger = LoggerFactory.getLogger(MqttPublisher.class);
     @Autowired private ChenileConfiguration chenileConfiguration;
     @Autowired private MqttAsyncClient v5Client;
     public void setActionTimeout(int actionTimeout) {
@@ -75,6 +78,7 @@ public class MqttPublisher {
     }
 
     public void sendAck(MqttMessage message) throws Exception{
-        v5Client.messageArrivedComplete(message.getId(),qos);
+        logger.info("Sending an ack for message ID = " + message.getId() + " for qos = " + qos);
+        v5Client.messageArrivedComplete(message.getId(), qos);
     }
 }

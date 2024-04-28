@@ -48,8 +48,8 @@ public class MqttEntryPoint {
 		 populateHeaders(message,exchange);
 		 chenileEntryPoint.execute(exchange);
 		 Object response = exchange.getResponse();
-		 if (logger.isDebugEnabled()) {
-			 logger.debug("Received message " + messageContent + " and handled it. Response = "
+		 if (logger.isInfoEnabled()) {
+			 logger.info("Received message " + messageContent + " and handled it. Response = "
 					 + objectMapper.writeValueAsString(response));
 		 }
 	}

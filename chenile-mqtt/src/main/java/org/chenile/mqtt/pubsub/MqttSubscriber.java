@@ -40,8 +40,15 @@ public class MqttSubscriber implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String messageContent = new String(message.getPayload());
-        log("Received at topic = |" + topic + "| message = ||\n" + messageContent + "||\n" );
+        log("Received at topic = |" + topic + "| message = ||\n" + messageContent + "||\n"
+                + " with ID = " + message.getId());
+        if(message.isDuplicate()){
+            log("Received duplicate message: " + messageContent);
+            publisher.sendAck(message);
+            return;
+        }
         mqttEntryPoint.process(topic,message);
+        logger.info("Done with MQtt entry point. sending ack");
         publisher.sendAck(message);
     }
 
