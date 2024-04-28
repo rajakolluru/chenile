@@ -31,6 +31,7 @@ public class MqttConfiguration {
     @Value("${mqtt.will.topic}") private String willTopic;
     @Value("${mqtt.clientID}") private String clientID;
     @Value("${mqtt.actionTimeout}") private int actionTimeout;
+    @Value("${mqtt.enabled:true}") private boolean mqttEnabled = true;
 
     /**
      * This converts a string to a byte array. This is required to convert the password which is
@@ -89,7 +90,7 @@ public class MqttConfiguration {
     }
     @Bean
     MqttInitializer mqttInitializer(){
-        return new MqttInitializer();
+        return new MqttInitializer(mqttEnabled);
     }
 
     /**

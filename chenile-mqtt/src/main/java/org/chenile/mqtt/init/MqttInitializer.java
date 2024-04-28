@@ -36,11 +36,15 @@ public class MqttInitializer {
     ApplicationContext applicationContext;
     @Autowired @Qualifier("mqttConfig")
     Map<String,String> mqttConfig;
-
+    boolean mqttEnabled;
+    public MqttInitializer(boolean enabled){
+        this.mqttEnabled = enabled;
+    }
     public static final String BASE_TOPIC_NAME = "/chenile";
     @EventListener(ApplicationReadyEvent.class)
     @Order(900) // ensure that it is called after core/http got initialized first
     public void init() throws Exception {
+        if(!mqttEnabled) return; // don't initialize if mqtt is not enabled.
         Map<String,Object> beans = applicationContext.getBeansWithAnnotation(ChenileMqtt.class);
 
         // register all of these beans as Mqtt beans

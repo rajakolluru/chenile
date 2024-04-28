@@ -40,7 +40,7 @@ public class MqttSubscriber implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String messageContent = new String(message.getPayload());
-        log("Received at topic = |" + topic + "| message = ||" + messageContent + "||" );
+        log("Received at topic = |" + topic + "| message = ||\n" + messageContent + "||\n" );
         mqttEntryPoint.process(topic,message);
         publisher.sendAck(message);
     }
