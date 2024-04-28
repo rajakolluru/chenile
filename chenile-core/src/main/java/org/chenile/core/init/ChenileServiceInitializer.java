@@ -4,7 +4,7 @@ import org.springframework.core.io.Resource;
 
 public class ChenileServiceInitializer extends AbstractServiceInitializer{
 	
-	private Resource[] chenileServiceJsonResources;
+	private final Resource[] chenileServiceJsonResources;
 
 	public ChenileServiceInitializer(Resource[] chenileServiceJsonResources) {	
 		this.chenileServiceJsonResources = chenileServiceJsonResources;

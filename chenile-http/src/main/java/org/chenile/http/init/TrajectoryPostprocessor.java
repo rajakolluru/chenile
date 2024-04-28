@@ -23,16 +23,14 @@ public class TrajectoryPostprocessor implements BeanFactoryPostProcessor{
 		Map<String,TrajectoryDefinition> tmap = new HashMap<>();
 		for (String name : beanFactory.getBeanDefinitionNames()) {
 			BeanDefinition bd = beanFactory.getBeanDefinition(name);
-			if (bd.getSource() instanceof AnnotatedTypeMetadata) {
-				AnnotatedTypeMetadata metadata = (AnnotatedTypeMetadata) bd.getSource();
-				boolean serviceOverride = false;boolean healthCheckOverride = false;
+			if (bd.getSource() instanceof AnnotatedTypeMetadata metadata) {
+                boolean healthCheckOverride = false;
 				Map<String, Object> attributes = metadata.getAnnotationAttributes(ConditionalOnTrajectory.class.getName());
 				if (null == attributes) {
 					attributes = metadata.getAnnotationAttributes(ConditionalHealthCheckOnTrajectory.class.getName());
 					if (null == attributes) continue;
 					healthCheckOverride = true;
-				}else 
-					serviceOverride = true;
+				}
 							
 				String id = (String)attributes.get("id");
 				String service = (String)attributes.get("service");
@@ -55,7 +53,7 @@ public class TrajectoryPostprocessor implements BeanFactoryPostProcessor{
 				
 				if (healthCheckOverride) {
 					to.setNewHealthCheckerReferenceId(name);
-				}else if (serviceOverride) {
+				}else { // service override
 					to.setNewServiceReferenceId(name);
 				}
 			}

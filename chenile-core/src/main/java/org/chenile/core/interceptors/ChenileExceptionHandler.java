@@ -4,6 +4,8 @@ import org.chenile.base.exception.ErrorNumException;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.base.response.WarningAware;
 import org.chenile.core.context.ChenileExchange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 
@@ -21,7 +23,7 @@ import java.util.Locale;
  *
  */
 public class ChenileExceptionHandler extends BaseChenileInterceptor{
-
+	Logger logger = LoggerFactory.getLogger(ChenileExceptionHandler.class);
 	@Autowired MessageSource messageSource;
 	@Override
 	protected void doPostProcessing(ChenileExchange exchange) {
@@ -67,7 +69,7 @@ public class ChenileExceptionHandler extends BaseChenileInterceptor{
 		String defaultMessage = "Message code " + code + " not found in resource bundle";
 		
 		try {
-			System.out.println("code = " + code + " locale = " + locale);
+			logger.info("code = " + code + " locale = " + locale);
 			String m = messageSource.getMessage("E" + code,params,defaultMessage,locale);
 			if (m == null) m = defaultMessage;
 			return m;

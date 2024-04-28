@@ -25,7 +25,7 @@ public class MqttPublisher {
     public void setActionTimeout(int actionTimeout) {
         this.actionTimeout = actionTimeout;
     }
-    private int actionTimeout = 120;
+    private int actionTimeout = 12000;
 
     public void setQos(int qos) {
         this.qos = qos;

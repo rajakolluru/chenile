@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import jakarta.validation.constraints.NotNull;
 import org.chenile.base.exception.ServerException;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.base.response.WarningAware;
@@ -23,6 +24,8 @@ import org.chenile.core.model.OperationDefinition;
 import org.chenile.http.Constants;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.NonNullApi;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -51,11 +54,12 @@ public class HttpEntryPoint implements HttpRequestHandler {
 	}
 	
 	@Override
-	public void handleRequest(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+	public void handleRequest(@NonNull HttpServletRequest httpServletRequest,
+							  @NonNull HttpServletResponse httpServletResponse)
 			throws ServletException, IOException {
 		ChenileExchange exchange = new ChenileExchange();
 		exchange.setServiceDefinition(serviceDefinition);
-		exchange.setHeader(HeaderUtils.CHANNEL, Constants.HTTP_ENTRY_POINT);
+		exchange.setHeader(HeaderUtils.ENTRY_POINT, Constants.HTTP_ENTRY_POINT);
 		exchange.setOperationDefinition(operationDefinition);
 		exchange.setHeaders(getHeaders(operationDefinition,httpServletRequest));
 		exchange.setMultiPartMap(getMultiPartMap(httpServletRequest));
@@ -112,31 +116,25 @@ public class HttpEntryPoint implements HttpRequestHandler {
 	private void processResponsePdf(ChenileExchange exchange, HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse, int httpStatusCode) throws ServletException,IOException {
 		OperationDefinition od = exchange.getOperationDefinition();
-		if (!(exchange.getResponse() instanceof File)) {
+		if (!(exchange.getResponse() instanceof File file)) {
 			throw new ServerException(ErrorCodes.MISCONFIGURATION.getSubError(), 
 					od.getName() + " MisConfiguration: Produces PDF must return a response of type File");
 		}
-		File file = (File)exchange.getResponse();
-		// display the pdf in the browser itself. They can always save it if they want
+        // display the pdf in the browser itself. They can always save it if they want
 		httpServletResponse.setHeader("Content-disposition","inline; filename='"  + file.getName() + " '");
 		httpServletResponse.setContentLength((int) file.length());
 
-		FileInputStream fileInputStream = null;		
-		try {
-			fileInputStream = new FileInputStream(file);
-	
-			OutputStream responseOutputStream = httpServletResponse.getOutputStream();
-			int bytes;
-			while ((bytes = fileInputStream.read()) != -1) {
-				responseOutputStream.write(bytes);
-			}
-		}finally {
-			if (fileInputStream != null)
-				fileInputStream.close();
-		}
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+
+            OutputStream responseOutputStream = httpServletResponse.getOutputStream();
+            int bytes;
+            while ((bytes = fileInputStream.read()) != -1) {
+                responseOutputStream.write(bytes);
+            }
+        }
 	}
 	
-	private static ObjectMapper om ;
+	private static final ObjectMapper om ;
 	static {
 		// Ensure that object mapper does not copy out nulls and does not fail if the 
 		// bean has no properties i.e. empty beans
@@ -164,7 +162,7 @@ public class HttpEntryPoint implements HttpRequestHandler {
 
 	public HttpStatus getSuccessHttpStatus(Object response) {
 		List<ResponseMessage> x = WarningAware.obtainWarnings(response);
-		if (x == null || x.size() == 0)
+		if (x == null || x.isEmpty())
 			return HttpStatus.valueOf(operationDefinition.getSuccessHttpStatus());
 		else 
 			return HttpStatus.valueOf(operationDefinition.getWarningHttpStatus());
@@ -173,10 +171,7 @@ public class HttpEntryPoint implements HttpRequestHandler {
 	private void setBody(HttpServletRequest httpServletRequest, ChenileExchange exchange)
 			throws IOException {
 		String body = httpServletRequest.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-		if (body == null) {
-			
-		}
-		exchange.setBody(body);
+        exchange.setBody(body);
 	}
 	
 	// @SuppressWarnings("unchecked")

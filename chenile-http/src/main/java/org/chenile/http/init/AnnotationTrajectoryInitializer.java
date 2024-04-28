@@ -9,12 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 
 public class AnnotationTrajectoryInitializer {
 	@Autowired ApplicationContext applicationContext;
 	@Autowired ChenileConfiguration chenileConfiguration;
 	
 	@EventListener(ApplicationReadyEvent.class)
+	@Order(50)
 	public void init() throws Exception {
 		@SuppressWarnings("unchecked")
 		List<TrajectoryDefinition> trajectoryDefinitions = 

@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-// @PropertySource("classpath:application-mqtt.properties")
 public class MqttConfiguration {
     @Value("${mqtt.connection.ServerURIs}") private String hostURI;
     @Value("${mqtt.will.payload}") private String willPayload;
@@ -66,24 +65,18 @@ public class MqttConfiguration {
     }
 
     @Bean
-    MqttAsyncClient mqttV5Client(@Autowired MemoryPersistence persistence) throws Exception{
-        return new MqttAsyncClient(hostURI, clientID, persistence);
-    }
-
-    @Bean
-    IMqttToken iMqttToken(@Autowired MqttConnectionOptions connOpts,
-                          @Autowired MqttAsyncClient v5Client) throws MqttException {
+    MqttAsyncClient mqttV5Client(@Autowired MqttConnectionOptions connOpts,
+                                 @Autowired MemoryPersistence persistence) throws MqttException {
+        MqttAsyncClient v5Client = new MqttAsyncClient(hostURI, clientID, persistence);
         IMqttToken token = v5Client.connect(connOpts);
         token.waitForCompletion(actionTimeout);
-        return token;
+        return v5Client;
     }
 
     @Bean
-    MqttSubscriber mqttSubscriber(@Autowired MqttAsyncClient v5Client)
-            throws Exception {
+    MqttSubscriber mqttSubscriber(@Autowired MqttAsyncClient v5Client) {
         MqttSubscriber subscriber = new MqttSubscriber();
         v5Client.setCallback(subscriber);
-        // v5Client.subscribe(publisher.topic, publisher.qos);
         return subscriber;
     }
     @Bean @ConfigurationProperties(prefix = "mqtt.publish")
@@ -99,6 +92,14 @@ public class MqttConfiguration {
         return new MqttInitializer();
     }
 
+    /**
+     * A topic to service map.<br/>
+     * This map is internally used to route a message that arrives at a topic to a service.<br/>
+     * This map is populated by the MqttInitializer during the initialization phase.<br/>
+     * It is used by the MqttEntryPoint during runtime to invoke the appropriate operation in a service<br/>
+     * @return a configuration that maps a route to a service.
+     *
+     */
     @Bean
     Map<String,String> mqttConfig(){
         return new HashMap<>();

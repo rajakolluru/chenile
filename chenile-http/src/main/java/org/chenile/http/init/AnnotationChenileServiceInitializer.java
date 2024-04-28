@@ -25,6 +25,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.annotation.Order;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +44,7 @@ public class AnnotationChenileServiceInitializer extends AbstractServiceInitiali
 	private PutMappingProducer putMappingProducer;
 
 	@EventListener(ApplicationReadyEvent.class)
+	@Order(10)
 	public void init() throws Exception {
 		deleteMappingProducer = new DeleteMappingProducer(applicationContext);
 		getMappingProducer = new GetMappingProducer(applicationContext);

@@ -11,6 +11,7 @@ import org.chenile.http.handler.HttpEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 
 public class HttpModuleBuilder extends SimpleUrlHandlerMapping {
@@ -21,6 +22,7 @@ public class HttpModuleBuilder extends SimpleUrlHandlerMapping {
 	private ChenileEntryPoint chenileEntryPoint;
 
 	@EventListener(ApplicationReadyEvent.class)
+	@Order(15)
 	public void build() throws Exception {
 		final Map<String, Object> urlMap = new HashMap<>();
 		for (ChenileServiceDefinition s : serviceConfiguration.getServices().values()) {
