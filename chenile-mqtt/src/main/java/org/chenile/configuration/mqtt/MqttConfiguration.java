@@ -10,6 +10,8 @@ import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
 import org.eclipse.paho.mqttv5.client.persist.MemoryPersistence;
 import org.eclipse.paho.mqttv5.common.MqttException;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -24,6 +26,7 @@ import java.util.Map;
 
 @Configuration
 public class MqttConfiguration {
+    Logger logger = LoggerFactory.getLogger(MqttConfiguration.class);
     @Value("${mqtt.connection.ServerURIs}") private String hostURI;
     @Value("${mqtt.will.payload}") private String willPayload;
     @Value("${mqtt.will.qos}") private int willQos;
@@ -31,7 +34,7 @@ public class MqttConfiguration {
     @Value("${mqtt.will.topic}") private String willTopic;
     @Value("${mqtt.clientID}") private String clientID;
     @Value("${mqtt.actionTimeout}") private int actionTimeout;
-    @Value("${mqtt.enabled:true}") private boolean mqttEnabled = true;
+    @Value("${mqtt.enabled:true}") private boolean mqttEnabled;
 
     /**
      * This converts a string to a byte array. This is required to convert the password which is
@@ -69,8 +72,15 @@ public class MqttConfiguration {
     MqttAsyncClient mqttV5Client(@Autowired MqttConnectionOptions connOpts,
                                  @Autowired MemoryPersistence persistence) throws MqttException {
         MqttAsyncClient v5Client = new MqttAsyncClient(hostURI, clientID, persistence);
+        if (!mqttEnabled){
+            // this will not have subscriptions. So clean session can always be set to true
+            // since this is a "publish only" instance irrespective of the property settings for
+            // mqtt connections
+            connOpts.setCleanStart(true);
+        }
         IMqttToken token = v5Client.connect(connOpts);
         token.waitForCompletion(actionTimeout);
+        logger.info("Connected to the MQTT broker with client ID = " + clientID);
         return v5Client;
     }
 

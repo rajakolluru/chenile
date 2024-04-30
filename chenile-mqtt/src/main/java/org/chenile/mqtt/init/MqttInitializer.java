@@ -44,7 +44,6 @@ public class MqttInitializer {
     @EventListener(ApplicationReadyEvent.class)
     @Order(900) // ensure that it is called after core/http got initialized first
     public void init() throws Exception {
-        if(!mqttEnabled) return; // don't initialize if mqtt is not enabled.
         Map<String,Object> beans = applicationContext.getBeansWithAnnotation(ChenileMqtt.class);
 
         // register all of these beans as Mqtt beans
@@ -64,9 +63,11 @@ public class MqttInitializer {
 
             putBackIntoServiceDefinition(serviceTopic,qos,serviceId);
             mqttConfig.put(serviceTopic,serviceId);
-            logger.info("Subscribing to topic " + serviceTopic + "/+");
             // subscribe to this topic and all the topics underneath it
             // We use a single level filter since all operations are supported under it
+            if(!mqttEnabled) return; // don't subscribe to the topic if mqtt is not enabled.
+            // but we need to do the rest of the stuff. Otherwise, we cannot publish to the correct topic
+            logger.info("Subscribing to topic " + serviceTopic + "/+");
             IMqttToken token = mqttV5Client.subscribe(serviceTopic + "/+", qos);
             token.waitForCompletion();
         }

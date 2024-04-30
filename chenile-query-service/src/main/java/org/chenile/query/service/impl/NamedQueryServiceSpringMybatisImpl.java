@@ -43,9 +43,13 @@ public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImp
 		if (queryMetadata.isPaginated()) {
 			processCountQuery(searchRequest.enhancedFilters,searchResponse,queryMetadata);
 		}
-		
-		List<Object> list = executeQuery(queryMetadata.getId(),
-				searchRequest.enhancedFilters);
+		List<Object> list = null;
+		try {
+			list = executeQuery(queryMetadata.getId(),
+					searchRequest.enhancedFilters);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		List<ResponseRow> responseList = new ArrayList<ResponseRow>();
 		for (Object o : list) {
 			ResponseRow row = new ResponseRow();

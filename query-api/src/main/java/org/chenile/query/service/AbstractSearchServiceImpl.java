@@ -21,11 +21,13 @@ import org.chenile.query.model.SortCriterion;
 import org.chenile.query.service.error.ErrorCodes;
 import org.chenile.stm.State;
 import org.chenile.stm.StateEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("unchecked")
 public abstract class AbstractSearchServiceImpl implements SearchService<Map<String, Object>> {
-
+	Logger logger = LoggerFactory.getLogger(AbstractSearchServiceImpl.class);
 	protected class EnhancedSearchRequest {
 		public EnhancedSearchRequest(SearchRequest<Map<String, Object>> searchRequest) {
 			this.originalSearchRequest = searchRequest;
@@ -102,17 +104,19 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		for (String name : filters.keySet()) {
 			ColumnMetadata cmd = cmdmap.get(name);
 			if (cmd == null || !cmd.isFilterable()) { // ignore stuff in filters which is not filterable
-				System.err.println(
-						"Warning: Filter name " + name + " is not filterable but has been passed as a filter!");
+				logger.warn("Warning: Filter name " + name + " is not filterable but has been passed as a filter!");
 				continue;
 			}
 			Object value = filters.get(name);
-			if (null != value && value.toString().length() != 0) {
+			if (null != value && !value.toString().isEmpty()) {
 				if (cmd.isLikeQuery()) {
 					searchInput.enhancedFilters.put(name, "%" + value + "%");
 				} else if (cmd.isContainsQuery()) {
 					constructContainsQuery(searchInput.enhancedFilters, name, value);
 				} else if (cmd.isBetweenQuery()) {
+					System.err.println("i am at filters construction: name = " + name +
+							",value = " + value +
+							" column type = " + cmd.getColumnType());
 					constructBetweenQuery(searchInput.enhancedFilters, name, value, cmd);
 				} else {
 					searchInput.enhancedFilters.put(name, value);
@@ -121,6 +125,8 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		}
 		if (queryMetadata.isFlexiblePropnames())
 			enhanceFiltersWithPropNamesPropValues(searchInput.enhancedFilters);
+		System.err.println("Filters = " + searchInput.enhancedFilters);
+		logger.debug("Filters = " + searchInput.enhancedFilters);
 	}
 
 	protected void constructBetweenQuery(Map<String, Object> enhancedFilters, String name, Object value,
@@ -164,7 +170,6 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		}
 
 		List<Object> filterList = new ArrayList<>(2);
-
 		if (columnType == ColumnType.Text) {
 			filterList.add("%" + first + "%");
 			filterList.add("%" + second + "%");
