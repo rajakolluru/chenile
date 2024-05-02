@@ -103,6 +103,7 @@ public abstract class MappingProducerBase {
 				String n = klass.getName();
 				n = n.substring(n.lastIndexOf('.')+1);
 				od.putExtension(n,map);
+				od.putExtensionAsAnnotation(annotation.getClass(),annotation);
 			}				
 		}
 	}

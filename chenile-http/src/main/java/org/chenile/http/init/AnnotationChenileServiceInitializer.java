@@ -131,6 +131,7 @@ public class AnnotationChenileServiceInitializer extends AbstractServiceInitiali
 				String n = klass.getName();
 				n = n.substring(n.lastIndexOf('.')+1);
 				csd.putExtension(n,map);
+				csd.putExtensionAsAnnotation(annotation.getClass(),annotation);
 			}				
 		}
 	}

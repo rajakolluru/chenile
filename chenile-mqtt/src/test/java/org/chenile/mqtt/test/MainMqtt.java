@@ -26,7 +26,7 @@ public class MainMqtt {
         IMqttToken token = v5Client.connect(connectionOptions);
         token.waitForCompletion(12000);
 
-        MqttSubscriber subscriber = new MqttSubscriber();
+        MqttSubscriber subscriber = new MqttSubscriber(true);
         v5Client.setCallback(subscriber);
         v5Client.subscribe("/chenile/mqtt", 2);
         for(;;){

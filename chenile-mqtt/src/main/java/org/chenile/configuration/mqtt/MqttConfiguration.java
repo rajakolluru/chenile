@@ -1,5 +1,6 @@
 package org.chenile.configuration.mqtt;
 
+import org.chenile.mqtt.MqttInfoProvider;
 import org.chenile.mqtt.entry.MqttEntryPoint;
 import org.chenile.mqtt.init.MqttInitializer;
 import org.chenile.mqtt.pubsub.MqttPublisher;
@@ -95,7 +96,7 @@ public class MqttConfiguration {
 
     @Bean
     MqttSubscriber mqttSubscriber(@Autowired MqttAsyncClient v5Client) {
-        MqttSubscriber subscriber = new MqttSubscriber();
+        MqttSubscriber subscriber = new MqttSubscriber(mqttEnabled);
         v5Client.setCallback(subscriber);
         return subscriber;
     }
@@ -123,5 +124,10 @@ public class MqttConfiguration {
     @Bean
     Map<String,String> mqttConfig(){
         return new HashMap<>();
+    }
+
+    @Bean
+    MqttInfoProvider mqttInfoProvider(){
+        return new MqttInfoProvider();
     }
 }

@@ -1,5 +1,6 @@
 package org.chenile.core.interceptors;
 
+import java.lang.annotation.Annotation;
 import java.util.Map;
 
 import org.chenile.core.context.ChenileExchange;
@@ -115,10 +116,19 @@ public class BaseChenileInterceptor implements Command<ChenileExchange>{
 	 * @return the annotation if it exists or null if it does not. Opertion level annotations override service level annotations
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	protected Map<String,Object> getExtensionByAnnotation(String name,ChenileExchange exchange) {
 		Map<String,Object> ret = (Map<String,Object>)exchange.getOperationDefinition().getExtension(name);
 		if (ret == null) {
 			ret = (Map<String,Object>)exchange.getServiceDefinition().getExtension(name);
+		}
+		return ret;
+	}
+
+	protected <T extends Annotation> T getExtensionByAnnotation(Class<T> klass, ChenileExchange exchange) {
+		T ret = exchange.getOperationDefinition().getExtensionAsAnnotation(klass);
+		if (ret == null) {
+			ret = exchange.getServiceDefinition().getExtensionAsAnnotation(klass);
 		}
 		return ret;
 	}

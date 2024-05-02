@@ -1,5 +1,6 @@
 package org.chenile.core.model;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.context.ContextContainer;
 import org.chenile.owiz.Command;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -121,6 +123,7 @@ public class OperationDefinition {
 	protected List<Command<ChenileExchange>> interceptorCommands;
 	protected List<String> interceptorComponentNames;
 	protected Map<String,Object> extensions = new HashMap<>();
+	protected Map<Class<? extends Annotation>, Annotation> extensionsAsAnnotation = new HashMap<>();
 	
 	public List<Command<ChenileExchange>> getClientInterceptorCommands() {
 		return clientInterceptorCommands;
@@ -378,7 +381,7 @@ public class OperationDefinition {
 	public void setWarningHttpStatus(int warningHttpStatus) {
 		this.warningHttpStatus = HttpStatus.valueOf(warningHttpStatus);
 	}
-	
+	@Deprecated
 	public Object getExtension(String key) {
 		return extensions.get(key);
 	}
@@ -386,7 +389,7 @@ public class OperationDefinition {
 	public void putExtension(String key, Object value) {
 		extensions.put(key, value);
 	}
-	
+	@Deprecated
 	public Map<String,Object> getExtensions() {
 		return this.extensions;
 	}
@@ -396,6 +399,14 @@ public class OperationDefinition {
     }
 	public void setOutputAsParameterizedReference(ParameterizedTypeReference<?> ref) {
 		this.outputAsParameterizedReference = ref;
+	}
+	public void putExtensionAsAnnotation(Class<? extends Annotation> klass, Annotation annotation) {
+		extensionsAsAnnotation.put(klass,annotation);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Annotation> T getExtensionAsAnnotation(Class<T> klass) {
+		return (T)extensionsAsAnnotation.get(klass);
 	}
 
 }

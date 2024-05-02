@@ -1,8 +1,8 @@
 package org.chenile.mqtt.pubsub;
 
 import org.chenile.base.exception.ServerException;
-import org.chenile.core.model.ChenileConfiguration;
-import org.chenile.core.model.ChenileServiceDefinition;
+import org.chenile.mqtt.MqttInfoProvider;
+import org.chenile.mqtt.model.ChenileMqtt;
 import org.eclipse.paho.mqttv5.client.IMqttToken;
 import org.eclipse.paho.mqttv5.client.MqttAsyncClient;
 import org.eclipse.paho.mqttv5.common.MqttException;
@@ -23,7 +23,6 @@ import java.util.Map;
  */
 public class MqttPublisher {
     Logger logger = LoggerFactory.getLogger(MqttPublisher.class);
-    @Autowired private ChenileConfiguration chenileConfiguration;
     @Autowired private MqttAsyncClient v5Client;
     public void setActionTimeout(int actionTimeout) {
         this.actionTimeout = actionTimeout;
@@ -39,20 +38,20 @@ public class MqttPublisher {
     public void setRetain(boolean retain) {
         this.retain = retain;
     }
-
+    @Autowired
+    MqttInfoProvider mqttInfoProvider;
     private boolean retain = true;
-    @SuppressWarnings("unchecked")
+
     public void publishToOperation(String service, String operationName,String payload,Map<String,Object> properties)
-     throws Exception{
-        ChenileServiceDefinition csd = chenileConfiguration.getServices().get(service);
-        Map<String,Object> m = (Map<String,Object>)csd.getExtension("ChenileMqtt");
-        if (m == null){
-            throw new ServerException(905,new Object[]{service,operationName });
+     throws Exception {
+        ChenileMqtt m = mqttInfoProvider.obtainChenileMqtt(service);
+        if (m == null) {
+            throw new ServerException(905, new Object[] { service});
         }
-        String topic = (String)m.get("topic");
+        String topic = m.topic();
         topic = topic + "/" + operationName;
-        int qos = (int)m.get("qos");
-        System.out.println("Publishing message " + payload + " to " + topic);
+        int qos = m.qos();
+        logger.info("Publishing message " + payload + " to " + topic + " with qos = "  + qos);
         publish(topic,qos,payload,properties);
     }
     public void publish(String topic,  String payload, Map<String,Object> properties)

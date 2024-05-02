@@ -1,5 +1,6 @@
 package org.chenile.core.model;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,8 +22,6 @@ public class ChenileServiceDefinition  {
 	private String healthCheckerName;
 	@JsonIgnore
 	private HealthChecker healthChecker;
-	
-
 	private String id;
     private String moduleName;
     private String version;
@@ -35,7 +34,8 @@ public class ChenileServiceDefinition  {
     private List<Command<ChenileExchange>> clientInterceptorCommands = new ArrayList<Command<ChenileExchange>>();
 	protected Command<ChenileExchange> bodyTypeSelector;
 	protected String bodyTypeSelectorComponentName;
-	private Map<String,Object> extensions = new HashMap<>();
+	private final Map<String,Object> extensions = new HashMap<>();
+	private final Map<Class<? extends Annotation>, Annotation> extensionsAsAnnotation = new HashMap<>();
 	// a trajectory ID  to TrajectoryOverride mapping if this service is over-ridden for a particular trajectory
 	// the entry does not exist for trajectories that are not over-riding this particular service
 	private Map<String,TrajectoryOverride> trajectoryOverrides = new HashMap<>();
@@ -191,13 +191,22 @@ public class ChenileServiceDefinition  {
 	public void putExtension(String key, Object value) {
 		extensions.put(key,value);		
 	}
-	
+	@Deprecated
 	public Object getExtension(String key) {
 		return extensions.get(key);		
 	}
-	
+	@Deprecated
 	public Map<String,Object> getExtensions() {
 		return this.extensions;
+	}
+
+	public void putExtensionAsAnnotation(Class<? extends Annotation> klass, Annotation annotation) {
+		extensionsAsAnnotation.put(klass,annotation);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Annotation> T getExtensionAsAnnotation(Class<T> klass) {
+		return (T)extensionsAsAnnotation.get(klass);
 	}
 
 	public Map<String,TrajectoryOverride> getTrajectoryOverrides() {
