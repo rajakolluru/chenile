@@ -70,10 +70,17 @@ public class MqttConfiguration {
     }
 
     @Bean
+    @ConfigurationProperties(prefix = "mqtt.disconnected.buffer")
+    DisconnectedBufferOptions disconnectedBufferOptions(){
+        return new DisconnectedBufferOptions();
+    }
+
+    @Bean
     MqttAsyncClient mqttV5Client(@Autowired MqttConnectionOptions connOpts,
-                                 @Autowired MemoryPersistence persistence) throws MqttException {
+                                 @Autowired MemoryPersistence persistence,
+                                 @Autowired DisconnectedBufferOptions disconnectedBufferOptions) throws MqttException {
         MqttAsyncClient v5Client = new MqttAsyncClient(hostURI, clientID, persistence);
-        v5Client.setBufferOpts(new DisconnectedBufferOptions());
+        v5Client.setBufferOpts(disconnectedBufferOptions);
         if (!mqttEnabled){
             // this will not have subscriptions. So clean session can always be set to true
             // since this is a "publish only" instance irrespective of the property settings for
