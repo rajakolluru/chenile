@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +62,7 @@ public class MqttInitializer {
             }
             int qos = chenileMqtt.qos();
 
-            putBackIntoServiceDefinition(serviceTopic,qos,serviceId);
+            putAnnotationBackIntoServiceDefinition(serviceTopic,qos,serviceId);
             mqttConfig.put(serviceTopic,serviceId);
             // subscribe to this topic and all the topics underneath it
             // We use a single level filter since all operations are supported under it
@@ -81,11 +82,27 @@ public class MqttInitializer {
      * @param qos - the qos level to subscribe to
      * @param serviceId - the service Id of the service that gets mapped to the topic and qos
      */
-    private void putBackIntoServiceDefinition(String topic, int qos, String serviceId){
+    private void putAnnotationBackIntoServiceDefinition(String topic, int qos, String serviceId){
         ChenileServiceDefinition csd = chenileConfiguration.getServices().get(serviceId);
-        Map<String,Object> map = new HashMap<>();
-        map.put("topic", topic);
-        map.put("qos",qos);
-        csd.putExtension("ChenileMqtt",map);
+        ChenileMqtt chenileMqtt = new ChenileMqtt(){
+
+            @Override
+            public Class<? extends Annotation> annotationType() {
+                return ChenileMqtt.class;
+            }
+
+            @Override
+            public String topic() {
+                return topic;
+            }
+
+            @Override
+            public int qos() {
+                return qos;
+            }
+        };
+        csd.putExtensionAsAnnotation(ChenileMqtt.class,chenileMqtt);
     }
+
+
 }
