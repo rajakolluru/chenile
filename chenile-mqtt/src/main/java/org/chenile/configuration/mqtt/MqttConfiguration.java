@@ -4,6 +4,7 @@ import org.chenile.mqtt.entry.MqttEntryPoint;
 import org.chenile.mqtt.init.MqttInitializer;
 import org.chenile.mqtt.pubsub.MqttPublisher;
 import org.chenile.mqtt.pubsub.MqttSubscriber;
+import org.eclipse.paho.mqttv5.client.DisconnectedBufferOptions;
 import org.eclipse.paho.mqttv5.client.IMqttToken;
 import org.eclipse.paho.mqttv5.client.MqttAsyncClient;
 import org.eclipse.paho.mqttv5.client.MqttConnectionOptions;
@@ -72,6 +73,7 @@ public class MqttConfiguration {
     MqttAsyncClient mqttV5Client(@Autowired MqttConnectionOptions connOpts,
                                  @Autowired MemoryPersistence persistence) throws MqttException {
         MqttAsyncClient v5Client = new MqttAsyncClient(hostURI, clientID, persistence);
+        v5Client.setBufferOpts(new DisconnectedBufferOptions());
         if (!mqttEnabled){
             // this will not have subscriptions. So clean session can always be set to true
             // since this is a "publish only" instance irrespective of the property settings for
