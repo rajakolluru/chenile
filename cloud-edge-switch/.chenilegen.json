@@ -1,0 +1,16 @@
+{
+	"template": "newmonolith",
+	"artifactType": "monolith",
+	"data":
+
+{
+"interceptorName": "cloud-edge-switch",
+"interceptorVersion": "",
+"com": "com",
+"org": "pos",
+"company": "netscoretech",
+"chenilePackage": "org.chenile",
+"chenileVersion": "1.2.3",
+"InterceptorName": "ConnectRemote"
+}
+}
