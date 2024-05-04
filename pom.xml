@@ -31,6 +31,8 @@
 		<module>security-service</module>
 		<module>chenile-query-service</module>
 		<module>chenile-mqtt</module>
+		<!-- cloud-edge-switch requires an mqtt server for testing. hence commented it -->
+		<!-- module>cloud-edge-switch</module -->
 	</modules>
 
 	<packaging>pom</packaging>
@@ -193,15 +195,10 @@
 
 			<dependency>
 				<groupId>org.chenile</groupId>
-				<artifactId>student-query-service</artifactId>
+				<artifactId>cloud-edge-switch</artifactId>
 				<version>${chenile.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>org.chenile</groupId>
-				<artifactId>test-query-helper</artifactId>
-				<version>${chenile.version}</version>
-			</dependency>
 
 			<!-- Third Party Libraries -->
 			<dependency>
