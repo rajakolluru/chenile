@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.chenile.query.model.ColumnMetadata;
@@ -17,7 +19,7 @@ import org.chenile.query.service.AbstractSearchServiceImpl;
 import org.chenile.query.service.QueryStore;
 
 public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImpl{
-
+	Logger logger = LoggerFactory.getLogger(NamedQueryServiceSpringMybatisImpl.class);
 	public NamedQueryServiceSpringMybatisImpl(QueryStore queryStore) {
 		super(queryStore);
 	}
@@ -51,12 +53,14 @@ public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImp
 			e.printStackTrace();
 		}
 		List<ResponseRow> responseList = new ArrayList<ResponseRow>();
-		for (Object o : list) {
-			ResponseRow row = new ResponseRow();
-			row.setRow(o);
-			
-			// row.setAllowedActions(getAllowedActionsForWorkflowEntity(queryMetadata.getWorkflowName(),o));
-			responseList.add(row);
+		if (list != null) {
+			for (Object o : list) {
+				ResponseRow row = new ResponseRow();
+				row.setRow(o);
+
+				// row.setAllowedActions(getAllowedActionsForWorkflowEntity(queryMetadata.getWorkflowName(),o));
+				responseList.add(row);
+			}
 		}
 		searchResponse.setList(responseList);
 		searchResponse.setNumRowsReturned(responseList.size());
@@ -82,16 +86,16 @@ public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImp
 	protected int processCountQuery(Map<String,Object> filters, SearchResponse searchResponse, QueryMetadata queryMetadata) {
 		String qName = queryMetadata.getId() + "-count";
 		
-		Integer in = 0; 
+		int in = 0;
 		Object o = sessionTemplate.selectOne(qName, filters);
 		// Object o = session.selectOne(qName, filters);
-		if (o == null || !(o instanceof Integer)) {
+		if (!(o instanceof Integer)) {
 			throw new RuntimeException ("Invalid count query for query name = " + queryMetadata.getId());
 		}
 		in = (Integer)o;
 		setPaginationInResponse(searchResponse,in);
 		constructPagination(filters,searchResponse.getStartRow(),searchResponse.getNumRowsInPage());
-		return in.intValue();
+		return in;
 				
 	}
 	

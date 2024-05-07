@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @SuppressWarnings("unchecked")
 public abstract class AbstractSearchServiceImpl implements SearchService<Map<String, Object>> {
 	Logger logger = LoggerFactory.getLogger(AbstractSearchServiceImpl.class);
-	protected class EnhancedSearchRequest {
+	protected static class EnhancedSearchRequest {
 		public EnhancedSearchRequest(SearchRequest<Map<String, Object>> searchRequest) {
 			this.originalSearchRequest = searchRequest;
 		}
@@ -114,9 +114,6 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 				} else if (cmd.isContainsQuery()) {
 					constructContainsQuery(searchInput.enhancedFilters, name, value);
 				} else if (cmd.isBetweenQuery()) {
-					System.err.println("i am at filters construction: name = " + name +
-							",value = " + value +
-							" column type = " + cmd.getColumnType());
 					constructBetweenQuery(searchInput.enhancedFilters, name, value, cmd);
 				} else {
 					searchInput.enhancedFilters.put(name, value);
@@ -125,32 +122,27 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		}
 		if (queryMetadata.isFlexiblePropnames())
 			enhanceFiltersWithPropNamesPropValues(searchInput.enhancedFilters);
-		System.err.println("Filters = " + searchInput.enhancedFilters);
 		logger.debug("Filters = " + searchInput.enhancedFilters);
 	}
 
 	protected void constructBetweenQuery(Map<String, Object> enhancedFilters, String name, Object value,
 			ColumnMetadata columnMetadata) {
-		if (null == columnMetadata)
+		if (null == columnMetadata || null == value)
 			return;
-		if (!(value instanceof List)) {
-			throw new ServerException(
-					"Value: " + value + " should be an array for the range operation to be executed.");
+		List<Object> list;
+		if (value instanceof List) {
+			list = (List<Object>) value;
+		}else {
+			list = new ArrayList<Object>();
+			list.add(value);
 		}
-		;
 
 		ColumnType columnType = columnMetadata.getColumnType();
 
 		// No between operation for Checkbox and DropDown Type
 		if (columnType == ColumnType.CheckBox || columnType == ColumnType.DropDown)
 			return;
-
-		List<Object> list = (List<Object>) value;
-		if (null == list || list.isEmpty())
-			return;
-
-		int size = list.size();
-		if (1 == size) {
+		if (1 == list.size()) {
 			// If list contains only one element then add the same element again so that the
 			// between query contains two elements.
 			list.add(list.get(0));
@@ -161,11 +153,11 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		String firstStr = (null == first) ? "" : first.toString().trim();
 		String secondStr = (null == second) ? "" : second.toString().trim();
 
-		if ("".equals(firstStr) && "".equals(secondStr))
+		if (firstStr.isEmpty() && secondStr.isEmpty())
 			return;
-		if ("".equals(firstStr) && !"".equals(secondStr)) {
+		if (firstStr.isEmpty()) {
 			first = second;
-		} else if (!"".equals(firstStr) && "".equals(secondStr)) {
+		} else if (secondStr.isEmpty()) {
 			second = first;
 		}
 
@@ -176,20 +168,11 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		} else if (columnType == ColumnType.Number) {
 			filterList.add(first);
 			filterList.add(second);
-		} else {
-			Calendar firstDate = Calendar.getInstance();
-			firstDate.setTime(new Date(Long.valueOf(first.toString())));
-			firstDate.set(Calendar.HOUR_OF_DAY, 0);
-			firstDate.set(Calendar.MINUTE, 0);
-			firstDate.set(Calendar.SECOND, 0);
-			filterList.add(firstDate.getTime());
-
-			Calendar secondDate = Calendar.getInstance();
-			secondDate.setTime(new Date(Long.valueOf(second.toString())));
-			secondDate.set(Calendar.HOUR_OF_DAY, 23);
-			secondDate.set(Calendar.MINUTE, 59);
-			secondDate.set(Calendar.SECOND, 59);
-			filterList.add(secondDate.getTime());
+		} else if (columnType == ColumnType.Date || columnType == ColumnType.DateTime){
+			// treat these as strings and send them to the DB. Let the database
+			// worry about them.
+			filterList.add(firstStr);
+			filterList.add(secondStr);
 		}
 		enhancedFilters.put(name, filterList);
 	}
@@ -203,7 +186,6 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 			enhancedFilters.put(name, new String[] { (String) value });
 			return;
 		}
-
 	}
 
 	protected void enhanceFiltersWithPropNamesPropValues(Map<String, Object> filters) {
@@ -214,7 +196,7 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 			propNamesList.add(entry.getKey());
 			propValuesList.add(entry.getValue() + "");
 		}
-		if (propNamesList.size() > 0) {
+		if (!propNamesList.isEmpty()) {
 			filters.put("propNames", propNamesList);
 			filters.put("propValues", propValuesList);
 		}
@@ -225,7 +207,7 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		if (!queryMetadata.isSortable())
 			return;
 		String orderby = "order by 1 ASC";
-		if (sortCriteria == null || sortCriteria.size() == 0) {
+		if (sortCriteria == null || sortCriteria.isEmpty()) {
 			filters.put(ORDER_BY, orderby);
 			return;
 		}
@@ -270,11 +252,6 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		this.contextContainer = contextContainer;
 	}
 
-	/**
-	 * @deprecated
-	 * @param obj
-	 * @return
-	 */
 	protected List<String> getAllowedActionsForWorkflowEntity(Object obj) {
 		if (obj == null)
 			return null;
@@ -297,13 +274,6 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		return null;
 	}
 
-	/**
-	 * Merge the second search request to the first search request. The first search
-	 * request will be enhanced
-	 * 
-	 * @param one
-	 * @param two
-	 */
 	@SuppressWarnings("unused")
 	private void mergeSearchRequests(SearchRequest<Map<String, Object>> one, SearchRequest<Map<String, Object>> two) {
 		if (one == null || two == null)
@@ -317,7 +287,7 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 			}
 		}
 
-		/**
+		/*
 		 * Merging NumRowsInPage not required, because the default value has been set at
 		 * the model level. If we merge, then the value from the elastic search always
 		 * overrides the actual SearchRequest.

@@ -92,20 +92,14 @@ public class HttpInvoker implements Command<ChenileExchange>{
 	}
 	
 	private HttpMethod httpMethod(OperationDefinition od) {
-		switch(od.getHttpMethod()) {
-		case GET:
-			return HttpMethod.GET;
-		case POST:
-			return HttpMethod.POST;
-		case DELETE:
-			return HttpMethod.DELETE;
-		case PUT:
-			return HttpMethod.PUT;
-		case PATCH:
-			return HttpMethod.PATCH;
-		}
-		return HttpMethod.POST;
-	}
+        return switch (od.getHttpMethod()) {
+            case GET -> HttpMethod.GET;
+            case POST -> HttpMethod.POST;
+            case DELETE -> HttpMethod.DELETE;
+            case PUT -> HttpMethod.PUT;
+            case PATCH -> HttpMethod.PATCH;
+        };
+    }
 	
 	protected RestTemplate getRestTemplate(ChenileExchange chenileExchange) {
 		ChenileResponseHandler responseErrorHandler = new ChenileResponseHandler(chenileExchange,objectMapper);
