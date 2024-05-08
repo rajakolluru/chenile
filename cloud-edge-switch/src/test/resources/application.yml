@@ -78,10 +78,15 @@ mqtt:
 
   clientID: someClient
   actionTimeout: 12000
+  enabled: false
 
   publish:
     actionTimeout: 120
     qos: 2
     retain: true
     topic: /chenile/mqtt
+
+cloud:
+  remoteUrl: localhost:8089
+
 

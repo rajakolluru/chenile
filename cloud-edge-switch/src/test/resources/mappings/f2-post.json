@@ -1,0 +1,26 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/f2/ghi",
+    "headers": {
+      "Accept": {
+        "equalTo": "application/json",
+        "caseInsensitive": true
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "success": true,
+      "payload": {
+        "a": "abc-wire-mock",
+        "b": "def-wire-mock",
+        "c": "ghi-wire-mock"
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

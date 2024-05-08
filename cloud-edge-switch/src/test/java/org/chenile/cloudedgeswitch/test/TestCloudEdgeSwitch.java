@@ -30,22 +30,46 @@ public  class TestCloudEdgeSwitch {
 	// 8089 must be the same port as defined in the application.properties file
 	@Rule public WireMockRule wireMockRule = new WireMockRule(8089);
 	@Autowired private MockMvc mvc;
-	@Test @Order(1) public void testCloudEdgeSwitch() throws Exception {
+	@Test @Order(1) public void t1() throws Exception {
 		mvc.perform( MockMvcRequestBuilders
-            .get("/test")
+            .get("/f1")
             .accept(MediaType.APPLICATION_JSON))
         	.andDo(print())
         	.andExpect(status().isOk())
-        	.andExpect(jsonPath("$.payload.test").value("test"));
+        	.andExpect(jsonPath("$.payload.test").value("wire-mock-test"));
 	}
 
-	@Test @Order(2) public void testCloudEdgeSwitchFailCondition() throws Exception {
+	@Test @Order(2) public void t2() throws Exception {
+		String json = "{ \"a\": \"abc\", \"b\":\"def\"}";
+		mvc.perform( MockMvcRequestBuilders
+						.post("/f2/ghi")
+						.content(json)
+						.contentType("application/json")
+						.accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				// .andExpect(status().isOk())
+				.andExpect(jsonPath("$.payload.a").value("abc-wire-mock"));
+	}
+
+	@Test @Order(3) public void t3() throws Exception {
 		wireMockRule.stop();
 		mvc.perform( MockMvcRequestBuilders
-				.get("/test")
+				.get("/f1")
 				.accept(MediaType.APPLICATION_JSON))
 				.andDo(print())
-				.andExpect(status().isOk())
+				.andExpect(status().isAccepted())
 				.andExpect(jsonPath("$.payload.test").value("test"));
+	}
+	@Test @Order(4) public void t4() throws Exception {
+		String json = "{ \"a\": \"abc\", \"b\":\"def\"}";
+		wireMockRule.stop();
+		mvc.perform( MockMvcRequestBuilders
+						.post("/f2/ghi")
+						.content(json)
+						.contentType("application/json")
+						.accept(MediaType.APPLICATION_JSON))
+				.andDo(print())
+				.andExpect(status().isAccepted())
+				.andExpect(jsonPath("$.payload.a").value("abc"));
 	}
 }

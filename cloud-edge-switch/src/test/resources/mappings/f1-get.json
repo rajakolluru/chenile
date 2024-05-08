@@ -1,14 +1,14 @@
 {
   "request": {
     "method": "GET",
-    "url": "/test"
+    "url": "/f1"
   },
   "response": {
     "status": 200,
     "jsonBody": {
         "success": true,
         "payload": {
-          "test": "wiremocktest"
+          "test": "wire-mock-test"
         }
     },
     "headers": {
