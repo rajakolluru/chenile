@@ -113,11 +113,10 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 			logger.info("Unable to send a message. Error = " +e.getMessage());
 		}
 	}
-
+	ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 	private String toJson(Object payload) throws Exception{
 		if (payload == null) return null;
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		return ow.writeValueAsString(payload);
+		return objectWriter.writeValueAsString(payload);
 	}
 
 	private void enhanceWarnings(ErrorNumException exception, ChenileExchange exchange){

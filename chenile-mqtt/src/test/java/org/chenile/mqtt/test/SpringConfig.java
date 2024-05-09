@@ -1,7 +1,7 @@
-package org.chenile.cloudedgeswitch.test;
+package org.chenile.mqtt.test;
 
-import org.chenile.cloudedgeswitch.test.service.TestService;
-import org.chenile.cloudedgeswitch.test.service.TestServiceImpl;
+import org.chenile.mqtt.test.service.TestService;
+import org.chenile.mqtt.test.service.TestServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -12,8 +12,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 @Configuration
 @SpringBootApplication(scanBasePackages = {  "org.chenile.configuration",
-			"org.chenile.cloudedgeswitch.test.service"})
-@PropertySource("classpath:org/chenile/cloudedgeswitch/test/TestMqtt.properties")
+			"org.chenile.mqtt.test.service"})
+@PropertySource("classpath:org/chenile/mqtt/test/TestMqtt.properties")
 @ActiveProfiles("unittest")
 public class SpringConfig extends SpringBootServletInitializer{
 	
@@ -24,5 +24,6 @@ public class SpringConfig extends SpringBootServletInitializer{
 	@Bean("testService") public TestService testService() {
 		return new TestServiceImpl();
 	}
+	@Bean SharedData sharedData() { return new SharedData();}
 }
 

@@ -1,0 +1,33 @@
+logging:
+  level:
+    ROOT: INFO
+    org.hibernate.SQL: INFO
+
+mqtt:
+  connection:
+    ServerURIs: tcp://localhost:1883
+    keepAliveInterval: 120000
+    userName: emqx_test
+    password: emqx_test_password
+    cleanStart: true
+    receiveMaximum: 1000
+    automaticReconnect: true
+
+  will:
+    payload: I am dead
+    qos: 0
+    retained: false
+    topic: willTopic
+
+  clientID: someClient
+  actionTimeout: 12000
+  enabled: true
+
+  publish:
+    actionTimeout: 120
+    qos: 2
+    retain: true
+    topic: /chenile/mqtt
+
+
+
