@@ -1,6 +1,7 @@
 package org.chenile.cloudedgeswitch.test;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import org.chenile.mqtt.test.MqttBaseTest;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.jupiter.api.MethodOrderer;
@@ -26,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("unittest")
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public  class TestCloudEdgeSwitch {
+public  class TestCloudEdgeSwitch extends MqttBaseTest {
 	// 8089 must be the same port as defined in the application.properties file
 	@Rule public WireMockRule wireMockRule = new WireMockRule(8089);
 	@Autowired private MockMvc mvc;

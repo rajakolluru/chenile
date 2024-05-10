@@ -23,7 +23,8 @@ import java.util.concurrent.TimeUnit;
 @SpringBootTest(classes = SpringConfig.class)
 @ActiveProfiles("unittest")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public  class TestMqtt {
+public  class TestMqtt extends MqttBaseTest {
+
 	@Autowired private MqttPublisher publisher;
 	@Autowired private SharedData sharedData;
 	@Test @Order(1) public void testIfHeadersAndPayloadWork() throws Exception {

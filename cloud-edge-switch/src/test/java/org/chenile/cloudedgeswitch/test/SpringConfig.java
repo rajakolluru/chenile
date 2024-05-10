@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 @Configuration
 @SpringBootApplication(scanBasePackages = {  "org.chenile.configuration",
 			"org.chenile.cloudedgeswitch.test.service"})
-@PropertySource("classpath:org/chenile/cloudedgeswitch/test/TestMqtt.properties")
+@PropertySource("classpath:org/chenile/cloudedgeswitch/test/TestCloudEdgeSwitch.properties")
 @ActiveProfiles("unittest")
 public class SpringConfig extends SpringBootServletInitializer{
 	
