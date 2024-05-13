@@ -99,7 +99,6 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	private void publishMessage(ChenileExchange exchange){
 		try {
 			String s = toJson(exchange.getBody());
-			logger.debug("publishing message = " + s);
 			Map<String,Object> headers = new HashMap<>();
 			OperationDefinition od = exchange.getOperationDefinition();
 			for (ParamDefinition pd: od.getParams()){
@@ -107,6 +106,8 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 					headers.put(pd.getName(), exchange.getHeader(pd.getName()));
 				}
 			}
+			logger.debug("publishing message = " + s + " with headers " +
+					headers);
 			mqttPublisher.publishToOperation(exchange.getServiceDefinition().getId(),
 					exchange.getOperationDefinition().getName(),s, headers);
 		}catch(Exception e){
