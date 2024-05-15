@@ -28,6 +28,8 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.chenile.cloudedgeswitch.interceptor.errorcodes.ErrorCodes.*;
+
 /**
  * <p>This interceptor, if configured, acts like an edge switch for a service i.e. it turns a service from a
  * cloud service into an edge service.</p>
@@ -43,9 +45,10 @@ import java.util.Map;
  * hosted in the cloud. The remote url is the cloud location of the service. If the cloud call is successful, then this
  * effectively acts as if the edge service is a traffic cop merely directing all the incoming traffic to the cloud
  * and returning the result of the cloud service call. This is the 'forward only' functionality</p>
- * <p>If the call fails then the "store and forward" part of the logic kicks in. In this case the local service is
- * called. The result of the local service call is returned with a warning stating that the transaction succeeded
- * but it is done locally due to network failure.</p>
+ * <p>If the call fails due to a problem with the connection (we check this explicitly) then the
+ * "store and forward" part of the logic kicks in. In this case the local service is
+ * called. If successful, the result of the local service call is returned with a warning stating that the transaction
+ * succeeded but it is done locally due to network failure.</p>
  */
 public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	Logger logger = LoggerFactory.getLogger(CloudEdgeSwitch.class);
@@ -62,11 +65,10 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 			super.doContinue(exchange);
 			return;
 		}
-		if (remoteUrl == null || remoteUrl.isEmpty()) {
+		if (remoteUrl == null || remoteUrl.isEmpty())
 			handleCloud(exchange);
-			return;
-		}
-		handleEdge(exchange);
+		else
+			handleEdge(exchange);
 	}
 
 	/**
@@ -104,14 +106,14 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 		try {
 			resumeFromSavedPoint(savePoint, exchange);
 		}catch(Exception e){
-			exchange.setException(new ServerException(8002,new Object[]{e.getMessage()},e));
+			exchange.setException(new ServerException(LOCAL_SERVICE_FAILED.getSubError(),new Object[]{e.getMessage()},e));
 		}
         return exchange.getException() == null;
     }
 
 
 	/**
-	 * Switch to cloud proxy and invoke it so that invocation happens via http in the cloud
+	 * Switch to cloud proxy and invoke it via http
 	 * @param exchange - the chenile exchange
 	 * @return true if cloud invocation could be done. false if connectivity is a problem
 	 */
@@ -124,7 +126,7 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
                 return e.getSubErrorNum() != ErrorCodes.CANNOT_CONNECT.getSubError();
 			}
 		}catch(Exception e){
-			ServerException exception = new ServerException(8002,new Object[]{e.getMessage()}, e);
+			ServerException exception = new ServerException(CANNOT_INVOKE_CLOUD.getSubError(),new Object[]{e.getMessage()}, e);
 			exchange.setException(exception);
 			return false;
 		}
@@ -172,13 +174,13 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	private void enhanceWarnings(ErrorNumException exception, ChenileExchange exchange){
 		ResponseMessage responseMessage = new ResponseMessage();
 		responseMessage.setCode(HttpStatus.ACCEPTED);
-		responseMessage.setSubErrorCode(8000);
+		responseMessage.setSubErrorCode(PROCESSED_LOCALLY.getSubError());
 		responseMessage.setDescription(null);
 		responseMessage.setSeverity(ErrorType.WARN);
 		exchange.addWarningMessage(responseMessage);
 		responseMessage = new ResponseMessage();
 		responseMessage.setCode(exception.getErrorNum());
-		responseMessage.setSubErrorCode(8001);
+		responseMessage.setSubErrorCode(ERROR_DETAIL.getSubError());
 		responseMessage.setDescription(null);
 		responseMessage.setParams(new Object[] {exception.getMessage()});
 		responseMessage.setSeverity(ErrorType.WARN);
