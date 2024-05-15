@@ -55,6 +55,7 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	}
 	@Override
 	public void execute(ChenileExchange exchange) throws Exception {
+		String initialBody=toJson(exchange.getBody());
 		// Bypass this interceptor?
 		if(bypassInterception(exchange)){
 			super.doContinue(exchange);
@@ -93,12 +94,12 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 			enhanceWarnings(exception1,exchange);
 		}
 		// finally publish the message
-		publishMessage(exchange);
+		publishMessage(exchange,initialBody);
 	}
 
-	private void publishMessage(ChenileExchange exchange){
+	private void publishMessage(ChenileExchange exchange, String s){
 		try {
-			String s = toJson(exchange.getBody());
+			logger.debug("publishing message = " + s);
 			Map<String,Object> headers = new HashMap<>();
 			OperationDefinition od = exchange.getOperationDefinition();
 			for (ParamDefinition pd: od.getParams()){

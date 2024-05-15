@@ -37,6 +37,8 @@ public class MqttConfiguration {
     @Value("${mqtt.clientID}") private String clientID;
     @Value("${mqtt.actionTimeout}") private int actionTimeout;
     @Value("${mqtt.enabled:true}") private boolean mqttEnabled;
+    @Value("${mqtt.connection.session.expiry}") private Long sessionExpiry;
+
 
     /**
      * This converts a string to a byte array. This is required to convert the password which is
@@ -82,12 +84,12 @@ public class MqttConfiguration {
                                  @Autowired DisconnectedBufferOptions disconnectedBufferOptions) throws MqttException {
         MqttAsyncClient v5Client = new MqttAsyncClient(hostURI, clientID, persistence);
         v5Client.setBufferOpts(disconnectedBufferOptions);
-        if (!mqttEnabled){
-            // this will not have subscriptions. So clean session can always be set to true
-            // since this is a "publish only" instance irrespective of the property settings for
-            // mqtt connections
-            connOpts.setCleanStart(true);
-        }
+        // Combination of clean start and session, broker will wait for subscriber for given time,
+        // + publisher will store message in memory and publish when connection came back
+        connOpts.setCleanStart(false);
+        connOpts.setAutomaticReconnect(true);
+        connOpts.setKeepAliveInterval(sessionExpiry.intValue());
+        connOpts.setSessionExpiryInterval(sessionExpiry);
         IMqttToken token = v5Client.connect(connOpts);
         token.waitForCompletion(actionTimeout);
         logger.info("Connected to the MQTT broker with client ID = " + clientID);
