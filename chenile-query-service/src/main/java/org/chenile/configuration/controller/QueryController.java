@@ -7,6 +7,7 @@ import org.chenile.http.annotation.ChenileController;
 import org.chenile.http.handler.ControllerSupport;
 import org.chenile.query.model.SearchRequest;
 import org.chenile.query.model.SearchResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @RestController
 @ChenileController(value = "chenileMybatisQuery", serviceName = "searchService")
 public class QueryController extends ControllerSupport{
-
 	@PostMapping("/q/{queryName}")
 	// @InterceptedBy("securityInterceptor")
 	 public ResponseEntity<GenericResponse<SearchResponse>> search(

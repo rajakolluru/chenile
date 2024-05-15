@@ -1,17 +1,18 @@
 package org.chenile.proxy.interceptors;
 
 
+import java.net.ConnectException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 
+import org.chenile.base.exception.ErrorNumException;
 import org.chenile.base.exception.ServerException;
 import org.chenile.base.response.GenericResponse;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.owiz.Command;
 import org.chenile.proxy.builder.ProxyBuilder;
+import org.chenile.proxy.errorcodes.ErrorCodes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -37,6 +38,8 @@ public class HttpInvoker implements Command<ChenileExchange>{
 	    HttpEntity<Object> entity = new HttpEntity<Object>(exchange.getBody(),headers);
 	      
 	    String baseURI = (String)exchange.getHeader(ProxyBuilder.REMOTE_URL_BASE);
+		String serviceOpName = exchange.getServiceDefinition().getId() + "." +
+				exchange.getOperationDefinition().getName();
 		if (!baseURI.startsWith("http://")) baseURI = "http://" + baseURI;
 	    ResponseEntity<GenericResponse<?>> httpResponse = null;
 	    RestTemplate restTemplate = getRestTemplate(exchange);
@@ -45,22 +48,35 @@ public class HttpInvoker implements Command<ChenileExchange>{
 					restTemplate.exchange(baseURI + constructUrl(od.getUrl(),exchange),
 							httpMethod(od), entity,exchange.getResponseBodyType());
 		} catch (RestClientException e) {
-			if (exchange.getException() != null)
-				return; // if this has already been handled by the error handler then
-			// the exception has already been set. So we can return
-			RuntimeException exc = new ServerException("Cannot invoke service " + 
-					exchange.getServiceDefinition().getId() + "." + 
-					exchange.getOperationDefinition().getName() + ".Error is " + e.getMessage(), e);
-			exchange.setException(exc);
+			Object[] eArgs = new Object[]{baseURI, serviceOpName, e.getMessage()};
+			setCorrectException(exchange,eArgs,e);
 			return;
 		}
+		populateResponse(httpResponse,baseURI,serviceOpName,exchange);
+	}
+
+	private void populateResponse(ResponseEntity<GenericResponse<?>> httpResponse, String baseURI,String serviceOpName, ChenileExchange exchange) {
 		if (httpResponse.hasBody()) {
 			GenericResponse<?> gr = httpResponse.getBody();
 			exchange.setResponse(gr.getData());
 		}else {
 			String message = "No body returned for " + httpResponse.toString();
-			exchange.setException(new ServerException(0,message));
+			exchange.setException(new ServerException(ErrorCodes.MISSING_BODY.getSubError(), new Object[] {baseURI, serviceOpName}));
 		}
+	}
+
+	private void setCorrectException(ChenileExchange exchange, Object[] eArgs, RestClientException e){
+		if (exchange.getException() != null)
+			return; // if this has already been handled by the error handler then
+		// the exception has already been set. So we can return
+		Throwable t = e.getCause();
+		ErrorNumException exc;
+		if (t instanceof ConnectException){
+			exc = new ServerException(ErrorCodes.CANNOT_CONNECT.getSubError(), eArgs,e);
+		}else {
+			exc = new ServerException(ErrorCodes.CANNOT_INVOKE.getSubError(), eArgs,e);
+		}
+		exchange.setException(exc);
 	}
 
 	/**

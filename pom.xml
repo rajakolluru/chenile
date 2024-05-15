@@ -63,6 +63,7 @@
 		<spring-boot.version>3.2.4</spring-boot.version>
 		<mqtt.paho.version>1.2.5</mqtt.paho.version>
 		<hive.version>1.19.7</hive.version>
+		<wire.mock.version>3.5.2</wire.mock.version>
 	</properties>
 
 	<dependencyManagement>
@@ -268,6 +269,12 @@
 				<groupId>org.testcontainers</groupId>
 				<artifactId>hivemq</artifactId>
 				<version>1.19.7</version>
+			</dependency>
+			<dependency>
+				<groupId>org.wiremock</groupId>
+				<artifactId>wiremock-standalone</artifactId>
+				<version>${wire.mock.version}</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 

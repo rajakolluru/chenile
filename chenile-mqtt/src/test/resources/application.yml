@@ -12,7 +12,8 @@ mqtt:
     cleanStart: true
     receiveMaximum: 1000
     automaticReconnect: true
-
+    session:
+      expiry: 12000
   will:
     payload: I am dead
     qos: 0

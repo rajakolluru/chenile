@@ -26,8 +26,8 @@ public class MessageSourceConfiguration {
 	private String resourceBundle;
 	
 	@Bean public MessageSource messageSource() {
-		ReloadableResourceBundleMessageSource mms = new ReloadableResourceBundleMessageSource();
-		mms.setBasename("classpath:messages");
+		MultipleMessageSource mms = new MultipleMessageSource();
+		mms.setBasename("classpath*:" + resourceBundle);
 		return mms;
 	}
 	

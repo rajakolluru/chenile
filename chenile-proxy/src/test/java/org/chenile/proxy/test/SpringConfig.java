@@ -48,5 +48,11 @@ public class SpringConfig extends SpringBootServletInitializer{
 		return proxyBuilder.buildProxy(FooService.class, "fooService",null,
 				ProxyMode.REMOTE, "localhost:" + serverPort);
 	}
+
+	@Bean public FooService wireMockProxy() {
+		return proxyBuilder.buildProxy(FooService.class, "fooService",null,
+				ProxyMode.REMOTE, "localhost:8089");
+		// 8089 is the wire mock port instantiated in TestChenileProxy
+	}
 }
 

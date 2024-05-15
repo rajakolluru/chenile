@@ -17,7 +17,6 @@ public class FooServiceImpl implements FooService {
 
 	@Override
 	public FooModel increment1(int inc, FooModel foo) {
-		System.out.println("increment1 called with inc=" + inc);
 		return increment(inc,foo);
 	}
 }

@@ -10,7 +10,7 @@ import org.springframework.core.ResolvableType;
 /**
  * This class calculates the correct type for the response body. It will be of type GenericResponse<T> where
  * T is the return type of the underlying service. The underlying service return type can be represented as
- * a ParameterizedType of as a Class object, The treatment differs depending on what got specifid
+ * a ParameterizedType of as a Class object, The treatment differs depending on what got specified
  */
 public class ResponseBodyTypeSelector extends BaseChenileInterceptor {
 

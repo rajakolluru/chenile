@@ -39,7 +39,6 @@
         <dependency>
             <groupId>org.wiremock</groupId>
             <artifactId>wiremock-standalone</artifactId>
-            <version>3.5.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -51,7 +50,7 @@
             <artifactId>chenile-mqtt</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
-						<version>${chenile.version}</version>
+            <version>${chenile.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>

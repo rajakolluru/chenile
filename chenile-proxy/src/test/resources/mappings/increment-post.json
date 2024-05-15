@@ -1,0 +1,24 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/increment",
+    "headers": {
+      "Accept": {
+        "equalTo": "application/json",
+        "caseInsensitive": true
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "success": true,
+      "payload": {
+        "increment": 26
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

@@ -18,6 +18,7 @@ import org.chenile.mqtt.Constants;
 import org.chenile.mqtt.pubsub.MqttPublisher;
 import org.chenile.owiz.impl.ChainContext;
 import org.chenile.proxy.builder.ProxyBuilder;
+import org.chenile.proxy.errorcodes.ErrorCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,8 @@ import java.util.Map;
  * If the cloud service is detected and can be successfully invoked, then the edge service is a "forward only"
  * service. Else it is a "store and forward service" </p>
  * <p>This switch looks for a property called remoteUrl. If the remote Url is not configured then it assumes that
- * the service is running in the cloud. For the cloud it merely passes control to the service i.e. does nothing. </p>
+ * the service is running in the cloud. For the cloud it merely passes control to the service and publishes a message
+ * upon successful execution so that all edges can update themselves</p>
  * <p>If the remoteUrl is configured then it switches the functionality to the store-forward or forward-store modes
  * specified above.</p>
  * <p>The local service call is bypassed completely at the edge. The Switch attempts to call the same service but
@@ -55,45 +57,91 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	}
 	@Override
 	public void execute(ChenileExchange exchange) throws Exception {
-		String initialBody=toJson(exchange.getBody());
 		// Bypass this interceptor?
-		if(bypassInterception(exchange)){
+		if (bypassInterception(exchange)) {
 			super.doContinue(exchange);
 			return;
 		}
+		if (remoteUrl == null || remoteUrl.isEmpty()) {
+			handleCloud(exchange);
+			return;
+		}
+		handleEdge(exchange);
+	}
+
+	/**
+	 * In the edge, we will delegate the control to the cloud.
+	 * @param exchange the chenile exchange
+	 *
+	 */
+	private void handleEdge(ChenileExchange exchange) throws Exception{
+		String initialBody = toJson(exchange.getBody());
 		// First save your position
 		Object serviceReference = exchange.getServiceReference();
-		// Save the current save point. We may have to repeat this if the execution fails.
 		ChainContext.SavePoint savePoint = savePoint(exchange);
 
-		// Cloud invocation. Switch to cloud proxy and invoke it
-		ErrorNumException exception = null;
-		switchServiceReference(getRemoteProxy(exchange), exchange);
-		try {
-			super.doContinue(exchange);
-			if (exchange.getException() == null) return;
-		}catch(Exception e){
-			exception = new ServerException("Error occurred in cloud invocation",e);
+		if (callCloud(exchange,initialBody)) return ;
+		// Cloud call failed due to connectivity issues.
+		// call local service and then move on. Save the connectivity exception.
+		ErrorNumException exception = exchange.getException();
+		if(!callEdge(exchange,serviceReference,savePoint,initialBody)){
+			return ; // call failed. So the correct message will already be there in
+			// ChenileExchange. just return without propagating this elsewhere
 		}
-		// Implement the store and forward functionality. first save any exceptions
-		exception = exchange.getException();
+		// edge call is successful, so give out warnings to indicate that invocation
+		// though successful, happened locally only.
+		enhanceWarnings(exception,exchange);
+		// finally publish the message so the cloud gets it when connectivity is re-established
+		publishMessage(exchange,initialBody);
+	}
+
+	private boolean callEdge(ChenileExchange exchange, Object serviceReference,
+							 ChainContext.SavePoint savePoint,String initialBody){
 		// Switch back to the service reference and repeat it for local storage
 		switchServiceReference(serviceReference, exchange);
 		exchange.setException(null);
 		exchange.setResponse(null);
-		ErrorNumException exception1 = null;
 		try {
 			resumeFromSavedPoint(savePoint, exchange);
-			exception1 = exchange.getException();
 		}catch(Exception e){
-			exception1 = new ServerException("Error occurred in local invocation",e);
+			exchange.setException(new ServerException(8002,new Object[]{e.getMessage()},e));
 		}
+        return exchange.getException() == null;
+    }
 
-		enhanceWarnings(exception,exchange);
-		if (exception1 != null){
-			enhanceWarnings(exception1,exchange);
+
+	/**
+	 * Switch to cloud proxy and invoke it so that invocation happens via http in the cloud
+	 * @param exchange - the chenile exchange
+	 * @return true if cloud invocation could be done. false if connectivity is a problem
+	 */
+	private boolean callCloud(ChenileExchange exchange, String initialBody){
+		switchServiceReference(getRemoteProxy(exchange), exchange);
+		try {
+			super.doContinue(exchange);
+			if (exchange.getException() != null){
+				ErrorNumException e = exchange.getException();
+                return e.getSubErrorNum() != ErrorCodes.CANNOT_CONNECT.getSubError();
+			}
+		}catch(Exception e){
+			ServerException exception = new ServerException(8002,new Object[]{e.getMessage()}, e);
+			exchange.setException(exception);
+			return false;
 		}
 		// finally publish the message
+		publishMessage(exchange,initialBody);
+		return true;
+	}
+
+	/**
+	 * In the cloud, execute the actual service
+	 * Upon successful return, send a message to MQTT topic
+	 * @param exchange the Chenile exchange
+	 */
+	private void handleCloud(ChenileExchange exchange) throws Exception{
+		String initialBody = toJson(exchange.getBody());
+		doContinue(exchange);
+		if (exchange.getException() != null) return;
 		publishMessage(exchange,initialBody);
 	}
 
@@ -159,8 +207,6 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 		String entryPoint = exchange.getHeader(HeaderUtils.ENTRY_POINT,String.class);
 		if (entryPoint != null && entryPoint.equals(Constants.MQTT_ENTRY_POINT))
 			return true;
-		// bypass this if running in the cloud.
-		if(remoteUrl == null || remoteUrl.isEmpty()) return true;
 		// if this is not configured for this service/operation bypass it
 		CloudEdgeSwitchConfig config = getExtensionByAnnotation(CloudEdgeSwitchConfig.class, exchange);
         return config == null;
