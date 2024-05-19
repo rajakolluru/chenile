@@ -58,8 +58,8 @@ query:
     minimumIdle: '2'
     idleTimeout: '5000'
     jdbcUrl: jdbc:h2:mem:demo;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-  mapperFiles: classpath*:com/netscore/pos/query/service/mapper/*.xml
-  definitionFiles: classpath*:com/netscore/pos/query/service/mapper/*.json
+  mapperFiles: classpath*:com/netscoretech/pos/query/service/mapper/*.xml
+  definitionFiles: classpath*:com/netscoretech/pos/query/service/mapper/*.json
 mqtt:
   connection:
     ServerURIs: tcp://localhost:1883
@@ -78,7 +78,7 @@ mqtt:
     retained: false
     topic: willTopic
 
-  clientID: someClient
+  clientID: cloudMqtt
   actionTimeout: 12000
   enabled: false
 
@@ -90,5 +90,5 @@ mqtt:
 
 cloud:
   remoteUrl: localhost:8089
-
+  cloudClientID: cloudMqtt
 

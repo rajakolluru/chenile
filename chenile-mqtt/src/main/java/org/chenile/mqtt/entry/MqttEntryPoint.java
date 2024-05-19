@@ -2,7 +2,6 @@ package org.chenile.mqtt.entry;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.chenile.base.exception.ServerException;
-import org.chenile.base.response.GenericResponse;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.HeaderUtils;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
@@ -10,7 +9,6 @@ import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.mqtt.Constants;
-import org.chenile.mqtt.pubsub.MqttPublisher;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 import org.eclipse.paho.mqttv5.common.packet.UserProperty;
@@ -48,10 +46,9 @@ public class MqttEntryPoint {
 		 populateHeaders(message,exchange);
 		 chenileEntryPoint.execute(exchange);
 		 Object response = exchange.getResponse();
-		 if (logger.isInfoEnabled()) {
-			 logger.info("Received message " + messageContent + " and handled it. Response = "
+		 logger.info("Received message " + messageContent + " and handled it. Response = "
 					 + objectMapper.writeValueAsString(response));
-		 }
+
 	}
 
 	private void populateHeaders(MqttMessage message, ChenileExchange exchange){

@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.chenile.cloudedgeswitch.interceptor.errorcodes.ErrorCodes.*;
+import static org.chenile.http.Constants.*;
 
 /**
  * <p>This interceptor, if configured, acts like an edge switch for a service i.e. it turns a service from a
@@ -53,10 +54,14 @@ import static org.chenile.cloudedgeswitch.interceptor.errorcodes.ErrorCodes.*;
 public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	Logger logger = LoggerFactory.getLogger(CloudEdgeSwitch.class);
 	private String remoteUrl;
+	private String cloudClientID;
 	@Autowired private MqttPublisher mqttPublisher;
 	@Autowired private ProxyBuilder proxyBuilder;
 	public void setRemoteUrl(String remoteUrl){
 		this.remoteUrl = remoteUrl;
+	}
+	public void setCloudClientId(String cloudClientID) {
+		this.cloudClientID = cloudClientID;
 	}
 	@Override
 	public void execute(ChenileExchange exchange) throws Exception {
@@ -65,6 +70,30 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 			super.doContinue(exchange);
 			return;
 		}
+
+		String entryPoint = exchange.getHeader(HeaderUtils.ENTRY_POINT,String.class);
+		if (entryPoint != null && entryPoint.equals(Constants.MQTT_ENTRY_POINT))
+			handleMqtt(exchange);
+		else if (entryPoint != null && entryPoint.equals(HTTP_ENTRY_POINT))
+			handleHttp(exchange);
+	}
+
+	/**
+	 * In MQTT, if the message comes to the edge, call the service as usual
+	 * If it is the cloud, handle it like you do HTTP messages
+	 * @param exchange the chenile exchange
+	 * @throws Exception in case of any problem downstream
+	 */
+	private void handleMqtt(ChenileExchange exchange) throws Exception{
+		if (remoteUrl == null || remoteUrl.isEmpty())
+			handleCloud(exchange);
+		else{
+			super.doContinue(exchange);
+			return;
+		}
+	}
+
+	private void handleHttp(ChenileExchange exchange) throws Exception{
 		if (remoteUrl == null || remoteUrl.isEmpty())
 			handleCloud(exchange);
 		else
@@ -77,6 +106,7 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	 *
 	 */
 	private void handleEdge(ChenileExchange exchange) throws Exception{
+		System.err.println("I am at the edge ");
 		String initialBody = toJson(exchange.getBody());
 		// First save your position
 		Object serviceReference = exchange.getServiceReference();
@@ -94,7 +124,11 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 		// though successful, happened locally only.
 		enhanceWarnings(exception,exchange);
 		// finally publish the message so the cloud gets it when connectivity is re-established
-		publishMessage(exchange,initialBody);
+		// Since this must be specifically targeted at the cloud, set the target header in the message
+		Map<String,Object> headers = new HashMap<>();
+		if (!cloudClientID.isEmpty())
+			headers.put(Constants.TARGET,cloudClientID);
+		publishMessage(exchange,initialBody,headers);
 	}
 
 	private boolean callEdge(ChenileExchange exchange, Object serviceReference,
@@ -130,8 +164,6 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 			exchange.setException(exception);
 			return false;
 		}
-		// finally publish the message
-		publishMessage(exchange,initialBody);
 		return true;
 	}
 
@@ -144,20 +176,41 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 		String initialBody = toJson(exchange.getBody());
 		doContinue(exchange);
 		if (exchange.getException() != null) return;
-		publishMessage(exchange,initialBody);
+		Map<String,Object> headers = addMqttTargetHeaderIfRequired(exchange);
+		publishMessage(exchange,initialBody,headers);
 	}
 
-	private void publishMessage(ChenileExchange exchange, String s){
+	/**
+	 * If this message came from MQTT then the original source must not be receiving
+	 * this message since that would create duplicates. Hence, we will create a target header
+	 * telling the original source to not update itself again.
+	 * @param exchange the chenile exchange
+	 * @return the headers map
+	 */
+	private Map<String,Object> addMqttTargetHeaderIfRequired(ChenileExchange exchange){
+		Map<String,Object> headers = new HashMap<>();
+		String entryPoint = exchange.getHeader(HeaderUtils.ENTRY_POINT,String.class);
+		if (entryPoint != null && entryPoint.equals(Constants.MQTT_ENTRY_POINT)){
+			String source = exchange.getHeader(Constants.SOURCE, String.class);
+			logger.info("Adding an MQTT header !" + source + " for target");
+			if (source != null){
+				headers.put(Constants.TARGET,"!" + source);
+			}
+		}
+		return headers;
+	}
+
+	private void publishMessage(ChenileExchange exchange, String s, Map<String,Object> headers){
 		try {
 			logger.debug("publishing message = " + s);
-			Map<String,Object> headers = new HashMap<>();
+			if (headers == null) headers = new HashMap<>();
 			OperationDefinition od = exchange.getOperationDefinition();
 			for (ParamDefinition pd: od.getParams()){
 				if(pd.getType().equals(HttpBindingType.HEADER)) {
 					headers.put(pd.getName(), exchange.getHeader(pd.getName()));
 				}
 			}
-			logger.debug("publishing message = " + s + " with headers " +
+			System.out.println("publishing message = " + s + " with headers " +
 					headers);
 			mqttPublisher.publishToOperation(exchange.getServiceDefinition().getId(),
 					exchange.getOperationDefinition().getName(),s, headers);
@@ -202,15 +255,13 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 				null,ProxyBuilder.ProxyMode.REMOTE,remoteUrl);
 	}
 
-	// Bypass the interceptor if there exists no configuration or if the request is from MQTT entry point
+	// Bypass the interceptor if there exists no configuration
 	@Override
 	protected boolean bypassInterception(ChenileExchange exchange) {
-		// bypass all MQTT requests
-		String entryPoint = exchange.getHeader(HeaderUtils.ENTRY_POINT,String.class);
-		if (entryPoint != null && entryPoint.equals(Constants.MQTT_ENTRY_POINT))
-			return true;
 		// if this is not configured for this service/operation bypass it
 		CloudEdgeSwitchConfig config = getExtensionByAnnotation(CloudEdgeSwitchConfig.class, exchange);
         return config == null;
     }
+
+
 }

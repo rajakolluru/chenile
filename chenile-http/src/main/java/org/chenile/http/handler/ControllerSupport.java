@@ -43,7 +43,7 @@ public class ControllerSupport {
 	protected<T> ResponseEntity<T> process(String opName, 
 			HttpServletRequest request,Object...args ){
 		ChenileExchange chenileExchange = makeExchange(request,opName,args);
-		chenileExchange.setHeader(HeaderUtils.CHANNEL, Constants.HTTP_ENTRY_POINT);
+		chenileExchange.setHeader(HeaderUtils.ENTRY_POINT, Constants.HTTP_ENTRY_POINT);
 		chenileExchange.setApiInvocation(Arrays.asList(args));
 		chenileEntryPoint.execute(chenileExchange);
 		T response = (T) chenileExchange.getResponse();

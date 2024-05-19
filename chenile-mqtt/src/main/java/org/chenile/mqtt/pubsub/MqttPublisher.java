@@ -1,6 +1,7 @@
 package org.chenile.mqtt.pubsub;
 
 import org.chenile.base.exception.ServerException;
+import org.chenile.mqtt.Constants;
 import org.chenile.mqtt.MqttInfoProvider;
 import org.chenile.mqtt.model.ChenileMqtt;
 import org.eclipse.paho.mqttv5.client.IMqttToken;
@@ -51,7 +52,6 @@ public class MqttPublisher {
         String topic = m.topic();
         topic = topic + "/" + operationName;
         int qos = m.qos();
-        logger.info("Publishing message " + payload + " to " + topic + " with qos = "  + qos);
         publish(topic,qos,payload,properties);
     }
     public void publish(String topic,  String payload, Map<String,Object> properties)
@@ -66,6 +66,11 @@ public class MqttPublisher {
         for (String key: properties.keySet()){
             userProperties.add(new UserProperty(key,properties.get(key).toString()));
         }
+        logger.info("At the publish message sending client ID " + v5Client.getClientId() +
+                " as the source of the message with payload = " + payload +
+                " and qos = " + qos);
+        // always add the source to every MQTT message.
+        userProperties.add(new UserProperty(Constants.SOURCE, v5Client.getClientId()));
         props.setUserProperties(userProperties);
         v5Message.setProperties(props);
         if (givenQos == -1)

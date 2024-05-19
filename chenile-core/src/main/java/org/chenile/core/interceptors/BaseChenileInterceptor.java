@@ -50,7 +50,7 @@ public class BaseChenileInterceptor implements Command<ChenileExchange>{
 	 * If you happen to throw an exception in this method, it will get added to the
 	 * set of errors that would ultimately be returned. See also {@link ChenileExchange#setException(Throwable)}
 	 *
-	 * @param exchange
+	 * @param exchange Chenile Exchange
 	 */
 	protected void doPostProcessing(ChenileExchange exchange) {}
 
@@ -126,11 +126,7 @@ public class BaseChenileInterceptor implements Command<ChenileExchange>{
 	}
 
 	protected <T extends Annotation> T getExtensionByAnnotation(Class<T> klass, ChenileExchange exchange) {
-		T ret = exchange.getOperationDefinition().getExtensionAsAnnotation(klass);
-		if (ret == null) {
-			ret = exchange.getServiceDefinition().getExtensionAsAnnotation(klass);
-		}
-		return ret;
+		return exchange.getExtensionByAnnotation(klass);
 	}
 
 }

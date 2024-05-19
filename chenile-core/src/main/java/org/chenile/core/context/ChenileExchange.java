@@ -2,6 +2,7 @@ package org.chenile.core.context;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -416,5 +417,12 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	@Override
 	public void removeAllWarnings() {
 		responseMessages = new ArrayList<>();
+	}
+	public <T extends Annotation> T getExtensionByAnnotation(Class<T> klass) {
+		T ret = this.getOperationDefinition().getExtensionAsAnnotation(klass);
+		if (ret == null) {
+			ret = this.getServiceDefinition().getExtensionAsAnnotation(klass);
+		}
+		return ret;
 	}
 }

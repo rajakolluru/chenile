@@ -1,2 +1,5 @@
 cloud:
   remoteUrl: localhost:8089
+  cloudClientID: cloudMqtt
+mqtt:
+  clientID: storeMqtt

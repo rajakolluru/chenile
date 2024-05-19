@@ -1,5 +1,6 @@
 package org.chenile.mqtt.pubsub;
 
+import org.chenile.mqtt.Constants;
 import org.chenile.mqtt.MqttInfoProvider;
 import org.chenile.mqtt.entry.MqttEntryPoint;
 import org.chenile.mqtt.model.ChenileMqtt;
@@ -59,14 +60,51 @@ public class MqttSubscriber implements MqttCallback {
         String messageContent = new String(message.getPayload());
         log("Received at topic = |" + topic + "| message = ||\n" + messageContent + "||\n"
                 + " with ID = " + message.getId());
-        if(message.isDuplicate()){
-            log("Received duplicate message: " + messageContent);
-            publisher.sendAck(message);
-            return;
-        }
+        if(shouldIgnore(message)) return;
         mqttEntryPoint.process(topic,message);
         logger.info("Done with MQtt entry point. sending ack");
         publisher.sendAck(message);
+    }
+
+    /**
+     * This method performs a few checks to see if this message needs to be ignored.
+     * @param message the message that needs to be checked
+     * @return true if it needs to be ignored false otherwise
+     * @throws Exception if an exception is thrown in sending an ack
+     */
+    private boolean shouldIgnore(MqttMessage message) throws Exception{
+        if(message.isDuplicate()){
+            log("Received duplicate message: " + new String(message.getPayload()));
+            publisher.sendAck(message);
+            return true;
+        }
+        boolean testMode = mqttInfoProvider.getTestMode(message);
+        if (testMode) return false; // don't ignore in test mode.
+        // source and target checks
+        String source = mqttInfoProvider.getSource(message);
+        // ignore messages if they originate from us
+        if (source != null && source.equals(v5Cient.getClientId())){
+            log("Ignoring message as the source = current client ID = " + v5Cient.getClientId());
+            publisher.sendAck(message);
+            return true;
+        }
+        // if target is set and we are not the target then ignore this message
+        String target = mqttInfoProvider.getTarget(message);
+        log("Target = " + target);
+        if(target == null) return false;
+        // if target is marked with a !sign then if we are the target we should
+        // ignore this message
+        if ( target.startsWith("!") && target.substring(1).equals(v5Cient.getClientId())){
+            log("Ignoring message as the target = " + target + " and current client ID = " + v5Cient.getClientId());
+            publisher.sendAck(message);
+            return true;
+        }
+        if ( !target.startsWith("!") && !target.equals(v5Cient.getClientId())){
+            log("Ignoring message as the target = " + target + " and current client ID = " + v5Cient.getClientId());
+            publisher.sendAck(message);
+            return true;
+        }
+        return false;
     }
 
     @Override

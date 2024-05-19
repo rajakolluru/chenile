@@ -2,6 +2,7 @@ package org.chenile.proxy.interceptors;
 
 
 import java.net.ConnectException;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Map.Entry;
 
@@ -71,7 +72,8 @@ public class HttpInvoker implements Command<ChenileExchange>{
 		// the exception has already been set. So we can return
 		Throwable t = e.getCause();
 		ErrorNumException exc;
-		if (t instanceof ConnectException){
+		if (t instanceof ConnectException || t instanceof UnknownHostException ||
+				t.getClass().getName().startsWith("java.net.")){
 			exc = new ServerException(ErrorCodes.CANNOT_CONNECT.getSubError(), eArgs,e);
 		}else {
 			exc = new ServerException(ErrorCodes.CANNOT_INVOKE.getSubError(), eArgs,e);
