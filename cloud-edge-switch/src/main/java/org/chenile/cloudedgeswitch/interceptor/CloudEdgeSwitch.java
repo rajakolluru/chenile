@@ -106,17 +106,15 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	 *
 	 */
 	private void handleEdge(ChenileExchange exchange) throws Exception{
-		System.err.println("I am at the edge ");
-		String initialBody = toJson(exchange.getBody());
 		// First save your position
 		Object serviceReference = exchange.getServiceReference();
 		ChainContext.SavePoint savePoint = savePoint(exchange);
 
-		if (callCloud(exchange,initialBody)) return ;
+		if (callCloud(exchange)) return ;
 		// Cloud call failed due to connectivity issues.
 		// call local service and then move on. Save the connectivity exception.
 		ErrorNumException exception = exchange.getException();
-		if(!callEdge(exchange,serviceReference,savePoint,initialBody)){
+		if(!callEdge(exchange,serviceReference,savePoint)){
 			return ; // call failed. So the correct message will already be there in
 			// ChenileExchange. just return without propagating this elsewhere
 		}
@@ -128,11 +126,11 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 		Map<String,Object> headers = new HashMap<>();
 		if (!cloudClientID.isEmpty())
 			headers.put(Constants.TARGET,cloudClientID);
-		publishMessage(exchange,initialBody,headers);
+		publishMessage(exchange,headers);
 	}
 
 	private boolean callEdge(ChenileExchange exchange, Object serviceReference,
-							 ChainContext.SavePoint savePoint,String initialBody){
+							 ChainContext.SavePoint savePoint){
 		// Switch back to the service reference and repeat it for local storage
 		switchServiceReference(serviceReference, exchange);
 		exchange.setException(null);
@@ -151,7 +149,7 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	 * @param exchange - the chenile exchange
 	 * @return true if cloud invocation could be done. false if connectivity is a problem
 	 */
-	private boolean callCloud(ChenileExchange exchange, String initialBody){
+	private boolean callCloud(ChenileExchange exchange){
 		switchServiceReference(getRemoteProxy(exchange), exchange);
 		try {
 			super.doContinue(exchange);
@@ -173,11 +171,10 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	 * @param exchange the Chenile exchange
 	 */
 	private void handleCloud(ChenileExchange exchange) throws Exception{
-		String initialBody = toJson(exchange.getBody());
 		doContinue(exchange);
 		if (exchange.getException() != null) return;
 		Map<String,Object> headers = addMqttTargetHeaderIfRequired(exchange);
-		publishMessage(exchange,initialBody,headers);
+		publishMessage(exchange,headers);
 	}
 
 	/**
@@ -200,8 +197,9 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 		return headers;
 	}
 
-	private void publishMessage(ChenileExchange exchange, String s, Map<String,Object> headers){
+	private void publishMessage(ChenileExchange exchange, Map<String,Object> headers){
 		try {
+			String s = toJson(exchange.getBody());
 			logger.debug("publishing message = " + s);
 			if (headers == null) headers = new HashMap<>();
 			OperationDefinition od = exchange.getOperationDefinition();
@@ -210,8 +208,6 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 					headers.put(pd.getName(), exchange.getHeader(pd.getName()));
 				}
 			}
-			System.out.println("publishing message = " + s + " with headers " +
-					headers);
 			mqttPublisher.publishToOperation(exchange.getServiceDefinition().getId(),
 					exchange.getOperationDefinition().getName(),s, headers);
 		}catch(Exception e){
