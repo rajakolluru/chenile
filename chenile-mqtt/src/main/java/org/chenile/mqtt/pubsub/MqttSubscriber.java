@@ -93,8 +93,9 @@ public class MqttSubscriber implements MqttCallback {
         if(target == null) return false;
         // if target is marked with a !sign then if we are the target we should
         // ignore this message
-        if ( target.startsWith("!") && target.substring(1).equals(v5Cient.getClientId()) ||
-            ( !target.startsWith("!") && !target.equals(v5Cient.getClientId())){
+        if ( (target.startsWith("!") && target.substring(1).equals(v5Cient.getClientId())) ||
+            ( !target.startsWith("!") && !target.equals(v5Cient.getClientId()) )
+        ){
             log("Ignoring message as the target = " + target + " and current client ID = " + v5Cient.getClientId());
             publisher.sendAck(message);
             return true;
