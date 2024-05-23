@@ -27,7 +27,7 @@ mqtt:
   publish:
     actionTimeout: 120
     qos: 2
-    retain: true
+    retain: false
     topic: /chenile/mqtt
 
 

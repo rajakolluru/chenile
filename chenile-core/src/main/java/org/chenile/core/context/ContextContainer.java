@@ -317,6 +317,7 @@ public class ContextContainer {
 		map.put(HeaderUtils.DEVICE_ID, getDeviceId());
 		map.put(HeaderUtils.TENANT_TYPE, getTenantType());
 		map.put(HeaderUtils.TENANT_ID_KEY, getTenant());
+		map.putAll(getContext());
 		return map;
 	}
 

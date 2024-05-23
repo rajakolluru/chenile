@@ -9,6 +9,7 @@ import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.mqtt.Constants;
+import org.chenile.mqtt.errorcodes.ErrorCodes;
 import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.eclipse.paho.mqttv5.common.packet.MqttProperties;
 import org.eclipse.paho.mqttv5.common.packet.UserProperty;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import static org.chenile.mqtt.errorcodes.ErrorCodes.*;
 
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,13 @@ public class MqttEntryPoint {
 	ChenileEntryPoint chenileEntryPoint;
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
+	/**
+	 * The entry point for MQ-TT. It puts the message into the system and extracts the response which is logged.
+	 * We support asynchronous messages at this point in time.
+	 * @param topic the topic where the message was received
+	 * @param message the message that was received
+	 * @throws Exception if there is a problem in processing the message
+	 */
 	 public void process(String topic, MqttMessage message) throws Exception{
 		 ChenileExchange exchange = makeExchange(topic);
 		 String messageContent = new String(message.getPayload());
@@ -65,25 +74,29 @@ public class MqttEntryPoint {
 	/**
 	 * topic will be in the format /some/stuff/serviceName/operationName
 	 * extract the service name and operation name from the topic
-	 * @param topic
-	 * @return
+	 * @param topic the topic that received this message. Used to compute service and op name
+	 * @return the exchange
 	 */
 	private ChenileExchange makeExchange(String topic) {
 		ChenileExchange exchange = new ChenileExchange();
 		 int index = topic.lastIndexOf("/");
 		 if (index == -1){
-			 throw new ServerException(901,new Object[]{topic});
+			 throw new ServerException(UNSUPPORTED_TOPIC_FORMAT_FOR_OPERATION.getSubError(),
+					 new Object[]{topic});
 		 }
 		 String opName = topic.substring(index+1);
-		 String serviceTopic = topic.substring(0,index);
+		 String t = topic.substring(0,index);
+		 index = t.lastIndexOf("/");
+		if (index == -1){
+			throw new ServerException(UNSUPPORTED_TOPIC_FORMAT_FOR_SERVICE.getSubError(),
+					new Object[]{topic });
+		}
 
-		 String serviceId = mqttConfig.get(serviceTopic);
-		 if (serviceId == null){
-			 throw new ServerException(902,new Object[]{topic, serviceTopic });
-		 }
+		String serviceId = t.substring(index+1);
+
 		ChenileServiceDefinition serviceDefinition = chenileConfiguration.getServices().get(serviceId);
 		 if (serviceDefinition == null){
-			 throw new ServerException(903, new Object[] { topic, serviceId});
+			 throw new ServerException(MISSING_SERVICE.getSubError(), new Object[] { topic, serviceId});
 		 }
 		 exchange.setServiceDefinition(serviceDefinition);
 		List<OperationDefinition> operations = serviceDefinition.getOperations();
@@ -93,6 +106,7 @@ public class MqttEntryPoint {
 				return exchange;
 			}
 		}
-		throw new ServerException(904, new Object[]{ topic, serviceId, opName});
+		throw new ServerException(MISSING_SERVICE_OPERATION.getSubError(),
+				new Object[]{ topic, serviceId, opName});
 	}
 }

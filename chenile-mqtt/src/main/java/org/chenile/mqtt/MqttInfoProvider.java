@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Map;
 
 /**
- * A collection of general purpose utilities for MQ-TT
+ * A collection of general purpose utilities for MQ-TT. Internally used.
  */
 public class MqttInfoProvider {
     @Autowired

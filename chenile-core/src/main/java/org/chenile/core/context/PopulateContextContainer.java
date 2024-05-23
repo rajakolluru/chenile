@@ -24,7 +24,8 @@ public class PopulateContextContainer extends BaseChenileInterceptor implements 
 	
 	public static void populateChenileExchangeFromContext(ChenileExchange exchange, ContextContainer contextContainer) {
 		contextContainer.toMap().forEach((k,v)->{
-			exchange.setHeader(k,v);
+			if (k.startsWith("x-"))
+				exchange.setHeader(k,v);
 		});
 	}
 

@@ -30,6 +30,22 @@ import java.util.Map;
 public class MqttConfiguration {
     Logger logger = LoggerFactory.getLogger(MqttConfiguration.class);
     @Value("${mqtt.connection.ServerURIs}") private String hostURI;
+    /**
+     * This is the base publish topic that will be pre-pended to publish  messages.
+     * This can contain specific expressions such as {tenantId} for example which
+     * will be substituted by the actual tenantId at the time of publishing a message.
+     * This value may not be the same as the base subscribe topic because publishing
+     * happens at runtime while subscription happens during startup. Hence, subscription can contain
+     * wild cards (such as +) whereas publishing may include expressions that will be
+     * substituted from the headers (such as tenant Id etc.)
+     * But if it is a constant expression they both can be the same. (default: chenile)
+     */
+    @Value("${mqtt.publish.base.topic:chenile}") String basePublishTopic;
+    /**
+     * This is the base topic name that will pre-pended for all subscriptions. It can contain
+     * wild cards such as + in accordance with the MQ-TT subscription rules . (default: chenile)
+     */
+    @Value("${mqtt.subscribe.base.topic:chenile}") private String baseSubscribeTopic;
     @Value("${mqtt.will.payload}") private String willPayload;
     @Value("${mqtt.will.qos}") private int willQos;
     @Value("${mqtt.will.retained}") private boolean willRetained;
@@ -92,7 +108,7 @@ public class MqttConfiguration {
         connOpts.setSessionExpiryInterval(sessionExpiry);
         IMqttToken token = v5Client.connect(connOpts);
         token.waitForCompletion(actionTimeout);
-        logger.info("Connected to the MQTT broker with client ID = " + clientID);
+        logger.info("Connected to the MQTT broker with client ID = {}", clientID);
         return v5Client;
     }
 
@@ -112,7 +128,7 @@ public class MqttConfiguration {
     }
     @Bean
     MqttInitializer mqttInitializer(){
-        return new MqttInitializer(mqttEnabled);
+        return new MqttInitializer(mqttEnabled,basePublishTopic,baseSubscribeTopic);
     }
 
     /**

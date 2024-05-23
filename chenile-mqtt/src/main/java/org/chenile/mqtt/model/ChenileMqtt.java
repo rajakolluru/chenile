@@ -21,6 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(ElementType.TYPE)
 @ChenileAnnotation
 public @interface ChenileMqtt {
-    public String topic() default "";
+    public String subscribeTopic() default "";
+    public String publishTopic() default "";
     public int qos() default 2;
 }

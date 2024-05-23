@@ -19,7 +19,7 @@ public class HeaderUtils {
 	public static final String DEVICE_ID = "x-chenile-deviceid";
 	public static final String TENANT_TYPE = "x-chenile-tenanttype";
 	public static final String CHANNEL = "x-chenile-channel";
-	public static final String ENTRY_POINT = "x-chenile-entry-point";
+	public static final String ENTRY_POINT = "chenile-entry-point";
 	
 	private static String convertToString(Object o) {
 		return (o == null) ? null: o.toString();

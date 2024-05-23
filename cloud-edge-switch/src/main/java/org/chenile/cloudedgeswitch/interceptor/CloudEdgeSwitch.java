@@ -8,6 +8,7 @@ import org.chenile.base.response.ErrorType;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.cloudedgeswitch.CloudEdgeSwitchConfig;
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.context.HeaderCopier;
 import org.chenile.core.context.HeaderUtils;
 import org.chenile.core.interceptors.BaseChenileInterceptor;
 import org.chenile.core.model.HttpBindingType;
@@ -22,6 +23,7 @@ import org.chenile.proxy.errorcodes.ErrorCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 
 import java.lang.reflect.Method;
@@ -34,14 +36,13 @@ import static org.chenile.http.Constants.*;
 /**
  * <p>This interceptor, if configured, acts like an edge switch for a service i.e. it turns a service from a
  * cloud service into an edge service.</p>
- * <p>The edge service logic is as follows: <br/>
- * If the cloud service is detected and can be successfully invoked, then the edge service is a "forward only"
- * service. Else it is a "store and forward service" </p>
  * <p>This switch looks for a property called remoteUrl. If the remote Url is not configured then it assumes that
  * the service is running in the cloud. For the cloud it merely passes control to the service and publishes a message
  * upon successful execution so that all edges can update themselves</p>
- * <p>If the remoteUrl is configured then it switches the functionality to the store-forward or forward-store modes
- * specified above.</p>
+ * <p>If the remoteUrl is configured then it switches the functionality to the "edge" mode.
+ * <p>The edge service logic is as follows: <br/>
+ *  * If the cloud service is detected and can be successfully invoked synchronously via HTTP, then the edge service is a
+ *  "forward only" service. Else it is a "store and forward service" </p>
  * <p>The local service call is bypassed completely at the edge. The Switch attempts to call the same service but
  * hosted in the cloud. The remote url is the cloud location of the service. If the cloud call is successful, then this
  * effectively acts as if the edge service is a traffic cop merely directing all the incoming traffic to the cloud
@@ -50,6 +51,8 @@ import static org.chenile.http.Constants.*;
  * "store and forward" part of the logic kicks in. In this case the local service is
  * called. If successful, the result of the local service call is returned with a warning stating that the transaction
  * succeeded but it is done locally due to network failure.</p>
+ * <p>Then a message is forwarded to the cloud via MQ-TT. This message, when received, will cause the cloud service
+ * to update itself and also notify all the edges (except the edge that notified the cloud in the first place) </p>
  */
 public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	Logger logger = LoggerFactory.getLogger(CloudEdgeSwitch.class);
@@ -57,6 +60,7 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	private String cloudClientID;
 	@Autowired private MqttPublisher mqttPublisher;
 	@Autowired private ProxyBuilder proxyBuilder;
+	@Autowired @Qualifier("populateContextContainer") private HeaderCopier headerCopier;
 	public void setRemoteUrl(String remoteUrl){
 		this.remoteUrl = remoteUrl;
 	}
@@ -76,6 +80,8 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 			handleMqtt(exchange);
 		else if (entryPoint != null && entryPoint.equals(HTTP_ENTRY_POINT))
 			handleHttp(exchange);
+		else
+			super.doContinue(exchange);
 	}
 
 	/**
@@ -200,16 +206,21 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 	private void publishMessage(ChenileExchange exchange, Map<String,Object> headers){
 		try {
 			String s = toJson(exchange.getBody());
-			logger.debug("publishing message = " + s);
 			if (headers == null) headers = new HashMap<>();
+			final Map<String,Object> headers1 = headers;
+			exchange.getHeaders().forEach((key,val)-> {
+				// only copy headers starting with x-
+				if (key.startsWith("x-"))
+					headers1.put(key,val);
+			});
 			OperationDefinition od = exchange.getOperationDefinition();
 			for (ParamDefinition pd: od.getParams()){
 				if(pd.getType().equals(HttpBindingType.HEADER)) {
-					headers.put(pd.getName(), exchange.getHeader(pd.getName()));
+					headers1.put(pd.getName(), exchange.getHeader(pd.getName()));
 				}
 			}
 			mqttPublisher.publishToOperation(exchange.getServiceDefinition().getId(),
-					exchange.getOperationDefinition().getName(),s, headers);
+					exchange.getOperationDefinition().getName(),s, headers1);
 		}catch(Exception e){
 			logger.info("Unable to send a message. Error = " +e.getMessage());
 		}
@@ -248,7 +259,7 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 		// this service is running locally.
 		Class<?> interfaceClass = exchange.getServiceDefinition().getInterfaceClass();
 		return proxyBuilder.buildProxy(interfaceClass,exchange.getServiceDefinition().getId(),
-				null,ProxyBuilder.ProxyMode.REMOTE,remoteUrl);
+				headerCopier,ProxyBuilder.ProxyMode.REMOTE,remoteUrl);
 	}
 
 	// Bypass the interceptor if there exists no configuration
