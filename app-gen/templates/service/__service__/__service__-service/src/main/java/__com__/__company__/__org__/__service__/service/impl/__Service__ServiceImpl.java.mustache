@@ -3,13 +3,17 @@ package {{com}}.{{company}}.{{org}}.{{service}}.service.impl;
 import org.chenile.base.exception.BadRequestException;
 import org.chenile.base.exception.ErrorNumException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import {{com}}.{{company}}.{{org}}.{{service}}.model.{{Service}}Entity;
 import {{com}}.{{company}}.{{org}}.{{service}}.service.{{Service}}Service;
 
 public class {{Service}}ServiceImpl implements {{Service}}Service{
+    private static final Logger logger = LoggerFactory.getLogger({{Service}}ServiceImpl.class);
 	@Override
 	public {{Service}}Entity op1({{Service}}Entity {{service}}Entity) {
+        logger.debug("At the op1 method in service class");
 		// Implement the service here
 		{{service}}Entity.id = "{{Service}}ServiceImpl";
         /*
