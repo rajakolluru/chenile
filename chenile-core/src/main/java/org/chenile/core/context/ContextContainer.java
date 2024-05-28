@@ -70,22 +70,24 @@ public class ContextContainer {
 	public void setUserId(String userId) {
 		if (userId == null)
 			userId = "";
-		getContext().userId = userId;
+		put(HeaderUtils.USER_ID_KEY,userId);
+		//getContext().userId = userId;
 	}
 
 	public String getUser() {
-		String user = getContext().userId;
+		String user = get(HeaderUtils.USER_ID_KEY);
 		return (user == null) ? "" : user;
 	}
 
-	public void setRegion(String tenantId) {
-		if (tenantId == null)
-			tenantId = "";
-		getContext().regionId = tenantId;
+	public void setRegion(String regionId) {
+		if (regionId == null)
+			regionId = "";
+		put(HeaderUtils.REGION_ID_KEY,regionId);
+		//getContext().regionId = tenantId;
 	}
 
 	public String getRegion() {
-		String tenant = getContext().regionId;
+		String tenant = get(HeaderUtils.REGION_ID_KEY);
 		return (tenant == null) ? "" : tenant;
 	}
 
@@ -94,7 +96,7 @@ public class ContextContainer {
 	 * @return the groupId
 	 */
 	public String getGroupId() {
-		String groupId = getContext().groupId;
+		String groupId = get(HeaderUtils.GROUP_ID_KEY);
 		return (groupId == null) ? "" : groupId;
 	}
 
@@ -105,14 +107,15 @@ public class ContextContainer {
 	public void setGroupId(String groupId) {
 		if (groupId == null)
 			groupId = "";
-		getContext().groupId = groupId;
+		put(HeaderUtils.GROUP_ID_KEY,groupId);
+		//getContext().groupId = groupId;
 	}
 
 	/**
 	 * @return the employeeId
 	 */
 	public String getEmployeeId() {
-		String employeeId = getContext().employeeId;
+		String employeeId = get(HeaderUtils.EMPLOYEE_ID_KEY);
 		return (employeeId == null) ? "" : employeeId;
 	}
 
@@ -123,14 +126,15 @@ public class ContextContainer {
 	public void setEmployeeId(String employeeId) {
 		if (employeeId == null)
 			employeeId = "";
-		getContext().employeeId = employeeId;
+		put(HeaderUtils.EMPLOYEE_ID_KEY,employeeId);
+		//getContext().employeeId = employeeId;
 	}
 
 	/**
 	 * @return the appType
 	 */
 	public String getAppType() {
-		String appType = getContext().appType;
+		String appType = get(HeaderUtils.APP_TYPE_KEY);
 		return (appType == null) ? "" : appType;
 	}
 
@@ -141,14 +145,16 @@ public class ContextContainer {
 	public void setAppType(String appType) {
 		if (appType == null)
 			appType = "";
-		getContext().appType = appType;
+		put(HeaderUtils.APP_TYPE_KEY,appType);
+		//getContext().appType = appType;
 	}
 
 	/**
 	 * @return the tenantType
 	 */
 	public String getTenantType() {
-		return getContext().tenantType;
+
+		return get(HeaderUtils.TENANT_TYPE);
 	}
 
 	/**
@@ -158,7 +164,8 @@ public class ContextContainer {
 	public void setTenantType(String tenantType) {
 		if (tenantType == null)
 			tenantType = "";
-		getContext().tenantType = tenantType;
+		put(HeaderUtils.TENANT_TYPE,tenantType);
+		//getContext().tenantType = tenantType;
 	}
 
 	/**
@@ -233,7 +240,7 @@ public class ContextContainer {
 	 * @return the trajectory
 	 */
 	public String getTrajectory() {
-		return getContext().trajectory;
+		return get(HeaderUtils.TRAJECTORY_ID);
 	}
 
 	/**
@@ -243,7 +250,8 @@ public class ContextContainer {
 	public void setTrajectory(String trajectory) {
 		if (trajectory == null)
 			trajectory = "";
-		getContext().trajectory = trajectory;
+		put(HeaderUtils.TRAJECTORY_ID,trajectory);
+		//getContext().trajectory = trajectory;
 	}
 
 	/**
@@ -251,7 +259,7 @@ public class ContextContainer {
 	 */
 
 	public String getUserAgent() {
-		String userAgent = getContext().userAgent;
+		String userAgent = get(HeaderUtils.USER_AGENT_KEY);
 		return (null == userAgent) ? "" : userAgent;
 	}
 
@@ -262,29 +270,32 @@ public class ContextContainer {
 	public void setUserAgent(String userAgent) {
 		if (userAgent == null)
 			userAgent = "";
-		getContext().userAgent = userAgent;
+		put(HeaderUtils.USER_AGENT_KEY,userAgent);
+		//getContext().userAgent = userAgent;
 	}
 
 	private String getBatchId() {
-		String batchId = getContext().batchId;
+		String batchId = get(HeaderUtils.BATCH_ID);
 		return (null == batchId) ? "" : batchId;
 	}
 	private void setBatchId(String batchId) {
 		if (batchId == null)
 			batchId = "";
-		getContext().batchId = batchId;
+		put(HeaderUtils.BATCH_ID,batchId);
+		//getContext().batchId = batchId;
 
 	}
 
 
 	public String getTenant() {
-		String tenant = getContext().tenant;
+		String tenant = get(HeaderUtils.TENANT_ID_KEY);
 		return (null == tenant) ? "" : tenant;
 	}
 	public void setTenant(String tenant) {
 		if (tenant == null)
 			tenant = "";
-		getContext().tenant = tenant;
+		put(HeaderUtils.TENANT_ID_KEY,tenant);
+		//getContext().tenant = tenant;
 
 	}
 	/**
@@ -292,7 +303,7 @@ public class ContextContainer {
 	 * @return the deviceId
 	 */
 	private String getDeviceId() {
-		String deviceId = getContext().deviceId;
+		String deviceId = get(HeaderUtils.DEVICE_ID);
 		return (null == deviceId) ? "" : deviceId;
 	}
 	/**
@@ -301,13 +312,13 @@ public class ContextContainer {
 	private void setDeviceId(String deviceId) {
 		if (deviceId == null)
 			deviceId = "";
-		getContext().deviceId = deviceId;
+		put(HeaderUtils.DEVICE_ID,deviceId);
+		//getContext().deviceId = deviceId;
 
 	}
 
 	public Map<String, String> toMap() {
-		Map<String, String> map = new HashMap<>();
-		map.put(HeaderUtils.REGION_ID_KEY, getRegion());
+		/*map.put(HeaderUtils.REGION_ID_KEY, getRegion());
 		map.put(HeaderUtils.USER_ID_KEY, getUser());
 		map.put(HeaderUtils.EMPLOYEE_ID_KEY, getEmployeeId());
 		map.put(HeaderUtils.GROUP_ID_KEY, getGroupId());
@@ -316,9 +327,8 @@ public class ContextContainer {
 		map.put(HeaderUtils.BATCH_ID, getBatchId());
 		map.put(HeaderUtils.DEVICE_ID, getDeviceId());
 		map.put(HeaderUtils.TENANT_TYPE, getTenantType());
-		map.put(HeaderUtils.TENANT_ID_KEY, getTenant());
-		map.putAll(getContext());
-		return map;
+		map.put(HeaderUtils.TENANT_ID_KEY, getTenant());*/
+        return new HashMap<>(getContext());
 	}
 
 	public void fromSimpleMap(SimpleMap map) {

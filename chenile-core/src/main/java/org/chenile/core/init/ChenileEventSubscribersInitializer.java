@@ -31,7 +31,7 @@ public class ChenileEventSubscribersInitializer {
 			if (!s.getModuleName().equals(chenileConfiguration.getModuleName())) continue; 
 			for (OperationDefinition operationDefinition : s.getOperations()) {
 				Set<String> subscriptions = operationDefinition.getEventSubscribedTo();
-				if (subscriptions == null || subscriptions.size() == 0 ) continue;
+				if (subscriptions == null || subscriptions.isEmpty()) continue;
 				for (String eventId: subscriptions) {
 					registerSubscriber(s,operationDefinition,eventId);
 				}
@@ -42,21 +42,19 @@ public class ChenileEventSubscribersInitializer {
 	private void registerSubscriber(ChenileServiceDefinition s, OperationDefinition operationDefinition, String eventId) {
 		ChenileEventDefinition ced = chenileConfiguration.getEvents().get(eventId);
 		if (ced == null) {
-			throw new ServerException(ErrorCodes.MISCONFIGURATION.getSubError(), "Operation " + s.getId() + "." +
-					operationDefinition.getName() + " misconfigured. Event subscribed to " + eventId +
-					" does not exist in the event configuration.");
+			throw new ServerException(ErrorCodes.UNKNOWN_EVENT_SUBSCRIBED.getSubError(), new Object[]{s.getId(),
+					operationDefinition.getName(),eventId});
 		}
 		if (!ced.getType().equals(operationDefinition.getInput())) {
-			throw new ServerException(ErrorCodes.MISCONFIGURATION.getSubError(), "Operation " + s.getId() + "." +
-					operationDefinition.getName() + " misconfigured. Event subscribed to " + eventId +
-					" has a type " + ced.getType() + " that does not match the type of body input "
-					+ operationDefinition.getInput() + " for this operation.");
+			throw new ServerException(ErrorCodes.EVENT_TYPE_MISMATCH.getSubError(),
+					new Object[]{s.getId(),
+					operationDefinition.getName(),eventId, ced.getType(),
+					operationDefinition.getInput()});
 		}
 		Method method = operationDefinition.getMethod();
 		if (!EventLog.class.isAssignableFrom(method.getReturnType())) {
-			throw new ServerException(ErrorCodes.MISCONFIGURATION.getSubError(),"Operation " +
-		    s.getId() + "." + operationDefinition.getName() + " misconfigured. Return type of the "
-		    + " method must be Event Log.");
+			throw new ServerException(ErrorCodes.EVENT_RETURN_TYPE_MISMATCH.getSubError(),
+					new Object[]{s.getId(),operationDefinition.getName()});
 		}
 		ced.addEventSubscriber(s,operationDefinition);
 	}

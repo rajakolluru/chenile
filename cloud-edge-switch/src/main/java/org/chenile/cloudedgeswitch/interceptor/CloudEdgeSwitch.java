@@ -195,7 +195,7 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 		String entryPoint = exchange.getHeader(HeaderUtils.ENTRY_POINT,String.class);
 		if (entryPoint != null && entryPoint.equals(Constants.MQTT_ENTRY_POINT)){
 			String source = exchange.getHeader(Constants.SOURCE, String.class);
-			logger.info("Adding an MQTT header !" + source + " for target");
+            logger.debug("Adding an MQTT header !{} for target", source);
 			if (source != null){
 				headers.put(Constants.TARGET,"!" + source);
 			}
@@ -222,7 +222,7 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 			mqttPublisher.publishToOperation(exchange.getServiceDefinition().getId(),
 					exchange.getOperationDefinition().getName(),s, headers1);
 		}catch(Exception e){
-			logger.info("Unable to send a message. Error = " +e.getMessage());
+            logger.info("Unable to send a message. Error = {}", e.getMessage());
 		}
 	}
 	ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
@@ -255,7 +255,7 @@ public class CloudEdgeSwitch extends BaseChenileInterceptor {
 
 	private Object getRemoteProxy(ChenileExchange exchange){
 		// make sure that you pass the ProxyMode as REMOTE.
-		// This ensures that remote proxy is always returned. Otherwise the default would be LOCAL since
+		// This ensures that remote proxy is always returned. Otherwise, the default would be LOCAL since
 		// this service is running locally.
 		Class<?> interfaceClass = exchange.getServiceDefinition().getInterfaceClass();
 		return proxyBuilder.buildProxy(interfaceClass,exchange.getServiceDefinition().getId(),

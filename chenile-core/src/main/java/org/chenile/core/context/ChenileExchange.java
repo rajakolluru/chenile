@@ -322,7 +322,7 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	private ErrorNumException createErrorNumExceptionIfRequired(Throwable e){
 		if ( e instanceof ErrorNumException errorNumException)  return errorNumException;
 		return new ServerException(ErrorCodes.SERVICE_EXCEPTION.getSubError(),
-				ErrorCodes.SERVICE_EXCEPTION.name() + ":" + e.getMessage(),e);
+				new Object[]{ e.getMessage()},e);
 	}
 	
 	public ErrorNumException getException() {

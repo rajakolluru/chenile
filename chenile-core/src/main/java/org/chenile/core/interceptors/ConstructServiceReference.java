@@ -2,14 +2,15 @@ package org.chenile.core.interceptors;
 
 import java.lang.reflect.Method;
 
-import org.chenile.base.exception.ErrorNumException;
 import org.chenile.base.exception.ServerException;
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.context.HeaderUtils;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.TrajectoryDefinition;
 import org.chenile.core.util.MethodUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.chenile.core.errorcodes.ErrorCodes.*;
 
 /**
  * Find the correct service to invoke. 
@@ -20,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  */
 public class ConstructServiceReference extends BaseChenileInterceptor{
-	private static final String MOCK_HEADER = "x-chenile-mock-mode";
 	@Autowired ChenileConfiguration chenileConfiguration;
 	private final String trajectoryHeaderName ;
 	
@@ -44,7 +44,7 @@ public class ConstructServiceReference extends BaseChenileInterceptor{
 	
 	private boolean isMock(ChenileExchange exchange) {
 		if (exchange.isInvokeMock()) return true;
-		Object o = exchange.getHeader(MOCK_HEADER);
+		Object o = exchange.getHeader(HeaderUtils.MOCK_HEADER);
 		if (o == null) return false;
         return o.toString().equalsIgnoreCase("true");
     }
@@ -67,7 +67,7 @@ public class ConstructServiceReference extends BaseChenileInterceptor{
 		exchange.setServiceReferenceId(serviceId);
 		Method method = MethodUtils.computeMethod(ref.getClass(), exchange.getOperationDefinition());
 		if (method == null){
-			throw new ServerException(508,new Object[] {
+			throw new ServerException(UNKNOWN_METHOD.getSubError(),new Object[] {
 				exchange.getServiceDefinition().getId(), exchange.getOperationDefinition().getName()
 			});
 		}

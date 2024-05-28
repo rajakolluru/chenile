@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import org.chenile.base.exception.ServerException;
 import org.chenile.core.annotation.ChenileAnnotation;
+import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.init.AbstractServiceInitializer;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
@@ -72,7 +73,7 @@ public class AnnotationChenileServiceInitializer extends AbstractServiceInitiali
 				csd.setName(name);
 				csd.setServiceReference(serviceRef);
 			}else {
-				throw new ServerException(506,"Service " + id + " does not have a configured service reference. Did you miss instantiating it?");
+				throw new ServerException(ErrorCodes.MISSING_SERVICE_REFERENCE.getSubError(), new Object[]{id});
 			}
 			String healthCheckerName = chenileController.healthCheckerName();
 			if (healthCheckerName.isEmpty())

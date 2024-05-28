@@ -43,10 +43,10 @@ public class Transformer extends BaseChenileInterceptor {
     }
 
     private void throwBadRequestException(ChenileExchange exchange,Exception e) {
-        throw new BadRequestException(ErrorCodes.TYPE_MISMATCH.ordinal(),
-                "Type of payload passed does not match the operation for " + exchange.getServiceDefinition().getName()
-                        + "." + exchange.getOperationDefinition().getName() + " Error = " +
-                        e.getMessage());
+        throw new BadRequestException(ErrorCodes.TYPE_MISMATCH.getSubError(),
+            new Object[]{ exchange.getServiceDefinition().getName(),
+                exchange.getOperationDefinition().getName(),
+                e.getMessage()});
     }
 
 }

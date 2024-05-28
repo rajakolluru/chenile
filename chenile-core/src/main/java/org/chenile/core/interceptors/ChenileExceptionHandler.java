@@ -43,10 +43,8 @@ public class ChenileExceptionHandler extends BaseChenileInterceptor{
 
 
 	protected void translateErrors(ChenileExchange exchange) {
-		RuntimeException e = exchange.getException();
-		if (e == null) return;
-		if (!(e instanceof ErrorNumException ene))
-			return;
+		ErrorNumException ene = exchange.getException();
+		if (ene == null) return;
 		if (ene.getMessage() != null)
 			return;
 		ene.setMessage(translate(ene.getSubErrorNum(),ene.getParams(),exchange.getLocale()));
@@ -69,7 +67,7 @@ public class ChenileExceptionHandler extends BaseChenileInterceptor{
 		String defaultMessage = "Message code " + code + " not found in resource bundle";
 		
 		try {
-			logger.info("code = " + code + " locale = " + locale);
+            logger.debug("code = {} locale = {}", code, locale);
 			String m = messageSource.getMessage("E" + code,params,defaultMessage,locale);
 			if (m == null) m = defaultMessage;
 			return m;

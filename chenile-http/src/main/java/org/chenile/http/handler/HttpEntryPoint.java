@@ -117,8 +117,8 @@ public class HttpEntryPoint implements HttpRequestHandler {
 			HttpServletResponse httpServletResponse, int httpStatusCode) throws ServletException,IOException {
 		OperationDefinition od = exchange.getOperationDefinition();
 		if (!(exchange.getResponse() instanceof File file)) {
-			throw new ServerException(ErrorCodes.MISCONFIGURATION.getSubError(), 
-					od.getName() + " MisConfiguration: Produces PDF must return a response of type File");
+			throw new ServerException(ErrorCodes.PDF_MISCONFIGURATION.getSubError(),
+					new Object[]{od.getName()});
 		}
         // display the pdf in the browser itself. They can always save it if they want
 		httpServletResponse.setHeader("Content-disposition","inline; filename='"  + file.getName() + " '");
@@ -181,10 +181,6 @@ public class HttpEntryPoint implements HttpRequestHandler {
 		String pathInfo = httpServletRequest.getRequestURI();
 		headers.putAll(extractPathVariables(od.getUrl(),pathInfo));
 
-//		Map<String,Object> pathParams = (Map<String, Object>) httpServletRequest.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-//		if (null != pathParams) {
-//			headers.putAll(pathParams);
-//		}
 		headers.putAll(Collections.list(httpServletRequest.getParameterNames()).stream()
 				.collect(Collectors.toMap(parameterName -> parameterName, httpServletRequest::getParameterValues)));
 		Enumeration<String> headerNames = httpServletRequest.getHeaderNames();

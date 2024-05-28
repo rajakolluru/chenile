@@ -4,6 +4,10 @@ import org.chenile.base.exception.ErrorNumException;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.ContextContainer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+
+import static org.chenile.core.errorcodes.ErrorCodes.*;
 
 /**
  *
@@ -25,7 +29,8 @@ public class ValidateCopyHeaders extends BaseChenileInterceptor{
 	protected void doPreProcessing(ChenileExchange exchange) {
 		for(String headerName: exchange.getHeaders().keySet()) {
 			if (headerName.toLowerCase().startsWith("x-p-")) {
-				throw new ErrorNumException(403,507, new Object[] {headerName});
+				throw new ErrorNumException(HttpStatus.FORBIDDEN.value(),ILLEGAL_HEADER.getSubError(),
+						new Object[] {headerName});
 			}else if (headerName.toLowerCase().startsWith("x-")){
 				contextContainer.put(headerName,exchange.getHeader(headerName,String.class));
 			}

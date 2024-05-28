@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.chenile.base.exception.ServerException;
 import org.chenile.core.context.ChenileExchange;
-import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.HttpBindingType;
@@ -21,6 +20,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
+import static org.chenile.core.errorcodes.ErrorCodes.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -83,18 +83,18 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
     private void validate(ChenileServiceDefinition csd) {
 		try {
 			csd.setServiceReference(applicationContext.getBean(csd.getName()));
-			if(csd.getMockName() != null && csd.getMockName().length() > 0) {
+			if(csd.getMockName() != null && !csd.getMockName().isEmpty()) {
 				csd.setMockServiceReference(applicationContext.getBean(csd.getMockName()));
 			}
-			if(csd.getHealthCheckerName() != null && csd.getHealthCheckerName().length() > 0) {
+			if(csd.getHealthCheckerName() != null && !csd.getHealthCheckerName().isEmpty()) {
 				Object bean = applicationContext.getBean(csd.getHealthCheckerName());
 				if (! (bean instanceof HealthChecker)) {
-					throw new ServerException(503,new Object[] {csd.getName()});
+					throw new ServerException(NOT_INSTANCE_HEALTH_CHECKER.getSubError(),new Object[] {csd.getName()});
 				}
 				csd.setHealthChecker((HealthChecker)bean);
 			}
 		} catch (Exception e) {
-			throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),"Service " + csd.getName() + " is not configured in spring",e);
+			throw new ServerException(NOT_CONFIGURED_IN_SPRING.getSubError(), new Object[]{csd.getName()},e);
 		}
 		for (OperationDefinition od: csd.getOperations()) {
 			validate(csd, od);
@@ -104,20 +104,18 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
     private void validate(ChenileServiceDefinition csd,OperationDefinition od) {
     	
     	if (od.getInput() != null && od.getInput().equals(ChenileExchange.class) && od.getParams().size() > 1) {
-    		throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),"Chenile Exchange must be the only param accepted");
+    		throw new ServerException(CHENILE_EXCHANGE_ONLY.getSubError(),new Object[]{});
     	}
     	for (ParamDefinition pd: od.getParams()) {
     		if (pd.getType() == HttpBindingType.BODY) {
     			if (od.getInput() == null && od.getBodyTypeSelectorComponentName() == null) {
-    				throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),csd.getId() + "." + od.getName() + "." + pd.getName() + " specifies type as body but operation does not specify input or body type selector"); 
+    				throw new ServerException(MISSING_INPUT_TYPE.getSubError(), new Object[]{csd.getId(), od.getName(),pd.getName()});
     			}
     			if (pd.getParamClass() == null) {
-    				System.err.println("setting the param class for " + csd.getId() + "." + od.getName() + " to " + od.getInput());
     				pd.setParamClass(od.getInput());
     			}
     		}
     		if (pd.getParamClass() == null) {
-    			System.err.println("Setting the param class for " + csd.getId() + "." + od.getName() + " to String");
     			pd.setParamClass(String.class); 
     		}  		
     	}
@@ -125,9 +123,7 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
     	// cache the method within OperationDefinition so it does not need to be recomputed.
     	Method method = MethodUtils.computeMethod(csd.getServiceReference().getClass(), od);
 		if (method == null){
-			throw new ServerException(ErrorCodes.MISCONFIGURATION.ordinal(),
-					"Operation " + csd.getId() + "." + od.getName() +
-							 "() is not found. Did you define the paramClass properly?");
+			throw new ServerException(MISSING_OPERATION.getSubError(),new Object[]{csd.getId(),od.getName()});
 		}
     	od.setMethod(method);    	
     }

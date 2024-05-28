@@ -47,7 +47,7 @@ public abstract class BaseInitializer<T> implements InitializingBean{
 			return model;
 		} catch (Exception e) {
 			throw new ServerException(ErrorCodes.CANNOT_CONFIGURE_CHENILE_RESOURCE.getSubError(), 
-					"Cannot configure resource " + chenileResource.getFilename(),e);
+					new Object[]{chenileResource.getFilename()},e);
 		}
 		
 	}

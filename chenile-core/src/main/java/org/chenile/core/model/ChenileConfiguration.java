@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.chenile.base.exception.ConfigurationException;
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.event.EventLogger;
 import org.chenile.core.interceptors.ChenileExceptionHandler;
 import org.chenile.owiz.Command;
@@ -138,7 +139,7 @@ public class ChenileConfiguration {
 	public void addTrajectory(TrajectoryDefinition trajectoryDefinition){
 		String id = trajectoryDefinition.getId();
 		if (id == null)
-			throw new ConfigurationException(505,new Object[] {});
+			throw new ConfigurationException(ErrorCodes.MISSING_TRAJECTORY_ID.getSubError(), new Object[] {});
 		if(trajectoryDefinitions.containsKey(trajectoryDefinition.getId())){
 			TrajectoryDefinition orig = trajectoryDefinitions.get(trajectoryDefinition.getId());
 			orig.merge(trajectoryDefinition);

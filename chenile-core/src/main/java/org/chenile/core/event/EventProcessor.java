@@ -31,10 +31,10 @@ public class EventProcessor {
 	public void handleEvent(String eventId, Object eventPayload) {
 		ChenileEventDefinition ced = chenileServiceConfiguration.getEvents().get(eventId);
 		if (ced == null) {
-			throw new ServerException(ErrorCodes.UNKNOWN_EVENT.getSubError(), "Unknown event " + eventId);
+			throw new ServerException(ErrorCodes.UNKNOWN_EVENT.getSubError(), new Object[]{eventId});
 		}
 		Set<SubscriberVO> subscribers = ced.getEventSubscribers();
-		if(subscribers == null || subscribers.size() == 0) return;
+		if(subscribers == null || subscribers.isEmpty()) return;
 		for(SubscriberVO subscriber: subscribers) {
 			ChenileExchange chenileExchange = new ChenileExchange();
 			chenileExchange.setServiceDefinition(subscriber.serviceDefinition);

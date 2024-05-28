@@ -7,6 +7,7 @@ import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.TrajectoryDefinition;
 import org.chenile.core.service.Info.OperationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.chenile.core.errorcodes.ErrorCodes.*;
 
 public class ChenileInfoServiceImpl implements ChenileInfoService{
 	@Autowired private ChenileConfiguration chenileConfiguration;
@@ -35,11 +36,11 @@ public class ChenileInfoServiceImpl implements ChenileInfoService{
 	public HealthCheckInfo healthCheck(String currTrajectory,String service) {
 		ChenileServiceDefinition desc = chenileConfiguration.getServices().get(service);
 		if (desc == null) {
-			throw new NotFoundException(501, new Object[] {service});
+			throw new NotFoundException(SERVICE_NOT_FOUND.getSubError(), new Object[] {service});
 		}
 		HealthChecker healthChecker = getHealthChecker(currTrajectory,desc);
 		if (healthChecker == null) {
-			throw new NotFoundException(502, new Object[] {service});
+			throw new NotFoundException(HEALTH_CHECKER_NOT_CONFIGURED.getSubError(), new Object[] {service});
 		}
 		return healthChecker.healthCheck();
 	}
@@ -48,7 +49,7 @@ public class ChenileInfoServiceImpl implements ChenileInfoService{
 	public ChenileServiceDefinition serviceInfo(String service) {
 		ChenileServiceDefinition csd = chenileConfiguration.getServices().get(service);
 		if (csd == null) {
-			throw new NotFoundException(501, new Object[] {service});
+			throw new NotFoundException(SERVICE_NOT_FOUND.getSubError(), new Object[] {service});
 		}
 		return csd;
 	}

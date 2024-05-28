@@ -16,6 +16,7 @@ import org.chenile.base.exception.ServerException;
 import org.chenile.base.response.GenericResponse;
 import org.chenile.core.annotation.ChenileAnnotation;
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.HTTPMethod;
 import org.chenile.core.model.HttpBindingType;
@@ -121,7 +122,8 @@ public abstract class MappingProducerBase {
 				// first parameter must always be HTTPServletRequest.
 				// This parameter does not need to be passed to the underlying service
 				if (!param.getType().isAssignableFrom(HttpServletRequest.class)) {
-					throw new ServerException(400,new Object[] {method.getName()});
+					throw new ServerException(ErrorCodes.INVALID_CONTROLLER_ARGS.getSubError(),
+							new Object[] {csd.getId(),method.getName()});
 				}
 				continue;
 			}
