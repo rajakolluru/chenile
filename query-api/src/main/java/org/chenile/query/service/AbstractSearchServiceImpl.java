@@ -56,8 +56,8 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		QueryMetadata queryMetadata = queryStore.retrieve(searchRequest.getQueryName());
 
 		if (queryMetadata == null)
-			throw new NotFoundException(ErrorCodes.QUERY_ID_NOT_FOUND.ordinal(),
-					"Query " + searchRequest.getQueryName() + " not found");
+			throw new NotFoundException(ErrorCodes.QUERY_ID_NOT_FOUND.getSubError(),
+					new Object[]{ searchRequest.getQueryName()});
 
 		// construct enhanced search request
 		EnhancedSearchRequest esr = new EnhancedSearchRequest(searchRequest);
@@ -322,7 +322,7 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		searchResponse.setMaxRows(maxRows);
 		int page = searchResponse.getCurrentPage();
 		int numRowsInPage = searchResponse.getNumRowsInPage();
-		int maxPages = Math.round(maxRows / numRowsInPage);
+		int maxPages = Math.round((float) maxRows / numRowsInPage);
 		if (0 != maxRows % numRowsInPage) {
 			maxPages += 1;
 		}

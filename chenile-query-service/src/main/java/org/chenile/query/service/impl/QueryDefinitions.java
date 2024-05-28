@@ -5,6 +5,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 
 import org.chenile.query.model.QueryMetadata;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -16,8 +18,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * and gathers all the definitions in one place. 
  */
 public class QueryDefinitions extends BaseQueryStore{
-	
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private final Logger logger = LoggerFactory.getLogger(QueryDefinitions.class);
+	private final ObjectMapper objectMapper = new ObjectMapper();
 	public QueryDefinitions(Resource[] queryDefinitionFiles) throws IOException {
 		for (Resource file: queryDefinitionFiles ) {
 			processFile(file);
@@ -28,7 +30,7 @@ public class QueryDefinitions extends BaseQueryStore{
 		List<QueryMetadata> queries  = objectMapper.readValue(content, new TypeReference<List<QueryMetadata>>() {} );
 		for (QueryMetadata qm: queries) {
 			store.put(qm.getName(), qm);
-			System.out.println("Discovered name:" + qm.getName());
+			logger.debug("Discovered name:" + qm.getName());
 		}
 	}
 	@Override

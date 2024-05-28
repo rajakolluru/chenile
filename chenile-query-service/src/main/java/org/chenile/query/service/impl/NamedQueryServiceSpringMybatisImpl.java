@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.chenile.base.exception.ServerException;
+import org.chenile.query.service.error.ErrorCodes;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,10 +89,17 @@ public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImp
 		String qName = queryMetadata.getId() + "-count";
 		
 		int in = 0;
-		Object o = sessionTemplate.selectOne(qName, filters);
-		// Object o = session.selectOne(qName, filters);
+		Object o = null;
+		try {
+			o = sessionTemplate.selectOne(qName, filters);
+		}catch(Exception e){
+			throw new ServerException(ErrorCodes.CANNOT_EXECUTE_COUNT_QUERY.getSubError(),
+					new Object[]{qName,filters,e.getMessage()},e);
+		}
+
 		if (!(o instanceof Integer)) {
-			throw new RuntimeException ("Invalid count query for query name = " + queryMetadata.getId());
+			throw new ServerException(ErrorCodes.COUNT_QUERY_DOES_NOT_RETURN_INT.getSubError(),
+					new Object[]{queryMetadata.getId()});
 		}
 		in = (Integer)o;
 		setPaginationInResponse(searchResponse,in);
@@ -99,8 +108,13 @@ public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImp
 				
 	}
 	
-	protected List<Object> executeQuery(String queryName,Map<String, Object>filters){		
-		return sessionTemplate.selectList(queryName, filters);
+	protected List<Object> executeQuery(String queryName,Map<String, Object>filters){
+		try {
+			return sessionTemplate.selectList(queryName, filters);
+		}catch(Exception e){
+			throw new ServerException(ErrorCodes.CANNOT_EXECUTE_QUERY.getSubError(),
+					new Object[]{queryName,filters,e.getMessage()},e);
+		}
 	}
 	
 	@Override
