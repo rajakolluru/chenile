@@ -196,20 +196,19 @@ public class HttpEntryPoint implements HttpRequestHandler {
 
 	public static Map<String, Object> extractPathVariables(String url, String pathInfo) {
 		Map<String,Object> pathVars = new HashMap<>();
-		while (url.contains("/{")) {
-			int startIndex = url.indexOf("/{");
-			int endIndex = url.indexOf("}");
-			String pathVarName = url.substring(startIndex+2,endIndex);
-			url = url.substring(endIndex+1);
-			// In the pathInfo the position will be startIndex +1 since we don't 
-			// expect to see { there.
-			startIndex = startIndex + 1;
-			endIndex = pathInfo.indexOf("/", startIndex);
-			if (endIndex == -1) endIndex = pathInfo.length();
-			String pathVarValue = pathInfo.substring(startIndex, endIndex);
-			pathInfo = pathInfo.substring(endIndex);
-			pathVars.put(pathVarName, pathVarValue);
+		String[] urlArray = url.split("/");
+		String[] pathInfoArray = pathInfo.split("/");
+		int urlIndex = urlArray.length - 1;
+		for (int piIndex = pathInfoArray.length - 1; piIndex >= 0 && urlIndex >= 0; piIndex-- ){
+			String pi = pathInfoArray[piIndex];
+			String ui = urlArray[urlIndex];
+			if (ui.startsWith("{") && ui.endsWith("}")){
+				String pathVarName = ui.substring(1,ui.length()-1);
+				pathVars.put(pathVarName,pi);
+			}
+			urlIndex--;
 		}
 		return pathVars;
 	}
+
 }

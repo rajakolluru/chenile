@@ -32,6 +32,15 @@ public class TestExtractPathVarsInHttpEntryPoint {
 		assertMapContains(m,"id", "abc");
 		assertMapContains(m,"name", "def");
 	}
+
+	@Test public void test_if_prefix_added_to_pathInfo(){
+		String url = "/order/{id}/{eventId}";
+		String pathInfo = "/api/foo/bar/order/123/add-to-cart";
+		Map<String,Object> m = HttpEntryPoint.extractPathVariables(url,pathInfo);
+		assertMapContains(m,"id", "123");
+		assertMapContains(m,"eventId", "add-to-cart");
+	}
+
 	private void assertMapContains(Map<String, Object> m, String key, String value) {
 		Assert.assertNotNull(m);
 		Assert.assertTrue(m.containsKey(key));
