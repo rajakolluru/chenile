@@ -2,6 +2,9 @@ package org.chenile.base.exception;
 
 import java.io.Serial;
 
+/**
+ * {@link ErrorNumException} with HTTP status code of 400.
+ */
 public class BadRequestException extends ErrorNumException {
 
 	@Serial private static final long serialVersionUID = -8109926578240270390L;

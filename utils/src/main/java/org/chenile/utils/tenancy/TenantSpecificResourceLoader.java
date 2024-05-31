@@ -11,8 +11,8 @@ import org.chenile.utils.str.StrSubstitutor;
 /**
  * A class that looks for a specific resource (using {@link #tenantSpecificPath}) from the class path.
  * If the tenant specific resource is not found then a generic path ({@link #genericPath} is used.
- * The resource is then opened and the name and URL are returned by calling {@link #obtainFileName(String)}
- * and {@link #obt}
+ * The resource is then opened and the name and URL are returned by calling {@link #obtainFileName(String, String)}
+ * and {@link #obtainURL(String, String)}
  * Variable %{name} and %{tenantId} can be used for finding the name of the resource in both the generic and tenant 
  * specific paths.
  * 
@@ -99,10 +99,10 @@ public class TenantSpecificResourceLoader {
 	 * Override this to store cached values that have information specific to the particular sub class 
 	 * By default the Cached Value stores URL and filename. But the specific sub class might choose to
 	 * cache additional resources. 
-	 * @param filename
-	 * @param url
-	 * @return
-	 * @throws Exception
+	 * @param filename the filename to look for
+	 * @param url - URL
+	 * @return the cached value
+	 * @throws Exception if there is a problem
 	 */
 	protected CachedValue populateValue(String filename, URL url) throws Exception{
 		return new CachedValue(url,filename);

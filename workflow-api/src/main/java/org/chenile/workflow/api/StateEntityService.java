@@ -10,7 +10,7 @@ import org.chenile.workflow.model.AbstractStateEntity;
 public interface StateEntityService<T extends AbstractStateEntity> {
 	/**
 	 * 
-	 * @param enetity the entity on which the event has happened
+	 * @param entity the entity on which the event has happened
 	 * @param event - the name of the event that happened on the entity
 	 * @param payload - Additional parameters for the event (event specific)
 	 * @return a StateEntityServiceResponse with the mutated entity

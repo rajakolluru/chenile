@@ -7,6 +7,18 @@ import org.springframework.http.HttpStatus;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+/**
+ * A detailed response message that contains a bunch of information.
+ * Code - HTTP Status code
+ * subErrorCode - The specific error returned by the service. Typically, there must be
+ * an enum that the service defines which has all the possible values for the subErrorCode
+ * that the particular service returns. Sub error codes are mapped to an i18n message that can
+ * have substitutable parameters.
+ * Description - of the error. Must be internationalized and must be found in a message bundle
+ * Field - at which the error occurred. This is useful if there is a validation failure for a particular field
+ * Severity - which can have the value WARN or ERROR
+ * Params - which contain replacements for the substitutable parameters contained in the i18n message
+ */
 public class ResponseMessage {
 	
 	public String getDescription() {

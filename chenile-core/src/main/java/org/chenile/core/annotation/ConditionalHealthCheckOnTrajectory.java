@@ -13,13 +13,13 @@ import org.springframework.context.annotation.Configuration;
  * This annotation does the same thing as {@link ConditionalOnTrajectory} 
  * However it does this behaviour for health checkers rather than the services
  * You can then use this annotation to accomplish this. 
- * <code>
+ * <pre> {@code :
  *  // original health checker that needs to be replaced for specific trajectories
  *  @Bean public HealthChecker testHealthChecker(){ return new TestHealthChecker(); }
  *  // replace with this new health checker only for trajectory id "t1"
  *  @Bean @ConditionalHealthCheckOnTrajectory(id = "t1", service = "testService")
  *  public HealthChecker testHealthChecker1(){ return new TestHealthChecker1();}
- * </code>
+ * }</pre>
  * The code above replaces all instances of TestHealthChecker with TestHealthChecker1 but will do so only
  * for trajectory ID "t1" 
  * @author Raja Shankar Kolluru

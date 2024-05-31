@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 /**
- * <p>A bidirectional exchange that navigates between different Chenile Interceptors.
+ * A bidirectional exchange that navigates between different Chenile Interceptors.
  * The exchange contains a body which is the incoming request along with headers. </p>
  * <p>Commands will set the response or exception in the return journey.</p>
  * 
@@ -69,7 +69,7 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	 * and the Operation within it. All operations are performed using these data structures. For example this
 	 * metadata will be used to determine the service that needs to be invoked and the method within the
 	 * service. This metadata is also used to determine the interceptors that are applicable etc.
-	 * ChenileServiceDefinition & OperationDefinition are expected to be set by the protocol specific end point.
+	 * ChenileServiceDefinition and OperationDefinition are expected to be set by the protocol specific end point.
 	 * Example: in chenile-http the URL called will be mapped to the ChenileServiceDefinition and OperationDefinition.
 	 */ 
 	private OperationDefinition operationDefinition;

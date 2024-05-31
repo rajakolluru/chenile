@@ -335,6 +335,10 @@
 					<additionalOptions>
 						<additionalOption>-Xdoclint:none</additionalOption>
 					</additionalOptions>
+					<stylesheetfile>site-resources/styles-new.css</stylesheetfile>
+					<bottom>
+						<![CDATA[Generated from Source. <a href="https://chenile.org">Chenile<a>]]>
+					</bottom>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -390,8 +394,10 @@
 					</reportSet>
 				</reportSets>
 				<configuration>
-					<!-- Here you can add special configurations for your
-					javadoc, if needed -->
+					<bottom>
+						<![CDATA[Generated from Source, <a href="https://chenile.org">Chenile<a>]]>
+					</bottom>
+					<stylesheetfile>./site-resources/styles-new.css</stylesheetfile>
 				</configuration>
 			</plugin>
 

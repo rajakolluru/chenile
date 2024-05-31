@@ -5,6 +5,9 @@ import org.chenile.core.context.HeaderCopier;
 import org.chenile.core.interceptors.BaseChenileInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * This class can act as a {@link HeaderCopier}
+ */
 public class PopulateContextContainer extends BaseChenileInterceptor implements HeaderCopier{
 
 	@Autowired ContextContainer contextContainer;

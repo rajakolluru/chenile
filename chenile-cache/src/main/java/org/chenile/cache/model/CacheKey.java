@@ -3,7 +3,9 @@ package org.chenile.cache.model;
 import java.io.Serializable;
 import java.util.List;
 
-
+/**
+ * The key for a cache constructed using input parameters for a method.
+ */
 public class CacheKey implements Serializable{
 	private static final long serialVersionUID = 2219928603176575494L;
 	public List<Object> apiInvocation;

@@ -3,7 +3,7 @@ package org.chenile.core.context;
 import java.util.Map;
 
 /**
- * Convenient methods that avoid the need for using header names everywhere
+ * Convenience methods that avoid the need for using header names everywhere
  * @author Raja Shankar Kolluru
  *
  */

@@ -1,5 +1,9 @@
 package org.chenile.base.exception;
 
+/**
+ * {@link ErrorNumException} with HTTP status code of 500 meant for configuration errors. (as
+ * opposed to run time errors)
+ */
 public class ConfigurationException extends ErrorNumException {
 
 	private static final long serialVersionUID = -8109926578240270390L;

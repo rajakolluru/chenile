@@ -1,5 +1,8 @@
 package org.chenile.cache.model;
 
+/**
+ * Values that can be used to configure a cache.
+ */
 public class CacheConfig {
 	public static final String EXTENSION = "cacheConfigs";
 	public int getTimeToLiveInSeconds() {

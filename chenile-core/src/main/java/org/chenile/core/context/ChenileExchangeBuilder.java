@@ -6,6 +6,9 @@ import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.SubscriberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Builds an exchange from a service name and an operation name
+ */
 public class ChenileExchangeBuilder {
 	@Autowired ChenileConfiguration chenileConfiguration;
 	private ChenileServiceDefinition findService(String serviceName) {

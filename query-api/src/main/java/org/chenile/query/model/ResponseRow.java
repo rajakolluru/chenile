@@ -16,7 +16,7 @@ public class ResponseRow implements Serializable {
 		return row;
 	}
 	/**
-	 * @param rowInfo the rowInfo to set
+	 * @param row the row to set
 	 */
 	public void setRow(Object row) {
 		this.row = row;

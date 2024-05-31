@@ -9,7 +9,7 @@ public class RoleAclsStoreImpl implements RoleAclsStore {
 	private Map<String, Set<String>> roleAcls = new HashMap<String, Set<String>>();
 
 	/**
-	 * @param userRoles the userRoles to set
+	 * @param roleAcls the role ACLs to set
 	 */
 	public void setRoleAcls(Map<String, Set<String>> roleAcls) {
 		this.roleAcls = roleAcls;

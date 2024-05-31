@@ -12,6 +12,9 @@ import org.springframework.context.event.EventListener;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.MapConfig;
 
+/**
+ * Builds all caches that have been configured during startup
+ */
 public class CacheBuilder {
 	@Autowired
 	private ChenileConfiguration chenileConfiguration;

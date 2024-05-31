@@ -1,5 +1,10 @@
 package org.chenile.core.errorcodes;
 
+/**
+ * ALl the errors that have been defined for Chenile core.
+ * The error codes defined here must be defined in the Message resources so that the
+ * error messages are i18n.
+ */
 public enum ErrorCodes {
 	SERVICE_NOT_FOUND(501),
 	HEALTH_CHECKER_NOT_CONFIGURED(502),

@@ -7,6 +7,13 @@ import java.util.List;
 import org.chenile.base.response.ErrorType;
 import org.chenile.base.response.ResponseMessage;
 
+/**
+ * An exception that has a HTTP status code and a custom subErrorCode (which can be a specific
+ * error)
+ * These two errors make the exception very specific
+ * It can contain further errors that are supported by the {@link ResponseMessage}
+ * @see ResponseMessage
+ */
 public class ErrorNumException extends RuntimeException {
 	@Serial
 	private static final long serialVersionUID = -6173788572115857426L;

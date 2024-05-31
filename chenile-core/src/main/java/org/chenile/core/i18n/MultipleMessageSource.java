@@ -10,13 +10,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 /**
- * 
- * @author Raja Shankar Kolluru
  * This can be used in lieu of the default Message Source. It provides an ability to modularize 
  * messages.properties resource bundle. <br/>
  * By default, the spring message source does not load multiple messages.properties in multiple jars. It picks up 
  * the first file it could find in the class path instead of looking for multiple messages.properties files in the class path
- * (presumably in multipe jar files)
+ * (presumably in multiple jar files)
  * But this behaviour is desired to provide modularization. This uses the PathMatchingResourcePatternResolver 
  * to achieve this.
  *

@@ -45,6 +45,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
+/**
+ Class creates a bunch of Spring Beans. These beans are required for Chenile core.
+ */
 @Configuration
 @PropertySource("classpath:${chenile.properties:chenile.properties}")
 public class ChenileCoreConfiguration {

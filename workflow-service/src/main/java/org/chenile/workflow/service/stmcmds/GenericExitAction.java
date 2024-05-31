@@ -7,9 +7,7 @@ public class GenericExitAction<T extends AbstractStateEntity> implements STMActi
 //	@Autowired
 //	private AuditLogger auditLogger ;
 
-	/**
-	 * @param auditLogger the auditLogger to set
-	 */
+
 	//public void setAuditLogger(AuditLogger auditLogger) {
 //		this.auditLogger = auditLogger;
 	// }

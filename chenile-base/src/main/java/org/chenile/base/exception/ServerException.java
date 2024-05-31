@@ -2,6 +2,9 @@ package org.chenile.base.exception;
 
 import java.io.Serial;
 
+/**
+ * {@link ErrorNumException} with HTTP status code of 500 for runtime errors.
+ */
 public class ServerException extends ErrorNumException{
 
     @Serial
