@@ -14,6 +14,10 @@ import org.springframework.core.io.Resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Extend this to initialize anything like event definitions etc. (not only services)
+ * @param <T> - the class that will be initialized.
+ */
 public abstract class BaseInitializer<T> implements InitializingBean{
 	protected Resource[] chenileJsonResources;
 	@Autowired protected ChenileConfiguration chenileConfiguration;
@@ -21,7 +25,6 @@ public abstract class BaseInitializer<T> implements InitializingBean{
 	public BaseInitializer(Resource[] resources) {
 		this.chenileJsonResources = resources;
 	}
-	
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		init();		
@@ -49,7 +52,6 @@ public abstract class BaseInitializer<T> implements InitializingBean{
 			throw new ServerException(ErrorCodes.CANNOT_CONFIGURE_CHENILE_RESOURCE.getSubError(), 
 					new Object[]{chenileResource.getFilename()},e);
 		}
-		
 	}
 
 	private T populateEventFromInputStream(InputStream inputStream) throws Exception{	
@@ -72,5 +74,4 @@ public abstract class BaseInitializer<T> implements InitializingBean{
 		}
 		return map;
 	}
-
 }

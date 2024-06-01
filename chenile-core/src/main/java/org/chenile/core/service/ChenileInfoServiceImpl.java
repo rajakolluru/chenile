@@ -9,6 +9,9 @@ import org.chenile.core.service.Info.OperationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.chenile.core.errorcodes.ErrorCodes.*;
 
+/**
+ * This class provides information about all services registered in this running instance of Chenile.
+ */
 public class ChenileInfoServiceImpl implements ChenileInfoService{
 	@Autowired private ChenileConfiguration chenileConfiguration;
 

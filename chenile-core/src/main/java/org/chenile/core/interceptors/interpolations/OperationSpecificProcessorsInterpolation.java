@@ -8,6 +8,9 @@ import org.chenile.owiz.Command;
 import org.chenile.owiz.impl.InterpolationCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Calls a bunch of interceptors defined at the level of the particular operation.
+ */
 public class OperationSpecificProcessorsInterpolation extends InterpolationCommand<ChenileExchange> {
 
 	@Autowired ChenileConfiguration chenileConfiguration;

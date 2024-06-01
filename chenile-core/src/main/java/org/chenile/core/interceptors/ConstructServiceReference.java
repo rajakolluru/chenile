@@ -22,10 +22,8 @@ import static org.chenile.core.errorcodes.ErrorCodes.*;
  */
 public class ConstructServiceReference extends BaseChenileInterceptor{
 	@Autowired ChenileConfiguration chenileConfiguration;
-	private final String trajectoryHeaderName ;
 	
-	public ConstructServiceReference(String trajectoryHeaderName) {
-		this.trajectoryHeaderName = trajectoryHeaderName;
+	public ConstructServiceReference() {
 	}
 	@Override
 	protected void doPreProcessing(ChenileExchange exchange) {
@@ -50,7 +48,7 @@ public class ConstructServiceReference extends BaseChenileInterceptor{
     }
 	
 	private boolean trajectoryDoesNotOverrideService(ChenileExchange exchange) {
-		String trajectoryId = exchange.getHeader(trajectoryHeaderName,String.class);
+		String trajectoryId = HeaderUtils.getTrajectoryId(exchange.getHeaders());
 		if (trajectoryId == null) return true;
 		TrajectoryDefinition td = chenileConfiguration.getTrajectories().get(trajectoryId);
 		if (td == null) return true;

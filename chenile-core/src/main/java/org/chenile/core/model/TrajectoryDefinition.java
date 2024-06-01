@@ -6,10 +6,16 @@ import java.util.Map;
 import org.chenile.core.service.HealthChecker;
 
 /**
- * The trajectory definition details. 
- * Trajectories can dictate that the user be directed to new services or health checks.
- * @author r0k02sw
- *
+ * The trajectory definition details. Trajectories allow experimentation. They may also serve
+ * other purposes like overriding services for certain geographies, tenants etc. These overrides
+ * customize the services for a specific set of users. Trajectories are highly modular. A new
+ * trajectory can be defined/used in a new module. Once the module is removed, the trajectory
+ * vanishes from Chenile!
+ * <p>A trajectory can also be an experimental (A-B test) path that provides
+ * selected users with alternate services. These paths may invoke experimental services. Loggers will
+ * log the trajectories. This will allow us to determine if the experimental services are
+ * more effective than the actual services. </p>
+ * <p> Even health checks can be customized for a particular trajectory </p>
  */
 public class TrajectoryDefinition {
 

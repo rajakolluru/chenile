@@ -1,9 +1,7 @@
 package org.chenile.core.model;
 
 /**
- * Contains the service definition and operation definition. Most chenile subscribers will need it
- * @author Raja Shankar Kolluru
- *
+ * The combination of service and operation that are mapped to a Chenile event.
  */
 public class SubscriberVO {
 	public ChenileServiceDefinition serviceDefinition;

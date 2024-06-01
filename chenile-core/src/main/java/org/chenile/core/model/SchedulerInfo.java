@@ -2,6 +2,10 @@ package org.chenile.core.model;
 
 import java.util.Map;
 
+/**
+ * @deprecated
+ * this should ideally move to chenile-scheduler. (TODO)
+ */
 public class SchedulerInfo {
 	private String cronSchedule;
 	private String triggerName;

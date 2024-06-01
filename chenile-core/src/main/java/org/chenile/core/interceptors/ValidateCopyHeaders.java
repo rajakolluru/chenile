@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatusCode;
 import static org.chenile.core.errorcodes.ErrorCodes.*;
 
 /**
- *
- * @author Raja Shankar Kolluru
  * As per HTTP convention, all custom headers start with "x-"
  * This interceptor copies all  headers that start with "x-" into the context.
  * The context can then be used to read the values by subsequent interceptors and other classes.

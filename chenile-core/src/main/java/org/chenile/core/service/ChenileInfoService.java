@@ -2,6 +2,9 @@ package org.chenile.core.service;
 
 import org.chenile.core.model.ChenileServiceDefinition;
 
+/**
+ * This interface emits information about a Chenile Service.
+ */
 public interface ChenileInfoService {
 	/**
 	 * 

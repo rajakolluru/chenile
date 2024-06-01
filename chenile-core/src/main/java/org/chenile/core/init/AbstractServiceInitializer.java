@@ -24,6 +24,11 @@ import static org.chenile.core.errorcodes.ErrorCodes.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * A super class to instantiate a service. This can be used to instantiate it from a file
+ * or from annotation or whatever other mechanism.
+ * It registers a service in {@link ChenileConfiguration}
+ */
 public abstract class AbstractServiceInitializer implements InitializingBean {
     @Autowired
     private ChenileConfiguration serviceConfiguration;

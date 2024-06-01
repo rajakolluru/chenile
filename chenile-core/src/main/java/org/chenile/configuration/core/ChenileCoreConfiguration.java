@@ -79,15 +79,12 @@ public class ChenileCoreConfiguration {
 	@Value("${chenile.event.logger:eventLogger}")
 	private String eventLoggerName;
 	
-	@Value("${chenile.trajectory.header.name:x-chenile-trajectory-id}")
-	private String trajectoryHeaderName;
-	
 	
 	Resource[] toResources(String resourceList) throws IOException{
 		PathMatchingResourcePatternResolver resourceLoader = new PathMatchingResourcePatternResolver();
 		
 		List<Resource> resources = new ArrayList<>();
-		if (resourceList == null || resourceList.length()==0)
+		if (resourceList == null || resourceList.isEmpty())
 			return new Resource[] {};
 		for(String resourcePattern: resourceList.split(",")) {
 			Resource[] r = resourceLoader.getResources(resourcePattern);
@@ -158,7 +155,7 @@ public class ChenileCoreConfiguration {
     
     @Bean
     public ConstructServiceReference constructServiceReference() {
-    	return new ConstructServiceReference(trajectoryHeaderName);
+    	return new ConstructServiceReference();
     }
     
     @Bean

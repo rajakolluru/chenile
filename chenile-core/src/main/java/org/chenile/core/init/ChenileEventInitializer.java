@@ -17,7 +17,6 @@ public class ChenileEventInitializer extends BaseInitializer<ChenileEventDefinit
 	@Override
 	protected void registerModelInChenile(ChenileEventDefinition event) {
 		chenileConfiguration.addEvent(event);
-		
 	}
 
 	@Override

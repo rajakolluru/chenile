@@ -12,6 +12,12 @@ import org.chenile.owiz.Command;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Defines a chenile service. A chenile service is more than its implementation. It is
+ * a construct that exposes an interface and an implementation. A service comes equipped
+ * with policies that are enforced by specific last mile interceptors. Please see the details in
+ * <a href="https://chenile.org/chenile-service-design.html">Chenile Service Definition.</a>
+ */
 public class ChenileServiceDefinition  { 
 	@JsonIgnore
 	private Object serviceReference;

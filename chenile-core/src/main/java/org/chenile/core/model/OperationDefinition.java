@@ -16,6 +16,9 @@ import org.springframework.http.HttpStatus;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * Contains details about the particular operation of a service. Operations are methods in a service
+ */
 public class OperationDefinition {
 	
 	private HttpStatus successHttpStatus = HttpStatus.OK;

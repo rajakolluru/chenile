@@ -3,6 +3,9 @@ package org.chenile.core.service;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A DTO that provides a condensed version of services along with the operations that they support
+ */
 public class Info {
 	public String version;
 	public String moduleName;

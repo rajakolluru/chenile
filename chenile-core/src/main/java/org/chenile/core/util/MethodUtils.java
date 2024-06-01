@@ -9,6 +9,9 @@ import org.chenile.core.errorcodes.ErrorCodes;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.ParamDefinition;
 
+/**
+ * Given an OperationDefinition and a service class, this class computes the java.lang.reflect.Method
+ */
 public abstract class MethodUtils {
 	public static Method computeMethod( Class<?> clazz, OperationDefinition od) {
 		List<Class<?>> paramTypes = new ArrayList<Class<?>>();

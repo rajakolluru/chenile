@@ -18,11 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * 
- * @author Raja Shankar Kolluru
  * This command invokes a service gathering inputs from {@link ChenileExchange}.
- * Inserted at the end of the interception chain. 
- * 
+ * Inserted at the end of the interception chain.
  */
 public class ServiceInvoker implements Command<ChenileExchange>{
 

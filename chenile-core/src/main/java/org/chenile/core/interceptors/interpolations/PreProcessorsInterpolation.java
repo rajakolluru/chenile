@@ -8,6 +8,10 @@ import org.chenile.owiz.Command;
 import org.chenile.owiz.impl.InterpolationCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Calls a bunch of interceptors called as "pre processors". These are called before the
+ * body gets transformed.
+ */
 public class PreProcessorsInterpolation extends InterpolationCommand<ChenileExchange> {
 
 	@Autowired ChenileConfiguration chenileConfiguration;

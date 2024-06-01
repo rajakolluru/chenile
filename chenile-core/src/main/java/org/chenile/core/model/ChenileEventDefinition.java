@@ -3,6 +3,10 @@ package org.chenile.core.model;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Chenile keeps track of events. It maps multiple combinations of Service/Operations to
+ * an event ID.
+ */
 public class ChenileEventDefinition implements ModuleAware{
 	
 	/**
@@ -15,7 +19,7 @@ public class ChenileEventDefinition implements ModuleAware{
 	private String topic;
 	private Class<?> type;
 	private String originatingModuleName;
-	private Set<SubscriberVO> eventSubscribers = new HashSet<SubscriberVO>();
+	private final Set<SubscriberVO> eventSubscribers = new HashSet<SubscriberVO>();
 	
 	public String getId() {
 		return id;

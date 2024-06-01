@@ -9,6 +9,9 @@ import org.chenile.owiz.Command;
 import org.chenile.owiz.impl.InterpolationCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Calls the exception handler that is defined in Chenile properties.
+ */
 public class ExceptionHandlerInterpolation extends InterpolationCommand<ChenileExchange> {
 
 	@Autowired ChenileConfiguration chenileConfiguration;

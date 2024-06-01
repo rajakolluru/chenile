@@ -2,7 +2,9 @@ package org.chenile.core.model;
 
 import java.io.Serializable;
 
-
+/**
+ * Defines an individual parameter that is accepted by an operation of a sevice.
+ */
 public class ParamDefinition implements Serializable {
 
      private static final long serialVersionUID = 1L;

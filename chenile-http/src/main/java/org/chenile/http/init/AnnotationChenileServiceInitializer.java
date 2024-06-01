@@ -34,6 +34,10 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+/**
+ * Uses a Spring controller with additional annotations to initiate a Chenile Service.
+ * The controller must extend from ControllerSupport.
+ */
 public class AnnotationChenileServiceInitializer extends AbstractServiceInitializer{
 	@Autowired ApplicationContext applicationContext;
 	@Autowired ChenileConfiguration chenileConfiguration;

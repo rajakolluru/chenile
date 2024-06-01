@@ -1,5 +1,8 @@
 package org.chenile.core.service;
 
+/**
+ * Health checker for the ChenileInfoService
+ */
 public class InfoHealthChecker implements HealthChecker{
 
 	@Override

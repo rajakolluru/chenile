@@ -2,6 +2,10 @@ package org.chenile.core.model;
 
 import org.chenile.core.service.HealthChecker;
 
+/**
+ * For a given service, map a new Spring bean reference for a particular trajectory. This
+ * happens only for the given combination of trajectory ID and service ID.
+ */
 public class TrajectoryOverride {
 	private String trajectoryId; // the ID of the trajectory for which this override is applicable
 	public String getTrajectoryId() {

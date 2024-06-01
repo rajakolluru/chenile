@@ -3,7 +3,8 @@ package org.chenile.core.context;
 import java.util.Map;
 
 /**
- * Convenience methods that avoid the need for using header names everywhere
+ * Defines all the header names in one place.
+ * Supports Convenience methods that avoid the need for using header names everywhere
  * @author Raja Shankar Kolluru
  *
  */
@@ -65,7 +66,9 @@ public class HeaderUtils {
 	public static String getEntryPoint(Map<String, Object> headers) {
 		return convertToString(headers.get(ENTRY_POINT));
 	}
-
+	public static String getTrajectoryId(Map<String, Object> headers) {
+		return convertToString(headers.get(TRAJECTORY_ID));
+	}
 	public static void setRegion(Map<String, Object> headers, String regionId) {
 		headers.put(REGION_ID_KEY,regionId);
 	}
@@ -104,5 +107,8 @@ public class HeaderUtils {
 	}
 	public static void setEntryPoint(Map<String, Object> headers, String entryPoint) {
 		headers.put(ENTRY_POINT,entryPoint);
+	}
+	public static void setTrajectoryId(Map<String, Object> headers, String trajectoryId) {
+		headers.put(TRAJECTORY_ID,trajectoryId);
 	}
 }

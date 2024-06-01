@@ -38,7 +38,7 @@ public class ChenileConfiguration {
 	private Map<String,Map<String,?>> otherExtensions = new HashMap<String,Map<String,?>>();
 	private String chenileExceptionHandlerName;
 	private String eventLoggerName;
-	private Map<String, TrajectoryDefinition> trajectoryDefinitions = new HashMap<>();
+	private final Map<String, TrajectoryDefinition> trajectoryDefinitions = new HashMap<>();
 	
 	public String getEventLoggerName() {
 		return eventLoggerName;
