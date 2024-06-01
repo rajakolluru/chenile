@@ -14,31 +14,31 @@
     --block-font-family: 'Josefin Sans', Georgia, "Times New Roman", Times, serif;
     --code-font-family: "Source Code Pro",monospace;
     /* Base font sizes for body and code elements */
-    --body-font-size: 14px;
-    --code-font-size: 14px;
+    --body-font-size: 16px;
+    --code-font-size: 16px;
     /* Text colors for body and block elements */
-    --body-text-color: #353833;
-    --block-text-color: #474747;
+    --body-text-color: wheat; /*#353833; */
+    --block-text-color: #ffffff;   /* #474747; */
     /* Background colors for various structural elements */
-    --body-background-color: #ffffff;
-    --section-background-color: #f8f8f8;
-    --detail-background-color: #ffffff;
+    --body-background-color: #555555; /*#ffffff;*/
+    --section-background-color: #55555; /*#f8f8f8; */
+    --detail-background-color: #555555; /*#ffffff;*/
     /* Colors for navigation bar and table captions */
-    --navbar-background-color: #4D7A97;
+    --navbar-background-color: #999999; /* #4D7A97;*/
     --navbar-text-color: #ffffff;
     /* Background color for subnavigation and various headers */
-    --subnav-background-color: #dee3e9;
+    --subnav-background-color: #777777; /*#dee3e9;*/
     /* Background and text colors for selected tabs and navigation items */
     --selected-background-color: #f8981d;
     --selected-text-color: #253441;
     --selected-link-color: #1f389c;
     /* Background colors for generated tables */
-    --even-row-color: #ffffff;
-    --odd-row-color: #eeeeef;
+    --even-row-color: #bbbbbb;
+    --odd-row-color: #888888; /*#eeeeef; */
     /* Text color for page title */
-    --title-color: #2c4557;
+    --title-color: wheat; /*#2c4557; */
     /* Text colors for links */
-    --link-color: #4A6782;
+    --link-color: #87CEEB; /* #4A6782; */
     --link-color-active: #bb7a2a;
     /* Snippet colors */
     --snippet-background-color: #ebecee;
@@ -59,6 +59,8 @@
     /* Colors for invalid tag notifications */
     --invalid-tag-background-color: #ffe6e6;
     --invalid-tag-text-color: #000000;
+    --table-text-link: #004d5d;
+    --table-text-color: #625948;
 }
 /*
  * Styles for individual HTML elements.
@@ -592,6 +594,10 @@ div.checkboxes > label > input {
 }
 .even-row-color, .even-row-color .table-header {
     background-color:var(--even-row-color);
+    color: var(--table-text-color);
+}
+.even-row-color a, .odd-row-color a {
+    color: var(--table-text-link);
 }
 .odd-row-color, .odd-row-color .table-header {
     background-color:var(--odd-row-color);
