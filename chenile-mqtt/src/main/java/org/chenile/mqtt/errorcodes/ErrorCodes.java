@@ -1,5 +1,8 @@
 package org.chenile.mqtt.errorcodes;
 
+/**
+ * Chenile MQTT error codes.
+ */
 public enum ErrorCodes {
 
 	MISCONFIGURATION(900), UNSUPPORTED_TOPIC_FORMAT_FOR_OPERATION(901), UNSUPPORTED_TOPIC_FORMAT_FOR_SERVICE(902),

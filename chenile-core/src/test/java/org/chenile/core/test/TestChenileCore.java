@@ -190,7 +190,7 @@ public class TestChenileCore {
 	@Test public void testTrajectoryRouting() {
 		String testId = "testID";
 		ChenileExchange exchange = makeExchange("mockService","s1");
-		exchange.setHeader("chenile-trajectory-id","t1");
+		exchange.setHeader("x-chenile-trajectory-id","t1");
 		exchange.setHeader("id",testId);
 		chenileEntryPoint.execute(exchange);
 		Object data = ((GenericResponse<Object>)exchange.getResponse()).getData();

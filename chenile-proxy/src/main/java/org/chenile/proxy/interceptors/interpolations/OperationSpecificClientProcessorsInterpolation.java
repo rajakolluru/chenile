@@ -8,6 +8,9 @@ import org.chenile.owiz.Command;
 import org.chenile.owiz.impl.InterpolationCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/**
+ * Interpolates all the operation specific processors on the client side for Chenile Proxy
+ */
 public class OperationSpecificClientProcessorsInterpolation extends InterpolationCommand<ChenileExchange> {
 
 	@Autowired ChenileConfiguration chenileConfiguration;

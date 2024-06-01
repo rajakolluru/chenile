@@ -26,6 +26,9 @@ import org.springframework.core.convert.converter.Converter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Sets up Eclipse Paho for communicating with MQ-TT broker using configurations
+ */
 @Configuration
 public class MqttConfiguration {
     Logger logger = LoggerFactory.getLogger(MqttConfiguration.class);

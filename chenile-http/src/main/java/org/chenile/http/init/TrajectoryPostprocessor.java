@@ -15,6 +15,10 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
+/**
+ * Processes all the trajectories {@link ConditionalOnTrajectory} annotations.
+ * End users need not be aware of this class. It is configured in Spring and does its job quietly.
+ */
 public class TrajectoryPostprocessor implements BeanFactoryPostProcessor{
 	
 	@Override

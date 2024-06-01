@@ -1,5 +1,8 @@
 package org.chenile.mqtt;
 
+/**
+ * Chenile MQTT constants
+ */
 public class Constants {
     /**
      * This is the value for the {@link org.chenile.core.context.HeaderUtils#ENTRY_POINT} header

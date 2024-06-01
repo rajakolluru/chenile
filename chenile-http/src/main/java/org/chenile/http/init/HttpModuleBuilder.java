@@ -14,6 +14,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 
+/**
+ * Uses JSON configurations to initiate Chenile HTTP.
+ */
 public class HttpModuleBuilder extends SimpleUrlHandlerMapping {
 
 	@Autowired

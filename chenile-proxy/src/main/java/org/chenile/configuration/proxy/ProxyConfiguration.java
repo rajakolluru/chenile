@@ -22,6 +22,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+/**
+ * Sets up the beans for Chenile Proxy and registers them in Spring.
+ */
 @Configuration
 @PropertySource("classpath:${chenile.properties:chenile.properties}")
 public class ProxyConfiguration {

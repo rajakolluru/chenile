@@ -16,7 +16,6 @@ import java.lang.annotation.Target;
 /**
  * Use this annotation to specify the interceptors at both the
  * service or operation level.
- * @author Raja Shankar Kolluru
  *
  */
 public @interface InterceptedBy {

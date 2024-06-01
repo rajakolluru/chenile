@@ -22,8 +22,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * This class can support a spring controller. It constructs a ResponseEntity for 
- * the response returned by the Chenile Entry point
+ * This class must be extended by Chenile controllers who use annotation to configure a service.
+ * Merely, call the process() method for delegating control to Chenile.
+ * <p>The process() method constructs a ResponseEntity for the response returned by the Chenile Entry point</p>
  * @author Raja Shankar Kolluru
  *
  */

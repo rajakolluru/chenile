@@ -40,12 +40,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * This is a generic controller that is used if JSON is used to configure a Chenile service.
+ */
 public class HttpEntryPoint implements HttpRequestHandler {
 
-	private ChenileServiceDefinition serviceDefinition;
-	private OperationDefinition operationDefinition;
-	private ChenileEntryPoint chenileEntryPoint;
-	private LocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+	private final ChenileServiceDefinition serviceDefinition;
+	private final OperationDefinition operationDefinition;
+	private final ChenileEntryPoint chenileEntryPoint;
+	private final LocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
 
 	public HttpEntryPoint(ChenileServiceDefinition serviceDefinition, OperationDefinition operationDefinition, ChenileEntryPoint chenileEntryPoint) {
 		this.serviceDefinition = serviceDefinition;

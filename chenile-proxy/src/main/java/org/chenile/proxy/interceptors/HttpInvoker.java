@@ -26,6 +26,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Invokes the remote service using HTTP
+ */
 public class HttpInvoker implements Command<ChenileExchange>{
 	
 	@Autowired RestTemplateBuilder restTemplateBuilder;

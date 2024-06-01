@@ -23,6 +23,11 @@ export version := 1.2.3
 .PHONY: build
 build:
 	mvn  -Drevision=$(version) install 
+
+## javadoc: Build the executable with the version extracted from GIT
+.PHONY: javadoc
+javadoc:
+	mvn  -Drevision=$(version) javadoc:aggregate
 	
 ## deploy: Deploys the executable with the version extracted from GIT
 .PHONY: deploy

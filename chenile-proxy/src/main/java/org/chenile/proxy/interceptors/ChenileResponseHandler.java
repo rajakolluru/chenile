@@ -14,10 +14,13 @@ import org.springframework.web.client.DefaultResponseErrorHandler;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * This communicates with SpringRestTemplate to find the errors from the returned response.
+ */
 public class ChenileResponseHandler extends DefaultResponseErrorHandler{
 
-	private ChenileExchange chenileExchange;
-	private ObjectMapper objectMapper;
+	private final ChenileExchange chenileExchange;
+	private final ObjectMapper objectMapper;
 	public ChenileResponseHandler(ChenileExchange exchange,ObjectMapper objectMapper) {
 		this.chenileExchange = exchange;
 		this.objectMapper = objectMapper;

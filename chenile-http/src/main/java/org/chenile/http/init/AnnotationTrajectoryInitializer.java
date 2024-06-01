@@ -11,6 +11,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 
+/**
+ * Uses a special bean to configure all trajectories. This is not needed since trajectories
+ * can be dynamically defined using {@link org.chenile.core.annotation.ConditionalOnTrajectory}
+ */
 public class AnnotationTrajectoryInitializer {
 	@Autowired ApplicationContext applicationContext;
 	@Autowired ChenileConfiguration chenileConfiguration;
