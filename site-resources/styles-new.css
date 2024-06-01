@@ -61,6 +61,8 @@
     --invalid-tag-text-color: #000000;
     --table-text-link: #004d5d;
     --table-text-color: #625948;
+    --block-text-color: #181612;
+    --class-description: #ffffff;
 }
 /*
  * Styles for individual HTML elements.
@@ -608,6 +610,7 @@ div.checkboxes > label > input {
 div.block {
     font-size:var(--body-font-size);
     font-family:var(--block-font-family);
+    color: var(--block-text-color);
 }
 .col-last div {
     padding-top:0;
@@ -862,6 +865,9 @@ span#page-search-link {
 }
 section.class-description {
     line-height: 1.4;
+}
+section.class-description div.block, .detail div.block {
+    color: var(--class-description);
 }
 .summary section[class$="-summary"], .details section[class$="-details"],
 .class-uses .detail, .serialized-class-details {
