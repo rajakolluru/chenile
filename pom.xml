@@ -349,6 +349,9 @@
 						<link>
 							https://docs.spring.io/spring-framework/docs/current/javadoc-api/
 						</link>
+						<link>
+							https://jakarta.ee/specifications/platform/9/apidocs/
+						</link>
 					</links>
 				</configuration>
 				<executions>
