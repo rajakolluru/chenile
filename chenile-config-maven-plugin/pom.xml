@@ -12,28 +12,14 @@
 	<description>Generator of Chenile config in build process</description>
 	<packaging>maven-plugin</packaging>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>17</java.version>
-		<maven.compiler.target>17</maven.compiler.target>
-		<maven.compiler.source>17</maven.compiler.source>
-		<maven-gpg-plugin.version>3.2.1</maven-gpg-plugin.version>
-		<maven-release-plugin.version>3.0.1</maven-release-plugin.version>
-		<nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
-		<maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
-		<spring-boot.version>3.2.4</spring-boot.version>
-		<maven-source-plugin.version>3.3.0</maven-source-plugin.version>
-	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
-				<version>${spring-boot.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+				<version>${spring-boot.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

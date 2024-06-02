@@ -13,10 +13,8 @@ import java.util.List;
  * returned by the service along with other information such as Http Status code, warnings and errors.
  * This allows a comprehensive and consistent way of communicating with the rest of the world.<br/>
  * This can be used across protocols though it uses the Http status code
- * 
- * @author Raja Shankar Kolluru
  *
- * @param <T> - the Generic for the actual payload returned by the service
+ * @param <T> - the actual payload type returned by the service
  */
 public class GenericResponse<T> implements WarningAware{
 
@@ -30,11 +28,16 @@ public class GenericResponse<T> implements WarningAware{
 		this.responseMessage = message;
 	}
 
+	/**
+	 * Construct a response with the given payload.<br/>
+	 * Set {@link #success} to true <br/>
+	 * By default, call {@link #setCode(int)} to HTTP status OK. It will be over-ridden later if
+	 * required from the success and warning error codes that are set in OperationDefinition<br/>
+	 * @param data the payload of the response
+	 */
 	public GenericResponse(T data) {
 		this.data = data;
 		success = true;
-		// By default set it to OK. It will be over-ridden later if required
-		// from the warning error code set in operation definition
 		setCode(200); 
 	}
 

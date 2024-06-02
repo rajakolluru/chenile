@@ -6,10 +6,10 @@ import java.util.Map;
 
 /**
  * Extract and set warnings to response objects (either objects or maps)
- * It allows for checking of warnings to objects and also to add warnings to objects which are 
- * capable of accommodating warnings.
- * Currently, all objects capable of accommodating warnings will either implement this interface
- * or be a map (in which case a warningMessages key is created in the map)
+ * <p>It allows for checking of warnings to objects and also to add warnings to objects which are
+ * capable of accommodating warnings.</li>
+ * <p>Currently, all objects capable of accommodating warnings will either implement this interface
+ * or be a map (in which case a <i>warningMessages</i> key is created in the map)</p>
  * @author Raja Shankar Kolluru
  *
  */
