@@ -345,6 +345,11 @@
 					<bottom>
 						<![CDATA[Generated from Source. <a href="https://chenile.org">Chenile<a>]]>
 					</bottom>
+					<links>
+						<link>
+							https://docs.spring.io/spring-framework/docs/current/javadoc-api/
+						</link>
+					</links>
 				</configuration>
 				<executions>
 					<execution>
