@@ -342,6 +342,9 @@
 						<additionalOption>-Xdoclint:none</additionalOption>
 					</additionalOptions>
 					<stylesheetfile>site-resources/styles-new.css</stylesheetfile>
+					<top>
+						<![CDATA[<img src='/ch-logo.png'/><h2><a href='https://chenile.org'>Chenile Framework Javadocs</a></h2>]]>
+					</top>
 					<bottom>
 						<![CDATA[Generated from Source. <a href="https://chenile.org">Chenile<a>]]>
 					</bottom>
