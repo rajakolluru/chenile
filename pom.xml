@@ -356,6 +356,7 @@
 							https://jakarta.ee/specifications/platform/9/apidocs/
 						</link>
 					</links>
+					<show>private</show>
 				</configuration>
 				<executions>
 					<execution>

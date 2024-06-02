@@ -13,7 +13,10 @@ import org.chenile.owiz.config.model.AttachmentDescriptor;
 import org.chenile.owiz.config.model.CommandDescriptor;
 import org.chenile.owiz.impl.CommandBase;
 
-
+/**
+ * Implements a split aggregate functionality. The context must implement the SplitterContext
+ * interface.
+ */
 public class SplitterAggregator extends CommandBase<SplitterContext> implements  AttachableCommand<SplitterContext>{
 	   
 	private CommandDescriptor<?> command;
@@ -70,11 +73,6 @@ public class SplitterAggregator extends CommandBase<SplitterContext> implements 
 	/**
 	 * An adapter between {@link Command} and the {@link Callable} interface mandated by
 	 * the methods of java.util.concurrent.
-	 * 
-	 * @author raja.kolluru
-	 * 
-	 * @param <Request>
-	 * @param <Response>
 	 */
 	private class CallableAdapter implements Callable<IndividualSplitContext> {
 		private IndividualSplitContext req;

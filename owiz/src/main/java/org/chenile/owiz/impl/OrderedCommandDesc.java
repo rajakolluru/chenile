@@ -2,11 +2,12 @@ package org.chenile.owiz.impl;
 
 import org.chenile.owiz.config.model.CommandDescriptor;
 
+/**
+ * Internal class used to preserve the order of execution of commands.
+ */
 public class OrderedCommandDesc implements Comparable<OrderedCommandDesc> {
 	/**
 	 * This class is needed to ensure that the commands are retrieved in the correct order
-	 * @author Raja Shankar Kolluru
-	 *
 	 */
 	private int index;
 	private CommandDescriptor<?> command;
