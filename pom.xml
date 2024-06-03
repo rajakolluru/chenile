@@ -363,19 +363,19 @@
 							<!-- To includes java.lang, java.lang.ref,
                             java.lang.reflect and only java.util
                             (i.e. not java.util.jar) -->
-							<packages>org.chenile.base*:org.chenile.core*:org.chenile.http*:org.chenile.proxy*</packages>
+							<packages>org.chenile.base*:org.chenile.core*:org.chenile.http*:org.chenile.proxy*:org.chenile.configuration.core:org.chenile.configuration.proxy:org.chenile.configuration.http:org.chenile.configuration.controller</packages>
 						</group>
 						<group>
 							<title>MQTT</title>
 							<!-- To include javax.accessibility,
                            javax.crypto, ... (among others) -->
-							<packages>org.chenile.mqtt*:org.chenile.cloudedgeswitch*</packages>
+							<packages>org.chenile.mqtt*:org.chenile.cloudedgeswitch*:org.chenile.configuration.mqtt:org.chenile.configuration.cloudedgeswitch</packages>
 						</group>
 						<group>
 							<title>Libraries</title>
 							<!-- To include javax.accessibility,
                            javax.crypto, ... (among others) -->
-							<packages>org.chenile.owiz*:org.chenile.stm*</packages>
+							<packages>org.chenile.owiz*:org.chenile.stm*:org.chenile.ognl</packages>
 						</group>
 						<group>
 							<title>Testing</title>
@@ -385,11 +385,11 @@
 						</group>
 						<group>
 							<title>Query</title>
-							<packages>org.chenile.query*</packages>
+							<packages>org.chenile.query*:org.chenile.configuration.query.service</packages>
 						</group>
 						<group>
 							<title>Workflow</title>
-							<packages>org.chenile.workflow*</packages>
+							<packages>org.chenile.workflow*:org.chenile.configuration.workflow</packages>
 						</group>
 						<group>
 							<title>Configurations</title>
@@ -397,7 +397,7 @@
 						</group>
 						<group>
 							<title>Others</title>
-							<packages>org.chenile.*</packages>
+							<packages>org.chenile.*:org.chenile.configuration.*</packages>
 						</group>
 					</groups>
 				</configuration>
