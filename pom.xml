@@ -378,10 +378,10 @@
 							<packages>org.chenile.mqtt*:org.chenile.cloudedgeswitch*:org.chenile.configuration.mqtt:org.chenile.configuration.cloudedgeswitch</packages>
 						</group>
 						<group>
-							<title>Libraries</title>
+							<title>STM/OWIZ/Workflow</title>
 							<!-- To include javax.accessibility,
                            javax.crypto, ... (among others) -->
-							<packages>org.chenile.owiz*:org.chenile.stm*:org.chenile.ognl</packages>
+							<packages>org.chenile.owiz*:org.chenile.stm*:org.chenile.ognl:org.chenile.workflow*:org.chenile.configuration.workflow</packages>
 						</group>
 						<group>
 							<title>Testing</title>
@@ -392,10 +392,6 @@
 						<group>
 							<title>Query</title>
 							<packages>org.chenile.query*:org.chenile.configuration.query.service</packages>
-						</group>
-						<group>
-							<title>Workflow</title>
-							<packages>org.chenile.workflow*:org.chenile.configuration.workflow</packages>
 						</group>
 						<group>
 							<title>Others</title>
