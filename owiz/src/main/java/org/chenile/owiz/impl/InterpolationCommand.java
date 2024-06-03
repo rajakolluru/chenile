@@ -10,7 +10,7 @@ import org.chenile.owiz.Command;
  * supports this type of command. 
  * This command will not be executed. Instead, the {@link #fetchCommands(Object)} will be 
  * called to obtain the actual list of commands that will be executed.
- * Hence this command serves to interpolate the list of commands by adding more to the list.
+ * Hence, this command serves to interpolate the list of commands by adding more to the list.
  * It must be used with caution since this can change the runtime execution command list
  * @author Raja Shankar Kolluru
  *

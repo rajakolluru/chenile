@@ -1,0 +1,8 @@
+<flows>
+    <flow>
+        <while condition="counter &lt;= 2">
+            <increment-counter/>
+            <track/>
+        </while>
+    </flow>
+</flows>

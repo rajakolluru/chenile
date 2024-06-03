@@ -4,6 +4,11 @@ import java.lang.reflect.Method;
 
 import org.chenile.owiz.BeanFactoryAdapter;
 
+/**
+ * This Command delegates control to a method of an underlying object whose reference is
+ * passed to this command. This can be useful for trivial delegations.
+ * @param <InputType>
+ */
 public class DelegatorCommand<InputType> extends CommandBase<InputType> {
 	private BeanFactoryAdapter beanFactoryAdapter;
 	public BeanFactoryAdapter getBeanFactoryAdapter() {
@@ -50,7 +55,7 @@ public class DelegatorCommand<InputType> extends CommandBase<InputType> {
 	}
 	
 	/**
-	 * we dont know what is the signature since the arg type is unknown. So find the first one
+	 * we don't know what is the signature since the arg type is unknown. So find the first one
 	* arg method we assume that is the one.
 	 * @param delegateObject .
 	 * @param meth .

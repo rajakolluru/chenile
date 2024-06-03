@@ -1,0 +1,11 @@
+<flows>
+    <flow>
+        <chain>
+            <set name="counter" value="0"/>
+            <while condition="index &lt;= 2">
+                <set name="counter" value="counter+1"/>
+                <set name="index" value="index+1"/>
+            </while>
+        </chain>
+    </flow>
+</flows>

@@ -2,8 +2,6 @@ package org.chenile.owiz;
 
 /**
  * Interface defines a contract for classes that look up objects from various DI frameworks (aka Bean factories)
- * @author rkollu
- *
  */
 public interface BeanFactoryAdapter {
 	/**

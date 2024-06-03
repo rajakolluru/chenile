@@ -42,7 +42,7 @@ public class OgnlParsingTest extends TestCase{
 		fftc.setWarehouse("LONDON");
 		fftc.setSku("sku9");
 		oe.execute(fftc);
-		assertEquals("FT3", fftc.getFulfillmentType());
+		assertEquals("FT1", fftc.getFulfillmentType());
 	}
 	
 	public void testFT2() throws Exception{

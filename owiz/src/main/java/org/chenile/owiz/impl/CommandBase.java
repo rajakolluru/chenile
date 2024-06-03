@@ -10,8 +10,8 @@ import org.chenile.owiz.config.model.AttachmentDescriptor;
 import org.chenile.owiz.config.model.CommandDescriptor;
 
 /**
- * Base class to implement command functionality. Typically should get customized for 
- * individual implementations. Inherit this command and over-ride the pre and post process methods.
+ * Base class to implement command functionality. Typically, should get customized for
+ * individual implementations. Inherit this command and over-ride the 'pre' and 'post' process methods.
  * @author Raja Shankar Kolluru
  *
  */

@@ -1,0 +1,5 @@
+<flows>
+    <flow>
+        <set name="foo" value='"bar"'/>
+    </flow>
+</flows>

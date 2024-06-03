@@ -4,7 +4,6 @@ package org.chenile.owiz;
  * The execution interface of the orchestrator.
  * This is the one that gets typically utilized by the consumers to execute the orchestration chain of
  * commands.
- * @author Raja Shankar Kolluru
  *
  */
 public interface OrchExecutor<InputType> {

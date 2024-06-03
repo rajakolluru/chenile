@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 
+/**
+ * Registers the beans that are needed for chenile-http
+ */
 @Configuration
 @EnableWebMvc
 public class UrlMappingConfiguration {

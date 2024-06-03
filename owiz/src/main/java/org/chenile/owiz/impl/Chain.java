@@ -12,8 +12,6 @@ import org.chenile.owiz.config.model.CommandDescriptor;
 
 /**
  * A chain is a command that executes a chain of other commands.
- * @author Raja Shankar Kolluru
- *
  */
 public class Chain<InputType> extends CommandBase<InputType> implements Command<InputType>, AttachableCommand<InputType> {
 
