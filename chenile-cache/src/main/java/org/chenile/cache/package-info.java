@@ -1,4 +1,4 @@
 /**
  * Caching interface is defined here.
  */
-package com.chenile.cache;
+package org.chenile.cache;

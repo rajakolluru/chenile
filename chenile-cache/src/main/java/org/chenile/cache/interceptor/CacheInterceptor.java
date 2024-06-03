@@ -13,7 +13,7 @@ import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.ParamDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.chenile.cache.Cacheable;
+import org.chenile.cache.Cacheable;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.ReplicatedMap;
 
