@@ -355,6 +355,12 @@
 						<link>
 							https://jakarta.ee/specifications/platform/9/apidocs/
 						</link>
+						<link>
+							https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind/2.3.1/
+						</link>
+						<link>
+							https://javadoc.io/doc/org.apache.maven/maven-core/latest/
+						</link>
 					</links>
 					<show>private</show>
 					<groups>
@@ -390,10 +396,6 @@
 						<group>
 							<title>Workflow</title>
 							<packages>org.chenile.workflow*:org.chenile.configuration.workflow</packages>
-						</group>
-						<group>
-							<title>Configurations</title>
-							<packages>org.chenile.configuration*</packages>
 						</group>
 						<group>
 							<title>Others</title>
