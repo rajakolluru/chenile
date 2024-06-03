@@ -357,6 +357,49 @@
 						</link>
 					</links>
 					<show>private</show>
+					<groups>
+						<group>
+							<title>Core Packages</title>
+							<!-- To includes java.lang, java.lang.ref,
+                            java.lang.reflect and only java.util
+                            (i.e. not java.util.jar) -->
+							<packages>org.chenile.core*:org.chenile.http*</packages>
+						</group>
+						<group>
+							<title>MQTT</title>
+							<!-- To include javax.accessibility,
+                           javax.crypto, ... (among others) -->
+							<packages>org.chenile.mqtt*</packages>
+						</group>
+						<group>
+							<title>Libraries</title>
+							<!-- To include javax.accessibility,
+                           javax.crypto, ... (among others) -->
+							<packages>org.chenile.owiz*:org.chenile.stm*</packages>
+						</group>
+						<group>
+							<title>Testing</title>
+							<!-- To include javax.accessibility,
+                           javax.crypto, ... (among others) -->
+							<packages>org.chenile.cucumber*:org.chenile.testutils*</packages>
+						</group>
+						<group>
+							<title>Query</title>
+							<packages>org.chenile.query*</packages>
+						</group>
+						<group>
+							<title>Workflow</title>
+							<packages>org.chenile.workflow*</packages>
+						</group>
+						<group>
+							<title>Configurations</title>
+							<packages>org.chenile.configuration*</packages>
+						</group>
+						<group>
+							<title>Others</title>
+							<packages>org.chenile.*</packages>
+						</group>
+					</groups>
 				</configuration>
 				<executions>
 					<execution>
