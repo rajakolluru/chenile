@@ -1,6 +1,6 @@
-com.chenile.cache
 org.chenile.base.exception
 org.chenile.base.response
+org.chenile.cache
 org.chenile.cache.init
 org.chenile.cache.interceptor
 org.chenile.cache.model
