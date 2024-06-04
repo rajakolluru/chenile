@@ -20,6 +20,12 @@ import org.chenile.query.model.SearchResponse;
 import org.chenile.query.service.AbstractSearchServiceImpl;
 import org.chenile.query.service.QueryStore;
 
+/**
+ * An implementation of the query service using Mybatis. The service accomplishes search by
+ * first looking up a query name in a query store. It retrieves the metadata about the query
+ * that includes a Mybatis query name. This is used to execute the query using Mybatis.
+ * The results are returned back
+ */
 public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImpl{
 	Logger logger = LoggerFactory.getLogger(NamedQueryServiceSpringMybatisImpl.class);
 	public NamedQueryServiceSpringMybatisImpl(QueryStore queryStore) {

@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+/**
+ * This sets up a query service. This can be used by pointing this service to
+ * a database that can be configured in  application.yml.
+ */
 @RestController
 @ChenileController(value = "chenileMybatisQuery", serviceName = "searchService")
 public class QueryController extends ControllerSupport{

@@ -23,6 +23,9 @@ import org.chenile.query.service.impl.QueryDefinitions;
 import org.chenile.query.service.interceptor.QuerySAASInterceptor;
 import org.chenile.query.service.interceptor.QueryUserFilterInterceptor;
 
+/**
+ * Registers query beans in Spring
+ */
 @Configuration
 public class QueryConfiguration {
 

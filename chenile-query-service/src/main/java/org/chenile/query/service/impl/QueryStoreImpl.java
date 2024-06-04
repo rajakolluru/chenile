@@ -5,7 +5,9 @@ import org.chenile.query.model.QueryMetadata;
 
 import jakarta.annotation.PostConstruct;
 
-
+/**
+ * Unused for now
+ */
 public class QueryStoreImpl extends BaseQueryStore {
 
 	// @Autowired
