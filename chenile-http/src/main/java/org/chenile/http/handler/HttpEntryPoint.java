@@ -194,6 +194,14 @@ public class HttpEntryPoint implements HttpRequestHandler {
 				headers.put(headerName, httpServletRequest.getHeader(headerName));
 			}
 		}
+		Enumeration<String> attributeNames = httpServletRequest.getAttributeNames();
+		if (attributeNames != null) {
+			while (attributeNames.hasMoreElements()) {
+				String attributeName = attributeNames.nextElement();
+				headers.put(attributeName, httpServletRequest.getAttribute(attributeName));
+			}
+		}
+
 		return headers;
 	}
 

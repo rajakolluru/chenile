@@ -27,6 +27,7 @@ import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.service.ChenileInfoService;
 import org.chenile.core.service.ChenileInfoServiceImpl;
 import org.chenile.core.service.InfoHealthChecker;
+import org.chenile.core.transform.SubclassRegistry;
 import org.chenile.core.transform.TransformationClassSelector;
 import org.chenile.core.transform.Transformer;
 import org.chenile.owiz.BeanFactoryAdapter;
@@ -237,6 +238,9 @@ public class ChenileCoreConfiguration {
 	@Bean public GenericResponseBuilder genericResponseBuilder() {
 		return new GenericResponseBuilder();
 	}
-	
+
+	@Bean public SubclassRegistry subclassRegistry(){
+		return new SubclassRegistry();
+	}
 
 }

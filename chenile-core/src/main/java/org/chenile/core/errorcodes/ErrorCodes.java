@@ -26,7 +26,8 @@ public enum ErrorCodes {
 	EVENT_RETURN_TYPE_MISMATCH(520),
 	PDF_MISCONFIGURATION(521),
 	SERVICE_EXCEPTION(522),
-	INVALID_CONTROLLER_ARGS(523);
+	INVALID_CONTROLLER_ARGS(523),
+	PAYLOAD_CANNOT_BE_PARSED(524);
 	final int subError;
 	private ErrorCodes(int subError) {
 		this.subError = subError;
