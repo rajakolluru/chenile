@@ -86,11 +86,13 @@ public abstract class MappingProducerBase {
 		}
 	}
 	
-	protected void processParamClassType(ParamDefinition pd,Parameter param) {
+	protected void processParamClassType(OperationDefinition od, ParamDefinition pd,Parameter param) {
 		if(param.isAnnotationPresent(ChenileParamType.class)) {
 			ChenileParamType co = param.getAnnotation(ChenileParamType.class);
 			if (co.value() != null) {
 				pd.setParamClass(co.value());
+				// reflect the correct param class type in the OperationDefinition as well.
+				od.setInput(co.value());
 			}
 		}
 	}
@@ -136,7 +138,7 @@ public abstract class MappingProducerBase {
 			}else {
 				pd.setType(HttpBindingType.HEADER);
 			}
-			processParamClassType(pd,param);
+			processParamClassType(od,pd,param);
 			paramList.add(pd);
 		}
 		od.setParams(paramList);

@@ -1,9 +1,16 @@
 package org.chenile.http.test;
 
+import jakarta.annotation.PostConstruct;
+import org.chenile.core.transform.SubclassRegistry;
 import org.chenile.http.test.service.JsonInterceptor;
 import org.chenile.http.test.service.JsonInterceptor1;
 import org.chenile.http.test.service.JsonService;
 import org.chenile.http.test.service.JsonServiceImpl;
+import org.chenile.http.test.subclass.CapacityService;
+import org.chenile.http.test.subclass.Car;
+import org.chenile.http.test.subclass.Truck;
+import org.chenile.http.test.subclass.Vehicle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -17,7 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 @PropertySource("classpath:org/chenile/http/test/TestHttpModule.properties")
 @ActiveProfiles("unittest")
 public class TestChenileHttp extends SpringBootServletInitializer{
-
+	@Autowired SubclassRegistry subclassRegistry;
 	public static void main(String[] args) {
 		SpringApplication.run(TestChenileHttp.class, args);
 	}
@@ -36,6 +43,13 @@ public class TestChenileHttp extends SpringBootServletInitializer{
 	@Bean public TestUtil testUtil() {
 		return new TestUtil();
 	}
+	@Bean public CapacityService capacityService() {
+		return new CapacityService();
+	}
 
+	@PostConstruct public void postConstruct(){
+		subclassRegistry.addSubclass(Vehicle.class,"car", Car.class);
+		subclassRegistry.addSubclass(Vehicle.class,"truck", Truck.class);
+	}
 }
 

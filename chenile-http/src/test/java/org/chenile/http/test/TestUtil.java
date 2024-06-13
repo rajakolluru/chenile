@@ -176,7 +176,7 @@ public class TestUtil {
         assertErrors(actions,501,errorNum + 1,exceptionMessage + "1");
     }
    
-    static String asJsonString(final Object obj) {
+    public static String asJsonString(final Object obj) {
         try {
             return new ObjectMapper().writeValueAsString(obj);
         } catch (Exception e) {

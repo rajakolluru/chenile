@@ -2,9 +2,12 @@ package org.chenile.core.transform;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * This is a registry of mapping base classes to the appropriate subclasses.<br/>
@@ -29,9 +32,10 @@ import java.util.Map;
  * Subclass registration is done in the modules that own the subclass to preserve modularity.
  */
 public class SubclassRegistry {
+    Logger logger = LoggerFactory.getLogger(SubclassRegistry.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final Map<Class<? extends TypedSuperClass>,Map<String, Class<?>>> registry = new HashMap<>();
-    public <T> void  addSubclass(Class<? extends TypedSuperClass> superClass, String type, Class<? extends T> subClass ){
+    private final Map<Class<?>,Map<String, Class<?>>> registry = new HashMap<>();
+    public <T> void  addSubclass(Class<?> superClass, String type, Class<? extends T> subClass ){
         Map<String, Class<?>> map = registry.computeIfAbsent(superClass, k -> new HashMap<>());
         map.put(type,subClass);
     }
@@ -47,7 +51,7 @@ public class SubclassRegistry {
     public Class<?> determineSubClass(String jsonString, Class<TypedSuperClass> superClass)
             throws Exception {
         if (registry.get(superClass) == null) return null;
-        Map<String,Class<?>> map = registry.get(null);
+        Map<String,Class<?>> map = registry.get(superClass);
         JsonNode node = objectMapper.readTree(jsonString.getBytes());
         JsonNode subNode = node.get("type");
         if (subNode == null) {
