@@ -16,7 +16,7 @@
 # for pushing tags
 
 # export version := $(shell git describe --tag --abbrev=0)
-export version := 1.2.3
+export version := 1.2.4
 .DEFAULT_GOAL := help
 
 ## build: Build the executable with the version extracted from GIT

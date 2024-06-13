@@ -59,7 +59,7 @@
 		<springdoc.version>2.4.0</springdoc.version>
 		<hazelcast.version>3.12.3</hazelcast.version>
 		<mybatis.spring.version>3.0.3</mybatis.spring.version>
-		<revision>1.2.3</revision>
+		<revision>1.2.4</revision>
 		<spring-boot.version>3.2.4</spring-boot.version>
 		<mqtt.paho.version>1.2.5</mqtt.paho.version>
 		<hive.version>1.19.7</hive.version>
