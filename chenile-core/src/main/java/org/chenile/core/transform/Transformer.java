@@ -28,7 +28,6 @@ public class Transformer extends BaseChenileInterceptor {
     public void doPreProcessing(ChenileExchange exchange) {
         TypeReference<?> targetType = exchange.getBodyType();
         Object body = exchange.getBody();
-        System.out.println("Target type is " + targetType.getType());
         if (targetType == null || body == null) return;
 
         //if (body.getClass().isAssignableFrom(targetType.getType())) return;
