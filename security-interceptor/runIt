@@ -1,0 +1,2 @@
+get-access-token.sh > src/test/resources/token.txt
+mvn install

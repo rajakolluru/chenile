@@ -1,0 +1,12 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8180/realms/#tenantId#/protocol/openid-connect/certs
+
+chenile:
+  security:
+    provider:
+      name: "my-oidc-provider"
+      issuer-uri: http://localhost:8180/realms/#tenantId#

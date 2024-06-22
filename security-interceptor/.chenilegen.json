@@ -1,0 +1,16 @@
+{
+	"template": "newmonolith",
+	"artifactType": "monolith",
+	"data":
+
+{
+"interceptorName": "security-interceptor",
+"interceptorVersion": "",
+"com": "org",
+"org": "samples",
+"company": "chenile",
+"chenilePackage": "org.chenile",
+"chenileVersion": "1.2.3",
+"InterceptorName": "Security-interceptor"
+}
+}

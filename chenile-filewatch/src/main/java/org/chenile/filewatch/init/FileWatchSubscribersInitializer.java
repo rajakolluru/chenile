@@ -3,7 +3,7 @@ package org.chenile.filewatch.init;
 import java.util.Map;
 
 import org.chenile.base.exception.ServerException;
-import org.chenile.core.errorcodes.ErrorCodes;
+import org.chenile.filewatch.errorcodes.ErrorCodes;
 import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.OperationDefinition;

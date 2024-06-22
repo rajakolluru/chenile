@@ -64,9 +64,9 @@ public class ChenileFileWatchInitializer
 		}
 
 		Path spath = Paths.get(
-				srcFolder + "" + File.separator + "" + fwd.getDirToWatch());
+				srcFolder + File.separator + fwd.getDirToWatch());
 		Path dpath = Paths.get(
-				destFolder + "" + File.separator + "" + fwd.getDirToWatch());
+				destFolder + File.separator + fwd.getDirToWatch());
 
 		if (!Files.exists(spath)) {
 			try {

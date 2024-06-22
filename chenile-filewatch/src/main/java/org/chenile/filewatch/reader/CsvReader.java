@@ -18,11 +18,11 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 public class CsvReader implements Iterable<Object>{
 	
 	private MappingIterator<Object> mappingIterator;
+	private final CsvMapper csvMapper = new CsvMapper();
 	
 	public CsvReader(Path path, Class<?> clazz) throws Exception{  
 		// first line is the header and has the schema in it
 		CsvSchema schema = CsvSchema.emptySchema().withHeader();
-		CsvMapper csvMapper = new CsvMapper();
 		ObjectReader objectReader = csvMapper.readerFor(clazz).with(schema);
 		mappingIterator = objectReader.readValues(Files.newInputStream(path));
 	}

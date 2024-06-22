@@ -13,39 +13,24 @@
 # This gives flexibility to handle snapshots. For snapshots a new tag is not necessary
 # this of course means that SNAPSHOT releases are flaky since we dont have tags to make them
 # predictable
-# for pushing tags
 
-# export version := $(shell git describe --tag --abbrev=0)
-export version := $(shell cat chenile-version.txt)
-# export version := 1.2.4
+export version := $(shell git describe --tag --abbrev=0)
 .DEFAULT_GOAL := help
+ifndef version
+	override version = 
+endif
+
 
 ## build: Build the executable with the version extracted from GIT
 .PHONY: build
 build:
-	mvn  -Drevision=$(version) install 
-
-## javadoc: Build the aggregated javadocs web site 
-.PHONY: javadoc
-javadoc:
-	mvn  -Drevision=$(version) javadoc:aggregate
-
-	
-## deploy: Deploys the executable with the version extracted from GIT
-.PHONY: deploy
-deploy:
-	mvn  -B -DskipTests -Drevision=$(version) -DperformRelease=true -Dgpg.passphrase="" deploy
-
+	mvn -Drevision=$(version) install
 
 ## clean: Clean all previous builds
 .PHONY: clean
 clean:
-	mvn  -B -Drevision=$(version) clean
+	mvn -Drevision=$(version) clean
 
-## run: Run the executable using the spring-boot plugin
-.PHONY: run
-run: 
-	mvn -Drevision=$(version) spring-boot:run
 
 # check-tag: checks if the tag name has been passed as a parameter to the "make" command
 # This is internally used by the other goals and should not be invoked by the end user. Hence it 
