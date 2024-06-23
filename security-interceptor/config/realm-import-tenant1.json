@@ -1,20 +1,20 @@
 {
-  "realm": "quickstart",
+  "realm": "tenant1",
   "enabled": true,
   "requiredCredentials": [
     "password"
   ],
   "users": [
     {
-      "username": "alice",
-      "firstName": "Alice",
-      "lastName": "Liddel",
-      "email": "alice@keycloak.org",
+      "username": "sam",
+      "firstName": "Samuel",
+      "lastName": "Somers",
+      "email": "sam@keycloak.org",
       "enabled": true,
       "credentials": [
         {
           "type": "password",
-          "value": "alice"
+          "value": "sam"
         }
       ],
       "realmRoles": [
@@ -22,15 +22,15 @@
       ]
     },
     {
-      "username": "jdoe",
-      "firstName": "jdoe",
-      "lastName": "jdoe",
-      "email": "jdoe@keycloak.org",
+      "username": "james",
+      "firstName": "james",
+      "lastName": "stevens",
+      "email": "jstevens@keycloak.org",
       "enabled": true,
       "credentials": [
         {
           "type": "password",
-          "value": "jdoe"
+          "value": "james"
         }
       ],
       "realmRoles": [
@@ -185,7 +185,6 @@
   ],
   "clientScopes": [
     {
-      "id": "6476d4ee-7835-4e20-9235-0ad23c78d183",
       "name": "order.write",
       "description": "Write scope for Order for premium users",
       "protocol": "openid-connect",
@@ -197,7 +196,6 @@
       }
     },
     {
-      "id": "6476d4ee-7835-4e20-9235-0ad23c78d183",
       "name": "order.read",
       "description": "Read scope for Order for premium users",
       "protocol": "openid-connect",

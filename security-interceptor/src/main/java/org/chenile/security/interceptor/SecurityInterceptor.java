@@ -1,11 +1,11 @@
-package org.chenile.samples.security.interceptor;
+package org.chenile.security.interceptor;
 
 import org.chenile.base.exception.ErrorNumException;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.interceptors.BaseChenileInterceptor;
-import org.chenile.samples.security.AuthoritiesSupplier;
-import org.chenile.samples.security.SecurityConfig;
-import org.chenile.samples.security.errorcodes.ErrorCodes;
+import org.chenile.security.AuthoritiesSupplier;
+import org.chenile.security.SecurityConfig;
+import org.chenile.security.errorcodes.ErrorCodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package org.chenile.samples.security.test.service;
+package org.chenile.security.test.service;
 
 import java.util.Map;
 

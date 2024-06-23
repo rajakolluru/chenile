@@ -1,4 +1,4 @@
-package org.chenile.samples.security;
+package org.chenile.security;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
@@ -6,7 +6,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.chenile.core.annotation.ChenileAnnotation;
 import org.chenile.core.context.ChenileExchange;

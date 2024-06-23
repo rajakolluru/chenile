@@ -1,4 +1,4 @@
-package org.chenile.samples.security;
+package org.chenile.security;
 
 import org.chenile.core.context.ChenileExchange;
 

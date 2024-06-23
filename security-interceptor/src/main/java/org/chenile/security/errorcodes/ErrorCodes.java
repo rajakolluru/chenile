@@ -1,4 +1,4 @@
-package org.chenile.samples.security.errorcodes;
+package org.chenile.security.errorcodes;
 
 public enum ErrorCodes {
     // replace the 50000 below with your own sub error range.

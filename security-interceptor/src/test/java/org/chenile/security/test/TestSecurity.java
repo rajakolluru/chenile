@@ -1,4 +1,4 @@
-package org.chenile.samples.security.test;
+package org.chenile.security.test;
 
 import org.chenile.core.context.HeaderUtils;
 import org.junit.Test;
@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.io.InputStream;
-import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

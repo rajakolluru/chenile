@@ -1,4 +1,4 @@
-package org.chenile.samples.security.test.service;
+package org.chenile.security.test.service;
 
 import java.util.Map;
 
@@ -8,11 +8,10 @@ import org.chenile.base.response.GenericResponse;
 import org.chenile.http.annotation.ChenileController;
 import org.chenile.http.annotation.InterceptedBy;
 import org.chenile.http.handler.ControllerSupport;
+import org.chenile.security.SecurityConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.chenile.samples.security.SecurityConfig;
 
 @RestController
 @ChenileController(value = "testService", serviceName = "testService")
