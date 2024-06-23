@@ -27,7 +27,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
  */
 public class StmBodyTypeSelector implements Command<ChenileExchange>{
 	
-	private STMActionsInfoProvider stmActionsInfoProvider;
+	private final STMActionsInfoProvider stmActionsInfoProvider;
 	public StmBodyTypeSelector(STMActionsInfoProvider stmActionsInfoProvider) {
 		this.stmActionsInfoProvider = stmActionsInfoProvider;
 	}

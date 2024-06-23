@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * This interceptor uses {@link SecurityConfig} to secure this particular resource.
@@ -28,7 +29,8 @@ import java.util.List;
  * are expected in the SecurityConfig and throws an exception if they are not available in the
  * current user. It also throws a 401 (UNAUTHORIZED) if there are  no security credentials
  * that exist. <br/>
- * Finally, if the SecurityConfig says that the resource is UNPROTECTED, it does not do anything
+ * Finally, if the SecurityConfig says that the resource is UNPROTECTED, it does not do anything<br/>
+ * Please see {@link SecurityConfig} for more details about the various annotation fields.
  */
 public class SecurityInterceptor extends BaseChenileInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(SecurityInterceptor.class);
@@ -66,11 +68,29 @@ public class SecurityInterceptor extends BaseChenileInterceptor {
 			return config.authorities();
 		}
 		if (!config.authoritiesSupplier().isEmpty()){
-			AuthoritiesSupplier supplier = (AuthoritiesSupplier)applicationContext.
-					getBean(config.authoritiesSupplier());
-			return supplier.getAuthorities(exchange);
+			Object supplier = applicationContext.getBean(config.authoritiesSupplier());
+			return executeAuthoritiesSupplier(supplier,exchange);
 		}
 		return null;
+	}
+
+	/**
+	 *
+	 * @param obj The object
+	 * @param exchange the exchange
+	 * @return the authorities if available
+	 */
+	@SuppressWarnings("unchecked")
+	private String[] executeAuthoritiesSupplier(Object obj, ChenileExchange exchange){
+		String[] auths = null;
+		if (obj instanceof AuthoritiesSupplier as){
+			auths = as.getAuthorities(exchange);
+		}
+		if (obj instanceof Function<?,?> f1){
+			Function<ChenileExchange,String[]> f2 = (Function<ChenileExchange,String[]>)f1;
+			auths = f2.apply(exchange);
+		}
+		return auths;
 	}
 
 	private Collection<GrantedAuthority> getAuthorities(){

@@ -2,10 +2,13 @@ package org.chenile.configuration.query.service;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.chenile.core.context.ChenileExchange;
+import org.chenile.query.model.QueryMetadata;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,5 +76,16 @@ public class QueryConfiguration {
     @Bean
     QueryUserFilterInterceptor queryUserFilterInterceptor() {
 		return new QueryUserFilterInterceptor();
+	}
+
+	@Bean
+	Function<ChenileExchange,String[]> queryAuthorities(@Autowired QueryDefinitions queryDefinitions){
+		return (exchange) -> {
+			String queryName = exchange.getHeader("queryName",String.class);
+			if (queryName == null) return null;
+			QueryMetadata data = queryDefinitions.retrieve(queryName);
+			if (data == null) return null;
+			return data.getAcls();
+		};
 	}
 }

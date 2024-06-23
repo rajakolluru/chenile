@@ -31,10 +31,15 @@ javadoc:
 	mvn  -Drevision=$(version) javadoc:aggregate
 
 	
-## deploy: Deploys the executable with the version extracted from GIT
+## prepare-deploy: Prepares the jars for deployment into Maven central. Set passphrase variable to secrets
+.PHONY: prepare-deploy
+prepare-deploy:
+	mvn  -B -DskipTests -Drevision=$(version) -DperformRelease=true -Dgpg.passphrase="${passphrase}" install
+
+## deploy: Deploys the  chenile jars into Sonatype Maven central. Set passphrase to the correct secret key
 .PHONY: deploy
 deploy:
-	mvn  -B -DskipTests -Drevision=$(version) -DperformRelease=true -Dgpg.passphrase="" deploy
+	mvn  -B -DskipTests -Drevision=$(version) -DperformRelease=true -Dgpg.passphrase="${passphrase}" deploy
 
 
 ## clean: Clean all previous builds
