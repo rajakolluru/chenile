@@ -12,9 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,29 +21,69 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = SpringConfig.class)
 @ActiveProfiles("unittest")
 @AutoConfigureMockMvc
-public class TestSecurity {
-	@Autowired private MockMvc mvc;
-	@Test public void testSecurity() throws Exception {
-		String token = "";
-		InputStream is = getClass().getClassLoader().getResourceAsStream("token.txt");
-		if (is != null){
-			token = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-		}
-		// System.err.println("token is " + token);
+public class TestSecurity extends BaseSecurityTest {
+    @Autowired
+    private MockMvc mvc;
 
-		mvc.perform( MockMvcRequestBuilders
-            .get("/test")
-            .header("security-interceptor-preprocessheader","some_message")
-        	.header("security-interceptor-postprocessheader","some_message")
-			.header(HeaderUtils.TENANT_ID_KEY,"quickstart")
-			// .header("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7l")
-			.header("Authorization", "Bearer " + token.strip())
+    private void doTestSuccess(String realm,String url, String user, String password, String result)
+            throws Exception{
+        mvc.perform(MockMvcRequestBuilders
+            .get(url)
+            .header(HeaderUtils.TENANT_ID_KEY, realm)
+            .header("Authorization", "Bearer " + getToken(realm, user,password))
+            .accept(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.payload.test").value(result));
+    }
 
-			//.header("User-Agent",
-					//"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36")
-			.accept(MediaType.APPLICATION_JSON))
-        	.andDo(print())
-        	.andExpect(status().isOk())
-        	.andExpect(jsonPath("$.payload.test").value("test"));
-	}
+    private void doTestFailure(String realm, String url, String user, String password) throws Exception{
+        mvc.perform(MockMvcRequestBuilders
+            .get(url)
+            .header(HeaderUtils.TENANT_ID_KEY, realm)
+            .header("Authorization", "Bearer " + getToken(realm, user,password))
+            .accept(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void testUnauthorized() throws Exception {
+        doTestFailure("quickstart","/test","alice","alice");
+    }
+
+    @Test
+    public void testAuthorized() throws Exception {
+        doTestSuccess("quickstart","/test","jdoe","jdoe","test");
+    }
+
+    @Test
+    public void testAuthoritiesSupplierLambdaWithFoo() throws Exception {
+        doTestSuccess("quickstart","/test1/foo","alice","alice","foo");
+    }
+
+    @Test
+    public void testAuthoritiesSupplierLambdaWithOthers() throws Exception {
+        doTestFailure("quickstart","/test1/bar","alice","alice");
+    }
+    @Test
+    public void testAuthoritiesSupplierClassWithFoo() throws Exception {
+        doTestSuccess("quickstart","/test2/foo","alice","alice","foo");
+    }
+
+    @Test
+    public void testAuthoritiesSupplierClassWithOthers() throws Exception {
+        doTestFailure("quickstart","/test2/bar","alice","alice");
+    }
+
+    @Test
+    public void testAuthoritiesSupplierClassWithOthersForSuccess() throws Exception {
+        doTestSuccess("quickstart","/test2/bar","jdoe","jdoe","bar");
+    }
+
+    @Test public void testPremiumUserForTenant1() throws Exception {
+        doTestSuccess("tenant1","/test","james","james","test");
+        doTestSuccess("tenant1","/test1/bar","james","james","bar");
+        doTestSuccess("tenant1","/test2/bar","james","james","bar");
+    }
 }

@@ -24,13 +24,15 @@ import java.util.List;
 import java.util.function.Function;
 
 /**
- * This interceptor uses {@link SecurityConfig} to secure this particular resource.
- * It looks at the authorities of the signed-in user and compares them with the ones that
- * are expected in the SecurityConfig and throws an exception if they are not available in the
- * current user. It also throws a 401 (UNAUTHORIZED) if there are  no security credentials
- * that exist. <br/>
+ * This interceptor uses {@link SecurityConfig} to secure this particular resource.It first looks at the
+ * SecurityConfig to see if there are any guarding authorities for this service. If there are none then
+ * this interceptor does nothing. <br/>
+ * Next, it looks at the authorities of the signed-in user. It throws a 401 (UNAUTHORIZED) if the
+ * authorities don't exist for the current user. Now, it  compares current authorities with the guarding
+ * authorities for this service. It lets the user in if even one of the guarding authorities exist
+ * for the current user. Else it throws a 403 (FORBIDDEN) <br/>
  * Finally, if the SecurityConfig says that the resource is UNPROTECTED, it does not do anything<br/>
- * Please see {@link SecurityConfig} for more details about the various annotation fields.
+ * Please see {@link SecurityConfig} for more details about the various annotation fields and how they are used
  */
 public class SecurityInterceptor extends BaseChenileInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(SecurityInterceptor.class);
@@ -39,13 +41,14 @@ public class SecurityInterceptor extends BaseChenileInterceptor {
 	public static final String SCOPE_PREFIX = "SCOPE_";
 	@Override
 	protected void doPreProcessing(ChenileExchange exchange) {
-		Collection<GrantedAuthority> currentAuthorities = getAuthorities();
-		System.out.println("Authorities are " + getAuthorities());
-		if(currentAuthorities == null)
-			throw new ErrorNumException(HttpStatus.UNAUTHORIZED.value(), ErrorCodes.UNAUTHENTICATED.getSubError(),new Object[]{});
 		String[] guardingAuthorities = getGuardingAuthorities(exchange);
 		if(guardingAuthorities == null)
 			return;
+		Collection<GrantedAuthority> currentAuthorities = getAuthorities();
+		System.out.println("Authorities are : " + currentAuthorities);
+		if(currentAuthorities == null)
+			throw new ErrorNumException(HttpStatus.UNAUTHORIZED.value(), ErrorCodes.UNAUTHENTICATED.getSubError(),new Object[]{});
+
 		if(guardingAuthoritiesNotFoundInCurrentAuthorities(guardingAuthorities,currentAuthorities)){
 			throw new ErrorNumException(HttpStatus.FORBIDDEN.value(), ErrorCodes.FORBIDDEN.getSubError(),
 					new Object[]{});

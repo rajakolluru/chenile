@@ -29,7 +29,7 @@
         <module>chenile-query-service</module>
         <module>chenile-mqtt</module>
         <module>cloud-edge-switch</module>
-        <!-- module>security-interceptor</module -->
+        <module>security-interceptor</module>
     </modules>
 
     <packaging>pom</packaging>

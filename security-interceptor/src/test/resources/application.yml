@@ -1,0 +1,21 @@
+
+chenile:
+  security:
+    keycloak:
+      host: "localhost"
+      port: 8180
+      base:
+        realm: quickstart
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8180/realms/#tenantId#/protocol/openid-connect/certs
+
+logging:
+  level:
+    org:
+      chenile:
+        security: DEBUG

@@ -11,6 +11,7 @@ import org.chenile.http.handler.ControllerSupport;
 import org.chenile.security.SecurityConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,8 +19,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController extends ControllerSupport{
 	@GetMapping("/test")
 	@InterceptedBy("securityInterceptor")
-	@SecurityConfig
-	ResponseEntity<GenericResponse<Map<String, Object>>> example(HttpServletRequest request){
-		return process("example",request);
+	@SecurityConfig(authorities = {"order.read"})
+	ResponseEntity<GenericResponse<Map<String, Object>>> test(HttpServletRequest request){
+		return process("test",request);
+	}
+
+	@GetMapping("/test1/{option}")
+	@InterceptedBy("securityInterceptor")
+	@SecurityConfig(authoritiesSupplier = "supplier")
+	ResponseEntity<GenericResponse<Map<String, Object>>> test1(HttpServletRequest request,
+									   @PathVariable("option") String option){
+		return process("test1",request,option);
+	}
+
+	@GetMapping("/test2/{option}")
+	@InterceptedBy("securityInterceptor")
+	@SecurityConfig(authoritiesSupplier = "authoritiesSupplier")
+	ResponseEntity<GenericResponse<Map<String, Object>>> test2(HttpServletRequest request,
+									   @PathVariable("option") String option){
+		return process("test2",request,option);
 	}
 }

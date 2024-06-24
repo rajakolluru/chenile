@@ -1,0 +1,122 @@
+{
+  "realm": "tenant1",
+  "enabled": true,
+  "requiredCredentials": [
+    "password"
+  ],
+  "users": [
+    {
+      "username": "sam",
+      "firstName": "Sam",
+      "lastName": "Collins",
+      "email": "samcollins@keycloak.org",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "sam"
+        }
+      ],
+      "realmRoles": [
+        "user"
+      ]
+    },
+    {
+      "username": "james",
+      "firstName": "James",
+      "lastName": "Munroe",
+      "email": "jmunroe@keycloak.org",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "james"
+        }
+      ],
+      "realmRoles": [
+        "user",
+        "user_premium"
+      ]
+    },
+    {
+      "username": "service-account-authz-servlet",
+      "enabled": true,
+      "serviceAccountClientId": "authz-servlet",
+      "clientRoles": {
+        "authz-servlet" : ["uma_protection"]
+      }
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "user",
+        "description": "User privileges"
+      },
+      {
+        "name": "user_premium",
+        "description": "User Premium privileges"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "authz-servlet",
+      "enabled": true,
+      "bearerOnly": false,
+      "redirectUris": [
+        "http://localhost:8080/login/oauth2/code/authz_servlet"
+      ],
+      "secret": "secret",
+      "authorizationServicesEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "order.read",
+        "roles",
+        "profile",
+        "order.write",
+        "email"
+      ]
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "order.write",
+      "description": "Write scope for Order for premium users",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "gui.order": "",
+        "consent.screen.text": ""
+      }
+    },
+    {
+      "name": "order.read",
+      "description": "Read scope for Order for premium users",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "gui.order": "",
+        "consent.screen.text": ""
+      }
+    }
+  ],
+  "scopeMappings": [
+    {
+      "clientScope": "order.write",
+      "roles": [
+        "user_premium"
+      ]
+    },
+    {
+      "clientScope": "order.read",
+      "roles": [
+        "user_premium"
+      ]
+    }
+  ]
+}
