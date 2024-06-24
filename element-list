@@ -17,6 +17,7 @@ org.chenile.configuration.http
 org.chenile.configuration.mqtt
 org.chenile.configuration.proxy
 org.chenile.configuration.query.service
+org.chenile.configuration.security
 org.chenile.configuration.security.service
 org.chenile.configuration.utils
 org.chenile.core.annotation
@@ -64,6 +65,9 @@ org.chenile.query.service
 org.chenile.query.service.error
 org.chenile.query.service.impl
 org.chenile.query.service.interceptor
+org.chenile.security
+org.chenile.security.errorcodes
+org.chenile.security.interceptor
 org.chenile.security.model
 org.chenile.security.service
 org.chenile.security.service.impl
