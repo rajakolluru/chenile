@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<artifactId>chenile-parent</artifactId>
+		<groupId>org.chenile</groupId>
+		<version>${revision}</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>cucumber-sec-utils</artifactId>	
+	<description>Utilities for Cucumber tests. This extends the utils for security testing</description> 
+	<name>Cucumber test Security utilities</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.chenile</groupId>
+			<artifactId>cucumber-utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.chenile</groupId>
+			<artifactId>security-interceptor</artifactId>
+			<type>test-jar</type>
+			<version>${chenile.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.chenile</groupId>
+			<artifactId>security-interceptor</artifactId>
+		</dependency>
+	</dependencies>
+</project>

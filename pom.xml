@@ -21,6 +21,8 @@
         <module>cucumber-utils</module>
         <module>chenile-config-maven-plugin</module>
         <module>utils</module>
+        <module>security-interceptor</module>
+        <module>cucumber-sec-utils</module>
         <module>workflow-api</module>
         <module>workflow-service</module>
         <module>query-api</module>
@@ -29,7 +31,6 @@
         <module>chenile-query-service</module>
         <module>chenile-mqtt</module>
         <module>cloud-edge-switch</module>
-        <module>security-interceptor</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -43,7 +44,7 @@
 
     <properties>
         <java.version>17</java.version>
-				<revision>1.2.4</revision>
+        <revision>1.2.4</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cucumber.version>4.3.1</cucumber.version>
         <jacoco.version>0.8.11</jacoco.version>
@@ -134,6 +135,11 @@
             <dependency>
                 <groupId>org.chenile</groupId>
                 <artifactId>cucumber-utils</artifactId>
+                <version>${chenile.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.chenile</groupId>
+                <artifactId>cucumber-sec-utils</artifactId>
                 <version>${chenile.version}</version>
             </dependency>
             <dependency>

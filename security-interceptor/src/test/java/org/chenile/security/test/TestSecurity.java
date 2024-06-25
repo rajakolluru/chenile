@@ -81,9 +81,23 @@ public class TestSecurity extends BaseSecurityTest {
         doTestSuccess("quickstart","/test2/bar","jdoe","jdoe","bar");
     }
 
-    @Test public void testPremiumUserForTenant1() throws Exception {
-        doTestSuccess("tenant1","/test","james","james","test");
-        doTestSuccess("tenant1","/test1/bar","james","james","bar");
-        doTestSuccess("tenant1","/test2/bar","james","james","bar");
+    @Test
+    public void testPremiumUserTenant1Test() throws Exception {
+        doTestSuccess("tenant1", "/test", "james", "james", "test");
+    }
+
+    @Test
+    public void testPremiumUserTenant1Test1() throws Exception {
+        doTestSuccess("tenant1", "/test1/bar", "james", "james", "bar");
+    }
+
+    @Test
+    public void testPremiumUserTenant1Test2() throws Exception {
+        doTestSuccess("tenant1", "/test2/bar", "james", "james", "bar");
+    }
+
+    @Test
+    public void testNormalUserTenant1Test() throws Exception {
+        doTestFailure("tenant1","/test","sam","sam");
     }
 }

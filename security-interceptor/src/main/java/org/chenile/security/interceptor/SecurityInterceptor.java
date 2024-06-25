@@ -45,7 +45,7 @@ public class SecurityInterceptor extends BaseChenileInterceptor {
 		if(guardingAuthorities == null)
 			return;
 		Collection<GrantedAuthority> currentAuthorities = getAuthorities();
-		System.out.println("Authorities are : " + currentAuthorities);
+        logger.debug("Authorities are : {}", currentAuthorities);
 		if(currentAuthorities == null)
 			throw new ErrorNumException(HttpStatus.UNAUTHORIZED.value(), ErrorCodes.UNAUTHENTICATED.getSubError(),new Object[]{});
 

@@ -13,23 +13,35 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
-public class BaseSecurityTest {
-    static protected KeycloakContainer keycloak = null;
 
-    static {
-        keycloak = new KeycloakContainer();
-        keycloak.withRealmImportFiles("config/realm-import.json",
-                "config/realm-import-tenant1.json");
+public class BaseSecurityTest {
+
+    public static KeycloakContainer keycloak =
+         new KeycloakContainer()
+                .withRealmImportFiles("config/realm-import.json",
+                "config/realm-import-tenant1.json")
+                ;
+    static{
         keycloak.start();
     }
 
-    @DynamicPropertySource
-    static void keycloakProperties(DynamicPropertyRegistry registry) {
-        registry.add("chenile.security.keycloak.host", PropertiesProvider::host);
-        registry.add("chenile.security.keycloak.port", PropertiesProvider::port);
+    public static String getHost(){
+        return keycloak.getHost();
     }
 
-    protected String getToken(String realm, String user, String password) {
+    public static int getHttpPort(){
+        return keycloak.getHttpPort();
+    }
+
+
+    @DynamicPropertySource
+    public static void keycloakProperties(DynamicPropertyRegistry registry) {
+        System.out.println("**************setting the host to " + keycloak.getHost());
+        registry.add("chenile.security.keycloak.host", keycloak::getHost);
+        registry.add("chenile.security.keycloak.port", keycloak::getHttpPort);
+    }
+
+    public static String getToken(String realm, String user, String password) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -52,16 +64,6 @@ public class BaseSecurityTest {
 
         assert token != null;
         return token.accessToken();
-    }
-
-    static class PropertiesProvider {
-        public static String host() {
-            return keycloak.getHost();
-        }
-
-        public static int port() {
-            return keycloak.getHttpPort();
-        }
     }
 
     record KeyCloakToken(@JsonProperty("access_token") String accessToken) {
