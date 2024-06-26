@@ -42,7 +42,7 @@ public class SpringConfig extends SpringBootServletInitializer{
 				if (option.equals("foo")) {
 					return null;
 				}
-				return new String[]{"order.write"};
+				return new String[]{"test.premium"};
 			}
 		};
 	}

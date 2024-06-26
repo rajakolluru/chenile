@@ -48,56 +48,62 @@ public class TestSecurity extends BaseSecurityTest {
     }
 
     @Test
-    public void testUnauthorized() throws Exception {
-        doTestFailure("quickstart","/test","alice","alice");
+    public void tenant0ANormalUserAccessesPremiumResource() throws Exception {
+        doTestFailure("tenant0","/premium","t0-normal","t0-normal");
     }
 
     @Test
-    public void testAuthorized() throws Exception {
-        doTestSuccess("quickstart","/test","jdoe","jdoe","test");
+    public void tenant0APremiumUserAccessesPremiumResource() throws Exception {
+        doTestSuccess("tenant0","/premium","t0-premium","t0-premium","test");
     }
 
     @Test
-    public void testAuthoritiesSupplierLambdaWithFoo() throws Exception {
-        doTestSuccess("quickstart","/test1/foo","alice","alice","foo");
+    public void tenant0ANormalUserAccessesSelectivelyPremiumResourceForNonPremium() throws Exception {
+        doTestSuccess("tenant0","/selective-premium/foo","t0-normal","t0-normal","foo");
     }
 
     @Test
-    public void testAuthoritiesSupplierLambdaWithOthers() throws Exception {
-        doTestFailure("quickstart","/test1/bar","alice","alice");
+    public void tenant0ANormalUserAccessesSelectivelyPremiumResourceForPremium() throws Exception {
+        doTestFailure("tenant0","/selective-premium/bar","t0-normal","t0-normal");
     }
     @Test
-    public void testAuthoritiesSupplierClassWithFoo() throws Exception {
-        doTestSuccess("quickstart","/test2/foo","alice","alice","foo");
+    public void tenant0ANormalUserAccessesSelectivelyPremiumResourceForNonPremium1() throws Exception {
+        doTestSuccess("tenant0","/selective-premium1/foo","t0-normal","t0-normal","foo");
     }
 
     @Test
-    public void testAuthoritiesSupplierClassWithOthers() throws Exception {
-        doTestFailure("quickstart","/test2/bar","alice","alice");
+    public void tenant0ANormalUserAccessesSelectivelyPremiumResourceForPremium1() throws Exception {
+        doTestFailure("tenant0","/selective-premium1/bar","t0-normal","t0-normal");
     }
 
     @Test
-    public void testAuthoritiesSupplierClassWithOthersForSuccess() throws Exception {
-        doTestSuccess("quickstart","/test2/bar","jdoe","jdoe","bar");
+    public void tenant0APremiumUserAccessesSelectivelyPremiumResourceForPremium() throws Exception {
+        doTestSuccess("tenant0","/selective-premium1/bar","t0-premium","t0-premium","bar");
     }
 
     @Test
-    public void testPremiumUserTenant1Test() throws Exception {
-        doTestSuccess("tenant1", "/test", "james", "james", "test");
+    public void tenant1APremiumUserAccessesPremiumResource() throws Exception {
+        doTestSuccess("tenant1", "/premium", "t1-premium", "t1-premium", "test");
     }
 
     @Test
-    public void testPremiumUserTenant1Test1() throws Exception {
-        doTestSuccess("tenant1", "/test1/bar", "james", "james", "bar");
+    public void tenant1APremiumUserAccessesSelectivelyPremiumResourceForPremium() throws Exception {
+        doTestSuccess("tenant1", "/selective-premium/bar", "t1-premium", "t1-premium", "bar");
     }
 
     @Test
-    public void testPremiumUserTenant1Test2() throws Exception {
-        doTestSuccess("tenant1", "/test2/bar", "james", "james", "bar");
+    public void tenant1APremiumUserAccessesSelectivelyPremiumResourceForPremium1() throws Exception {
+        doTestSuccess("tenant1", "/selective-premium1/bar", "t1-premium", "t1-premium", "bar");
     }
 
     @Test
-    public void testNormalUserTenant1Test() throws Exception {
-        doTestFailure("tenant1","/test","sam","sam");
+    public void tenant1ANormalUserAccessesPremiumResource() throws Exception {
+        doTestFailure("tenant1","/premium","t1-normal","t1-normal");
     }
+
+    @Test
+    public void tenant1ANormalUserAccessesNormalResource() throws Exception {
+        doTestSuccess("tenant1","/normal","t1-normal","t1-normal","test");
+    }
+
 }

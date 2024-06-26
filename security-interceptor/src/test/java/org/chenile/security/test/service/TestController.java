@@ -17,26 +17,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ChenileController(value = "testService", serviceName = "testService")
 public class TestController extends ControllerSupport{
-	@GetMapping("/test")
+	@GetMapping("/premium")
 	@InterceptedBy("securityInterceptor")
-	@SecurityConfig(authorities = {"order.read"})
-	ResponseEntity<GenericResponse<Map<String, Object>>> test(HttpServletRequest request){
-		return process("test",request);
+	@SecurityConfig(authorities = {"test.premium"})
+	ResponseEntity<GenericResponse<Map<String, Object>>> premium(HttpServletRequest request){
+		return process("premium",request);
 	}
 
-	@GetMapping("/test1/{option}")
+	@GetMapping("/selective-premium/{option}")
 	@InterceptedBy("securityInterceptor")
 	@SecurityConfig(authoritiesSupplier = "supplier")
-	ResponseEntity<GenericResponse<Map<String, Object>>> test1(HttpServletRequest request,
+	ResponseEntity<GenericResponse<Map<String, Object>>> selectivelyPremium(HttpServletRequest request,
 									   @PathVariable("option") String option){
-		return process("test1",request,option);
+		return process("selectivelyPremium",request,option);
 	}
 
-	@GetMapping("/test2/{option}")
+	@GetMapping("/selective-premium1/{option}")
 	@InterceptedBy("securityInterceptor")
 	@SecurityConfig(authoritiesSupplier = "authoritiesSupplier")
-	ResponseEntity<GenericResponse<Map<String, Object>>> test2(HttpServletRequest request,
+	ResponseEntity<GenericResponse<Map<String, Object>>> selectivelyPremium1(HttpServletRequest request,
 									   @PathVariable("option") String option){
-		return process("test2",request,option);
+		return process("selectivelyPremium1",request,option);
+	}
+
+	@GetMapping("/normal")
+	@InterceptedBy("securityInterceptor")
+	@SecurityConfig(authorities = {"test.normal"})
+	ResponseEntity<GenericResponse<Map<String, Object>>> normal(HttpServletRequest request){
+		return process("normal",request);
 	}
 }

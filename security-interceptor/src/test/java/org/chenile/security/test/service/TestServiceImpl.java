@@ -6,19 +6,24 @@ import java.util.Map;
 public class TestServiceImpl implements TestService {
 
 	@Override
-	public Map<String, Object> test() {
-		return test1("test");
+	public Map<String, Object> normal() {
+		return premium();
 	}
 
 	@Override
-	public Map<String, Object> test1(String option) {
+	public Map<String, Object> premium() {
+		return selectivelyPremium("test");
+	}
+
+	@Override
+	public Map<String, Object> selectivelyPremium(String option) {
 		HashMap<String,Object> map = new HashMap<>();
 		map.put("test", option);
 		return map;
 	}
 
 	@Override
-	public Map<String, Object> test2(String option) {
-		return test1(option);
+	public Map<String, Object> selectivelyPremium1(String option) {
+		return selectivelyPremium(option);
 	}
 }

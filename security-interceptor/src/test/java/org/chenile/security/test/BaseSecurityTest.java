@@ -13,12 +13,49 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
-
+/**
+ * A security test container initiating class. Initiates a keycloak container to test security roles.
+ * This class can be used in two ways.<br/>
+ * <ul>
+ * <li>As a super class for your test case.</li>
+ * <li>As a utility class that can be called.</li>
+ * </ul>
+ * Its main purpose is to generate authorization tokens that can be injected into requests to test
+ * secure services. Without these tokens, the requests will be rejected by the Chenile security
+ * interceptor. <br/>
+ * This class is packaged in a test jar. To use it in Maven the following dependency must be included:<br/>
+ * <pre>
+ *     &lt;dependency&gt;
+ * 			&lt;groupId&gt;org.chenile&lt;/groupId&gt;
+ * 			&lt;artifactId&gt;security-interceptor&lt;/artifactId&gt;
+ * 			&lt;type&gt;test-jar&lt;/type&gt;
+ * 			&lt;version&gt;${chenile.version}&lt;/version&gt;
+ * 		&lt;/dependency&gt;
+ * </pre>
+ * This keycloak test container will have the following realms / users/ roles /scopes:<br/>
+ * <table>
+ *     <tr>
+ *         <th>Realm</th><th>User/Password</th><th>Role(s)</th><th>Scope(s)</th>
+ *     </tr>
+ *     <tr>
+ *         <td>tenant0</td><td>t0-normal/t0-normal</td><td>user</td><td>test.normal</td>
+ *     </tr>
+ *     <tr>
+ *          <td>tenant0</td><td>t0-premium/t0-premium</td><td>user,user_premium</td><td>test.normal,test.premium</td>
+ *     </tr>
+ *     <tr>
+ *          <td>tenant1</td><td>t1-normal/t1-normal</td><td>user</td><td>test.normal</td>
+ *     </tr>
+ *    <tr>
+ *         <td>tenant1</td><td>t1-premium/t1-premium</td><td>user,user_premium</td><td>test.normal,test.premium</td>
+ *    </tr>
+ * </table>
+ */
 public class BaseSecurityTest {
 
     public static KeycloakContainer keycloak =
          new KeycloakContainer()
-                .withRealmImportFiles("config/realm-import.json",
+                .withRealmImportFiles("config/realm-import-tenant0.json",
                 "config/realm-import-tenant1.json")
                 ;
     static{
@@ -36,7 +73,6 @@ public class BaseSecurityTest {
 
     @DynamicPropertySource
     public static void keycloakProperties(DynamicPropertyRegistry registry) {
-        System.out.println("**************setting the host to " + keycloak.getHost());
         registry.add("chenile.security.keycloak.host", keycloak::getHost);
         registry.add("chenile.security.keycloak.port", keycloak::getHttpPort);
     }

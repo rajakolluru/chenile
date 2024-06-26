@@ -1,20 +1,20 @@
 {
-  "realm": "quickstart",
+  "realm": "tenant0",
   "enabled": true,
   "requiredCredentials": [
     "password"
   ],
   "users": [
     {
-      "username": "alice",
+      "username": "t0-normal",
       "firstName": "Alice",
-      "lastName": "Liddel",
+      "lastName": "Wonderland",
       "email": "alice@keycloak.org",
       "enabled": true,
       "credentials": [
         {
           "type": "password",
-          "value": "alice"
+          "value": "t0-normal"
         }
       ],
       "realmRoles": [
@@ -22,15 +22,15 @@
       ]
     },
     {
-      "username": "jdoe",
-      "firstName": "jdoe",
-      "lastName": "jdoe",
+      "username": "t0-premium",
+      "firstName": "John",
+      "lastName": "Doe",
       "email": "jdoe@keycloak.org",
       "enabled": true,
       "credentials": [
         {
           "type": "password",
-          "value": "jdoe"
+          "value": "t0-premium"
         }
       ],
       "realmRoles": [
@@ -73,18 +73,18 @@
       "defaultClientScopes": [
         "web-origins",
         "acr",
-        "order.read",
+        "test.normal",
         "roles",
         "profile",
-        "order.write",
+        "test.premium",
         "email"
       ]
     }
   ],
   "clientScopes": [
     {
-      "name": "order.write",
-      "description": "Write scope for Order for premium users",
+      "name": "test.premium",
+      "description": "Enhanced test scope for premium users",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true",
@@ -94,8 +94,8 @@
       }
     },
     {
-      "name": "order.read",
-      "description": "Read scope for Order for premium users",
+      "name": "test.normal",
+      "description": "Normal test scope for all users",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true",
@@ -107,13 +107,14 @@
   ],
   "scopeMappings": [
     {
-      "clientScope": "order.write",
+      "clientScope": "test.normal",
       "roles": [
-        "user_premium"
+        "user_premium",
+        "user"
       ]
     },
     {
-      "clientScope": "order.read",
+      "clientScope": "test.premium",
       "roles": [
         "user_premium"
       ]

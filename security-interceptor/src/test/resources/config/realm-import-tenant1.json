@@ -6,7 +6,7 @@
   ],
   "users": [
     {
-      "username": "sam",
+      "username": "t1-normal",
       "firstName": "Sam",
       "lastName": "Collins",
       "email": "samcollins@keycloak.org",
@@ -14,7 +14,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "sam"
+          "value": "t1-normal"
         }
       ],
       "realmRoles": [
@@ -22,7 +22,7 @@
       ]
     },
     {
-      "username": "james",
+      "username": "t1-premium",
       "firstName": "James",
       "lastName": "Munroe",
       "email": "jmunroe@keycloak.org",
@@ -30,7 +30,7 @@
       "credentials": [
         {
           "type": "password",
-          "value": "james"
+          "value": "t1-premium"
         }
       ],
       "realmRoles": [
@@ -73,18 +73,18 @@
       "defaultClientScopes": [
         "web-origins",
         "acr",
-        "order.read",
+        "test.normal",
         "roles",
         "profile",
-        "order.write",
+        "test.premium",
         "email"
       ]
     }
   ],
   "clientScopes": [
     {
-      "name": "order.write",
-      "description": "Write scope for Order for premium users",
+      "name": "test.premium",
+      "description": "Premium test scope for premium users",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true",
@@ -94,8 +94,8 @@
       }
     },
     {
-      "name": "order.read",
-      "description": "Read scope for Order for premium users",
+      "name": "test.normal",
+      "description": "Normal test scope for all users",
       "protocol": "openid-connect",
       "attributes": {
         "include.in.token.scope": "true",
@@ -107,15 +107,16 @@
   ],
   "scopeMappings": [
     {
-      "clientScope": "order.write",
+      "clientScope": "test.premium",
       "roles": [
         "user_premium"
       ]
     },
     {
-      "clientScope": "order.read",
+      "clientScope": "test.normal",
       "roles": [
-        "user_premium"
+        "user_premium",
+        "user"
       ]
     }
   ]
