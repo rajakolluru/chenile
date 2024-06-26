@@ -335,6 +335,7 @@
                     <additionalOptions>
                         <additionalOption>-Xdoclint:none</additionalOption>
                     </additionalOptions>
+                    <failOnError>false</failOnError>
                     <stylesheetfile>site-resources/styles-new.css</stylesheetfile>
                     <top>
                         <![CDATA[<h2><a href='https://chenile.org'>Chenile Framework Javadocs</a></h2>]]>
