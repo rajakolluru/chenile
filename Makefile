@@ -30,6 +30,11 @@ build:
 javadoc:
 	mvn  -Drevision=$(version) javadoc:aggregate
 
+## test-javadoc: Build the aggregated javadocs web site for Test classes
+.PHONY: test-javadoc
+javadoc:
+	mvn  -Drevision=$(version) javadoc:test-aggregate
+
 	
 ## prepare-deploy: Prepares the jars for deployment into Maven central. Set passphrase variable to secrets
 .PHONY: prepare-deploy

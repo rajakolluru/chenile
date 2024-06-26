@@ -1,4 +1,4 @@
 /**
- * Contains the Gherkin language support for Rest interactions
+ * Contains the Gherkin language support for Rest interactions for Security
  */
-package org.chenile.cucumber.rest;
+package org.chenile.cucumber.security.rest;
