@@ -117,6 +117,11 @@ list-local-tags:
 list-origin-tags:
 	@git ls-remote --tags origin | grep -v '\}' | cut -d/ -f3
 
+## push-tags: Push all tags from local to origin
+.PHONY: push-tags
+push-tags: 
+	git push --tags origin 
+
 ## delete-origin-tag: Delete a tag at the origin
 .PHONY: delete-origin-tag
 delete-origin-tag: check-tag
