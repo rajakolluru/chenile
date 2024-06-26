@@ -22,13 +22,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.chenile</groupId>
-			<artifactId>security-interceptor</artifactId>
-			<type>test-jar</type>
-			<version>${chenile.version}</version>
+			<artifactId>chenile-security</artifactId>
 		</dependency>
+
 		<dependency>
-			<groupId>org.chenile</groupId>
-			<artifactId>security-interceptor</artifactId>
+			<groupId>com.github.dasniko</groupId>
+			<artifactId>testcontainers-keycloak</artifactId>
+			<version>3.4.0</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -32,7 +32,7 @@ javadoc:
 
 ## test-javadoc: Build the aggregated javadocs web site for Test classes
 .PHONY: test-javadoc
-javadoc:
+test-javadoc:
 	mvn  -Drevision=$(version) javadoc:test-aggregate
 
 	

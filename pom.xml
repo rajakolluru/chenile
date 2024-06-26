@@ -21,6 +21,7 @@
         <module>cucumber-utils</module>
         <module>chenile-config-maven-plugin</module>
         <module>utils</module>
+        <module>chenile-security</module>
         <module>security-interceptor</module>
         <module>cucumber-sec-utils</module>
         <module>workflow-api</module>
@@ -140,6 +141,11 @@
             <dependency>
                 <groupId>org.chenile</groupId>
                 <artifactId>cucumber-sec-utils</artifactId>
+                <version>${chenile.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.chenile</groupId>
+                <artifactId>chenile-security</artifactId>
                 <version>${chenile.version}</version>
             </dependency>
             <dependency>
