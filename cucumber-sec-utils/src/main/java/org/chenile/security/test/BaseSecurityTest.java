@@ -19,19 +19,11 @@ import java.util.Collections;
  * <ul>
  * <li>As a super class for your test case.</li>
  * <li>As a utility class that can be called.</li>
+ * <li>Packaged within Cucumber. See {@link org.chenile.cucumber.security.rest.RestCukesSecSteps}</li>
  * </ul>
  * Its main purpose is to generate authorization tokens that can be injected into requests to test
  * secure services. Without these tokens, the requests will be rejected by the Chenile security
  * interceptor. <br/>
- * This class is packaged in a test jar. To use it in Maven the following dependency must be included:<br/>
- * <pre>
- *     &lt;dependency&gt;
- * 			&lt;groupId&gt;org.chenile&lt;/groupId&gt;
- * 			&lt;artifactId&gt;security-interceptor&lt;/artifactId&gt;
- * 			&lt;type&gt;test-jar&lt;/type&gt;
- * 			&lt;version&gt;${chenile.version}&lt;/version&gt;
- * 		&lt;/dependency&gt;
- * </pre>
  * This keycloak test container will have the following realms / users/ roles /scopes:<br/>
  * <table>
  *     <tr>

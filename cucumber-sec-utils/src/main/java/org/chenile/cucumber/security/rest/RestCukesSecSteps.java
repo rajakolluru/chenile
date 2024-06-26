@@ -17,9 +17,8 @@ import java.util.Map;
 import static org.chenile.security.test.BaseSecurityTest.getToken;
 
 /**
- * Since Cucumber does not allow inheritance we need to use composition with CukesSteps (from cucumber-utils)
- *
- * @author Raja Shankar Kolluru
+ * Cucumber steps to facilitate injection of security tokens into the MVC request header.<br/>
+ * See the methods  below for the precise Gherkin language that has been created.
  */
 @ActiveProfiles("unittest")
 @AutoConfigureMockMvc

@@ -27,6 +27,12 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+/**
+ * Cucumber steps to facilitate running tests using normal IN-VM testing (NOT REST based)<br/>
+ * These steps are generic since they leverage the scripting language and JSON PATH etc. that are
+ * supported by Spring MVC.<br/>
+ * See the methods  below for the precise Gherkin language that has been created.
+ */
 @ActiveProfiles("unittest")
 public class CukesSteps {	
 	

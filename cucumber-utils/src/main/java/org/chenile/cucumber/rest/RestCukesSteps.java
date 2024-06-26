@@ -35,9 +35,10 @@ import cucumber.api.java.en.When;
 import org.springframework.util.StringUtils;
 
 /**
- * Since Cucumber does not allow inheritance we need to use composition with CukesSteps (from cucumber-utils)
- *
- * @author Raja Shankar Kolluru
+ * Cucumber steps to facilitate running tests using Spring MOCK MVC.<br/>
+ * These steps are generic since they leverage the scripting language and JSON PATH etc. that are
+ * supported by Spring MVC.<br/>
+ * See the methods  below for the precise Gherkin language that has been created.
  */
 @ActiveProfiles("unittest")
 @AutoConfigureMockMvc

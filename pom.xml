@@ -367,34 +367,25 @@
                     <groups>
                         <group>
                             <title>Core Packages</title>
-                            <!-- To includes java.lang, java.lang.ref,
-                            java.lang.reflect and only java.util
-                            (i.e. not java.util.jar) -->
                             <packages>
                                 org.chenile.base*:org.chenile.core*:org.chenile.http*:org.chenile.proxy*:org.chenile.configuration.core:org.chenile.configuration.proxy:org.chenile.configuration.http:org.chenile.configuration.controller
                             </packages>
                         </group>
                         <group>
                             <title>MQTT</title>
-                            <!-- To include javax.accessibility,
-                           javax.crypto, ... (among others) -->
                             <packages>
                                 org.chenile.mqtt*:org.chenile.cloudedgeswitch*:org.chenile.configuration.mqtt:org.chenile.configuration.cloudedgeswitch
                             </packages>
                         </group>
                         <group>
                             <title>STM/OWIZ/Workflow</title>
-                            <!-- To include javax.accessibility,
-                           javax.crypto, ... (among others) -->
                             <packages>
                                 org.chenile.owiz*:org.chenile.stm*:org.chenile.ognl:org.chenile.workflow*:org.chenile.configuration.workflow
                             </packages>
                         </group>
                         <group>
                             <title>Testing</title>
-                            <!-- To include javax.accessibility,
-                           javax.crypto, ... (among others) -->
-                            <packages>org.chenile.cucumber*:org.chenile.testutils*</packages>
+                            <packages>org.chenile.cucumber*:org.chenile.testutils*:org.chenile.security.test</packages>
                         </group>
                         <group>
                             <title>Query</title>
