@@ -15,7 +15,7 @@ import java.util.Collections;
 
 /**
  * A security test container initiating class. Initiates a keycloak container to test security roles.
- * This class can be used in two ways.<br/>
+ * This class can be used in multiple ways:<br/>
  * <ul>
  * <li>As a super class for your test case.</li>
  * <li>As a utility class that can be called.</li>
@@ -25,7 +25,7 @@ import java.util.Collections;
  * secure services. Without these tokens, the requests will be rejected by the Chenile security
  * interceptor. <br/>
  * This keycloak test container will have the following realms / users/ roles /scopes:<br/>
- * <table>
+ * <table class="striped">
  *     <tr>
  *         <th>Realm</th><th>User/Password</th><th>Role(s)</th><th>Scope(s)</th>
  *     </tr>

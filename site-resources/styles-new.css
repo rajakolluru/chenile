@@ -1063,6 +1063,7 @@ table.borderless th, table.borderless td,
 table.plain th, table.plain td,
 table.striped th, table.striped td {
     padding: 2px 5px;
+    color: #444444;
 }
 table.borderless,
 table.borderless > thead > tr > th, table.borderless > tbody > tr > th, table.borderless > tr > th,
