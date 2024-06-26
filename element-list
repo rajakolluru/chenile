@@ -36,6 +36,7 @@ org.chenile.core.util
 org.chenile.cucumber
 org.chenile.cucumber.nonrest
 org.chenile.cucumber.rest
+org.chenile.cucumber.security.rest
 org.chenile.http
 org.chenile.http.annotation
 org.chenile.http.handler
@@ -72,6 +73,7 @@ org.chenile.security.model
 org.chenile.security.service
 org.chenile.security.service.impl
 org.chenile.security.stmutils
+org.chenile.security.test
 org.chenile.stm
 org.chenile.stm.action
 org.chenile.stm.action.scriptsupport
