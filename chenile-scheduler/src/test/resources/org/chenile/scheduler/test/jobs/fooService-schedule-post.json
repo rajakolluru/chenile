@@ -1,0 +1,15 @@
+{
+  "serviceName": "fooService",
+  "operationName": "post",
+  "cronSchedule": "0/10 * * * * ? *",
+  "jobName": "Test_Job1",
+  "payload": "{ \"x\": \"value-of-x\", \"y\": \"value-of-y\"  }",
+  "headers":
+    {
+      "index": 23
+    }
+  ,
+  "jobDescription": "Test Job Description",
+  "triggerGroup": "Test trigger group",
+  "triggerName": "testTrigger"
+}

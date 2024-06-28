@@ -1,17 +1,23 @@
-package org.chenile.core.model;
+package org.chenile.scheduler.model;
 
 import java.util.Map;
 
 /**
- * @deprecated
- * this should ideally move to chenile-scheduler. (TODO)
+ * Schedule definition.
+ *
  */
 public class SchedulerInfo {
-	private String cronSchedule;
-	private String triggerName;
-	private String jobName;
+	public static final String EXTENSION = "chenile.scheduler";
+	public String serviceName;
+	public String operationName;
+	public String cronSchedule;
+	public String jobName;
+	public String jobDescription;
+	public String triggerName;
+	private String triggerGroup;
 	
-	private Map<String,Object> jobMetadata;
+	public Map<String,Object> headers;
+	public String payload;
 	public String getJobName() {
 		return jobName;
 	}
@@ -28,7 +34,6 @@ public class SchedulerInfo {
 		this.jobDescription = jobDescription;
 	}
 
-	private String jobDescription;
 	public String getTriggerName() {
 		return triggerName;
 	}
@@ -45,7 +50,7 @@ public class SchedulerInfo {
 		this.triggerGroup = triggerGroup;
 	}
 
-	private String triggerGroup;
+
 
 	public String getCronSchedule() {
 		return cronSchedule;
@@ -55,11 +60,11 @@ public class SchedulerInfo {
 		this.cronSchedule = cronSchedule;
 	}
 
-	public Map<String,Object> getJobMetadata() {
-		return jobMetadata;
+	public Map<String,Object> getHeaders() {
+		return headers;
 	}
 
-	public void setJobMetadata(Map<String,Object> jobMetadata) {
-		this.jobMetadata = jobMetadata;
+	public void setHeaders(Map<String,Object> headers) {
+		this.headers = headers;
 	}
 }

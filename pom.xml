@@ -17,7 +17,7 @@
         <module>chenile-proxy</module>
         <module>chenile-http</module>
         <!-- module>chenile-filewatch</module -->
-        <!-- module>chenile-scheduler</module -->
+        <module>chenile-scheduler</module>
         <module>cucumber-utils</module>
         <module>chenile-config-maven-plugin</module>
         <module>utils</module>

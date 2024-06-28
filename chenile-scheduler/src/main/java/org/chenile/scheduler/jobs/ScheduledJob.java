@@ -23,7 +23,7 @@ public class ScheduledJob implements Job {
 		// This enables methods to accept job map keys as method params
 		// See the test case sch method for an example
 		copyHeaders(exchange,context);
-		exchange.setBody(context); // just in case someone wants to use it
+		exchange.setBody(getFromMap(SchedulerBuilder.BODY,context)); // just in case someone wants to use it
 		getChenileEntryPoint(context).execute(exchange); 
 	}
 	

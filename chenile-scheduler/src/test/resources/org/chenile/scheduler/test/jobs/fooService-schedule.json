@@ -1,0 +1,9 @@
+{
+  "serviceName": "fooService",
+  "operationName": "schedule",
+  "cronSchedule": "0/5 * * * * ? *",
+  "jobName": "Test_Job",
+  "jobDescription": "Test_Job_Description",
+  "triggerGroup": "Test trigger group1",
+  "triggerName": "testTrigger1"
+}

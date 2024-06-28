@@ -9,18 +9,9 @@
 			"httpMethod": "GET",
 			"produces": "JSON",
 			"consumes": "JSON",
-			"secure": false,
 			"input": "",
-			"fileWatchId": "foo",
 			"output": "",
-			"cacheId": "cache1",
-			"schedulerInfo": {
-				"cronSchedule": "0/5 * * * * ? *",
-				"jobName": "Test Job",
-				"jobDescription": "",
-				"triggerGroup": "Test trigger group",
-				"triggerName": "Test trigger"
-			}
+			"cacheId": "cache1"
 		},
 		{
 			"name": "sch",
@@ -29,7 +20,6 @@
 			"httpMethod": "GET",
 			"produces": "JSON",
 			"consumes": "JSON",
-			"secure": false,
 			"input": "",
 			"fileWatchId": "foo",
 			"output": "",
@@ -45,6 +35,29 @@
 			        "paramClass": "int",
 			        "description": "some int param index that was passed in the job data"
 			      }
+			]
+		},
+		{
+			"name": "post",
+			"auditable": "false",
+			"url": "/post",
+			"httpMethod": "POST",
+			"consumes": "JSON",
+			"secure": false,
+			"input": "org.chenile.scheduler.test.service.FooModel",
+			"output": "",
+			"params":[
+				{
+					"name": "index",
+					"type": "HEADER",
+					"paramClass": "int",
+					"description": "some int param index that was passed in the job data"
+				},{
+					"name": "foo",
+					"type": "BODY",
+					"paramClass": "org.chenile.scheduler.test.service.FooModel",
+					"description": "Model data that needs to be posted as payload"
+				}
 			]
 		}
 	]
