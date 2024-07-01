@@ -96,6 +96,11 @@ increment-patch:
 create-hotfix-latest:
 	@scripts/make-hotfix-branch.sh
 
+## commits-after-last-tag: Find all commits since last tag in git
+.PHONY: commits-after-last-tag
+commits-after-last-tag:
+	@git log $(version)..HEAD 
+
 
 ## find-latest-local-tag: Finds the latest tag for this project
 .PHONY: find-latest-local-tag
