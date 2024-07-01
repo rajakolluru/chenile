@@ -1,9 +1,0 @@
-# Enables auto complete for the make program.
-# It will allow users to start typing commands and complete them by specifying tab
-#
-while read R
-do
-	a="$R $a"
-done <  <(make | awk '(NF>2){ print $1 }' | grep -v -i choose)
-echo $a
-complete -W "$a" make

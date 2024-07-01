@@ -1,2 +1,0 @@
-{{service}}-service
-{{service}}-service-mx

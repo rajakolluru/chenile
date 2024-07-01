@@ -6,6 +6,7 @@ import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.SubscriberVO;
+import org.chenile.scheduler.Constants;
 import org.chenile.scheduler.jobs.ScheduledJob;
 import org.chenile.scheduler.model.SchedulerInfo;
 import org.quartz.*;
@@ -29,11 +30,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
  *
  */
 public class SchedulerBuilder implements DisposableBean{
-	
-	public static final String SERVICE_DEFINITION = "service.definition";
-	public static final String OPERATION_DEFINITION = "operation.definition";
-	public static final String CHENILE_ENTRY_POINT = "chenile.entry.point";
-	public static final String BODY = "body";
+
 	public static Logger logger = LoggerFactory.getLogger(SchedulerBuilder.class);
 	@Autowired
 	private ChenileConfiguration chenileConfiguration;
@@ -52,7 +49,7 @@ public class SchedulerBuilder implements DisposableBean{
 	@EventListener(ApplicationReadyEvent.class)
 	public void build() throws Exception {
 		Map<String, SchedulerInfo> map = (Map<String,SchedulerInfo>)
-				chenileConfiguration.getOtherExtensions().get(SchedulerInfo.EXTENSION);
+				chenileConfiguration.getOtherExtensions().get(Constants.EXTENSION);
 
 		map.forEach((name,schedulerInfo)->{
 					try{
@@ -75,17 +72,14 @@ public class SchedulerBuilder implements DisposableBean{
 
 	public void scheduleJob(ChenileServiceDefinition serviceDefinition, 
 			OperationDefinition operationDefinition,SchedulerInfo schedulerInfo) throws SchedulerException {
-
 		JobDataMap jdm = new JobDataMap();
-		jdm.put(SERVICE_DEFINITION, serviceDefinition);
-		jdm.put(OPERATION_DEFINITION, operationDefinition);
-		jdm.put(CHENILE_ENTRY_POINT, chenileEntryPoint);
+		jdm.put(Constants.SERVICE_DEFINITION, serviceDefinition);
+		jdm.put(Constants.OPERATION_DEFINITION, operationDefinition);
+		jdm.put(Constants.CHENILE_ENTRY_POINT, chenileEntryPoint);
 		if (schedulerInfo.getHeaders() != null) {
-			schedulerInfo.getHeaders().forEach((k, v)->{
-				jdm.put(k,v);
-			});
+            jdm.putAll(schedulerInfo.getHeaders());
 		}
-		jdm.put(BODY,schedulerInfo.payload);
+		jdm.put(Constants.BODY,schedulerInfo.payload);
 		JobDetail job = newJob(ScheduledJob.class)
 	             .withIdentity(schedulerInfo.getJobName())
 	             .setJobData(jdm)

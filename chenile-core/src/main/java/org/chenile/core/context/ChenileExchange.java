@@ -74,7 +74,25 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	 */ 
 	private OperationDefinition operationDefinition;
 	private ChenileServiceDefinition serviceDefinition;
-	
+
+	public String getOriginalSourceReference() {
+		return originalSourceReference;
+	}
+
+	public void setOriginalSourceReference(String originalSourceReference) {
+		this.originalSourceReference = originalSourceReference;
+	}
+
+	/**
+	 * This (optional) field allows traceability to the original request. This is populated
+	 * when the entry point is invoked in a batch mode from a file watcher or a reader from a queue
+	 * or topic. In this situation, no response is emitted. Hence, we need to know how this request
+	 * got created in the first place. <br/>
+	 * Typical values can be: <br/>
+	 * <li>file1:line1:ref ID -> to indicate that this message was constructed from the file in question etc.</li>
+	 * <li>mqtt:topic1:id -> to indicate that this messages was created by MQTT by reading the topic in question etc.</li>
+	 */
+	private String originalSourceReference;
 
 	/**
 	 * used (by chenile-proxy) to convert the response JSON to a response body.

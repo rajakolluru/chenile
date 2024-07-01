@@ -13,6 +13,6 @@ The orchestration engine is internally used by Chenile to provide an interceptio
 Hence Chenile also serves like an IN-VM message bus. Chenile also facilitates easy swagger documentation (using Spring doc). 
 Chenile allows the development of Cucumber based BDD tests with most of the plumbing already in place
 
-Finally, Chenile ships with its own code generators to ease the development of micro services. 
+Finally, Chenile ships with its own code generators to ease the development of micro services. Please see [Code Generation Repository](https://github.com/rajakolluru/chenile-gen) for more information about the code generator.
 
 

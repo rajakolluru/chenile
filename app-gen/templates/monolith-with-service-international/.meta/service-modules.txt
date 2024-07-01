@@ -1,4 +1,0 @@
-{{service}}-service-base
-{{service}}-service-us
-{{service}}-service-can
-{{service}}-service-mx

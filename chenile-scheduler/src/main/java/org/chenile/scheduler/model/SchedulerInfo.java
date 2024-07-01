@@ -7,7 +7,6 @@ import java.util.Map;
  *
  */
 public class SchedulerInfo {
-	public static final String EXTENSION = "chenile.scheduler";
 	public String serviceName;
 	public String operationName;
 	public String cronSchedule;

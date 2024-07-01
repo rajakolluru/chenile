@@ -11,10 +11,9 @@ import org.springframework.http.HttpStatus;
 import java.util.List;
 
 /**
- * Constructs a generic response from the response and exception that has been thrown. 
+ * Constructs a generic response from the response and exception that has been thrown. <br/>
  * This also sets the Http Status and warnings in the exchange so that the HTTP controller can 
- * access them directly from exchange.
- * This should be the first interceptor in the chain.
+ * access them directly from exchange.<br/>
  * @author Raja Shankar Kolluru
  *
  */

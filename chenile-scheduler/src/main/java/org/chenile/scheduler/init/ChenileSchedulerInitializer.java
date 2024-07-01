@@ -3,6 +3,7 @@ package org.chenile.scheduler.init;
 import org.chenile.base.exception.ConfigurationException;
 import org.chenile.core.init.BaseInitializer;
 import org.chenile.core.model.ChenileConfiguration;
+import org.chenile.scheduler.Constants;
 import org.chenile.scheduler.errorcodes.ErrorCodes;
 import org.chenile.scheduler.model.SchedulerInfo;
 import org.slf4j.Logger;
@@ -28,7 +29,7 @@ public class ChenileSchedulerInitializer extends BaseInitializer<SchedulerInfo> 
 	}
 
 	protected void registerModelInChenile(SchedulerInfo schedulerInfo) {
-		Map<String, SchedulerInfo> map = getExtensionMap(SchedulerInfo.EXTENSION);
+		Map<String, SchedulerInfo> map = getExtensionMap(Constants.EXTENSION);
 
 		if (map.get(schedulerInfo.getJobName()) != null){
 			throw new ConfigurationException(ErrorCodes.MISCONFIGURATION_DUPLICATE_JOB_NAME.getSubError(),

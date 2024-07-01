@@ -20,11 +20,18 @@ public class HeaderUtils {
 	public static final String DEVICE_ID = "x-chenile-deviceid";
 	public static final String TENANT_TYPE = "x-chenile-tenanttype";
 	public static final String CHANNEL = "x-chenile-channel";
+	/**
+	 * Keeps track of the original entry point (HTTP, MQTT etc.) of Chenile.
+	 */
 	public static final String ENTRY_POINT = "chenile-entry-point";
 	public static final String TRAJECTORY_ID = "x-chenile-trajectory-id";
 	public static final String MOCK_HEADER = "x-chenile-mock-mode";
+	/**
+	 * If the output must be logged.
+	 */
+    public static final String LOG_OUTPUT = "log-output";
 
-	private static String convertToString(Object o) {
+    private static String convertToString(Object o) {
 		return (o == null) ? null: o.toString();
 	}
 	public static String getRegion(Map<String, Object> headers) {
