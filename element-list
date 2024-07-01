@@ -67,6 +67,7 @@ org.chenile.query.service
 org.chenile.query.service.error
 org.chenile.query.service.impl
 org.chenile.query.service.interceptor
+org.chenile.scheduler
 org.chenile.scheduler.errorcodes
 org.chenile.scheduler.init
 org.chenile.scheduler.jobs
