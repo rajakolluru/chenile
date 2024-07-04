@@ -14,6 +14,7 @@ org.chenile.configuration.cloudedgeswitch
 org.chenile.configuration.controller
 org.chenile.configuration.core
 org.chenile.configuration.http
+org.chenile.configuration.http.controller
 org.chenile.configuration.mqtt
 org.chenile.configuration.proxy
 org.chenile.configuration.query.service
@@ -35,9 +36,9 @@ org.chenile.core.service
 org.chenile.core.transform
 org.chenile.core.util
 org.chenile.cucumber
+org.chenile.cucumber.mqtt.rest
 org.chenile.cucumber.nonrest
 org.chenile.cucumber.rest
-org.chenile.cucumber.security.rest
 org.chenile.http
 org.chenile.http.annotation
 org.chenile.http.handler
@@ -49,6 +50,7 @@ org.chenile.mqtt.errorcodes
 org.chenile.mqtt.init
 org.chenile.mqtt.model
 org.chenile.mqtt.pubsub
+org.chenile.mqtt.test
 org.chenile.ognl
 org.chenile.owiz
 org.chenile.owiz.config
