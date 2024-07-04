@@ -1,12 +1,12 @@
 {
   "serviceName": "fooService",
   "operationName": "post",
-  "cronSchedule": "0/10 * * * * ? *",
+  "cronSchedule": "0/2 * * * * ? *",
   "jobName": "Test_Job1",
   "payload": "{ \"x\": \"value-of-x\", \"y\": \"value-of-y\"  }",
   "headers":
     {
-      "index": 23
+      "index": 286
     }
   ,
   "jobDescription": "Test Job Description",

@@ -37,6 +37,17 @@ public class TestSecurity extends BaseSecurityTest {
             .andExpect(jsonPath("$.payload.test").value(result));
     }
 
+    private void doTestFailureWithIncorrectTenancy(String realm,String tenant,String url, String user, String password)
+            throws Exception{
+        mvc.perform(MockMvcRequestBuilders
+            .get(url)
+            .header(HeaderUtils.TENANT_ID_KEY, tenant)
+            .header("Authorization", "Bearer " + getToken(realm, user,password))
+            .accept(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isUnauthorized());
+    }
+
     private void doTestFailure(String realm, String url, String user, String password) throws Exception{
         mvc.perform(MockMvcRequestBuilders
             .get(url)
@@ -106,4 +117,13 @@ public class TestSecurity extends BaseSecurityTest {
         doTestSuccess("tenant1","/normal","t1-normal","t1-normal","test");
     }
 
+    @Test
+    public void tenant0APremiumUserAccessesPremiumResourceWithWrongButValidTenancy() throws Exception{
+        doTestFailureWithIncorrectTenancy("tenant0","tenant1","/normal","t0-premium","t0-premium");
+    }
+
+    @Test
+    public void tenant0APremiumUserAccessesPremiumResourceWithIncorrectTenancy() throws Exception{
+        doTestFailureWithIncorrectTenancy("tenant0","tenant8","/normal","t0-premium","t0-premium");
+    }
 }

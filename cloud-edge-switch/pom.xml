@@ -47,10 +47,8 @@
         </dependency>
         <dependency>
             <groupId>org.chenile</groupId>
-            <artifactId>chenile-mqtt</artifactId>
-            <type>test-jar</type>
+            <artifactId>cucumber-mqtt-utils</artifactId>
             <scope>test</scope>
-            <version>${chenile.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>

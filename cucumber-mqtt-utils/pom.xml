@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<artifactId>chenile-parent</artifactId>
+		<groupId>org.chenile</groupId>
+		<version>${revision}</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>cucumber-mqtt-utils</artifactId>
+	<description>Utilities for Cucumber tests. This extends the utils for MQTT testing</description>
+	<name>Cucumber test MQTT utilities</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.chenile</groupId>
+			<artifactId>cucumber-utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.vintage</groupId>
+			<artifactId>junit-vintage-engine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>hivemq</artifactId>
+		</dependency>
+	</dependencies>
+</project>

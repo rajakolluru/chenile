@@ -15,6 +15,7 @@ import org.eclipse.paho.mqttv5.common.MqttMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
@@ -58,6 +59,11 @@ public class MqttConfiguration {
     @Value("${mqtt.enabled:true}") private boolean mqttEnabled;
     @Value("${mqtt.connection.session.expiry}") private Long sessionExpiry;
 
+    @Bean public Map<String,String> mqttConnectionDetails(){
+        Map<String,String> cd = new HashMap<>();
+        cd.put("mqtt.connection.ServerURIs",hostURI);
+        return cd;
+    }
 
     /**
      * This converts a string to a byte array. This is required to convert the password which is
@@ -98,10 +104,13 @@ public class MqttConfiguration {
     }
 
     @Bean
-    MqttAsyncClient mqttV5Client(@Autowired MqttConnectionOptions connOpts,
-                                 @Autowired MemoryPersistence persistence,
-                                 @Autowired DisconnectedBufferOptions disconnectedBufferOptions) throws MqttException {
-        MqttAsyncClient v5Client = new MqttAsyncClient(hostURI, clientID, persistence);
+    MqttAsyncClient mqttV5Client(
+            @Autowired @Qualifier("mqttConnectionDetails") Map<String,String> mqttConnectionDetails,
+            @Autowired MqttConnectionOptions connOpts,
+            @Autowired MemoryPersistence persistence,
+            @Autowired DisconnectedBufferOptions disconnectedBufferOptions) throws MqttException {
+        String uri = mqttConnectionDetails.get("mqtt.connection.ServerURIs");
+        MqttAsyncClient v5Client = new MqttAsyncClient(uri, clientID, persistence);
         v5Client.setBufferOpts(disconnectedBufferOptions);
         // Combination of clean start and session, broker will wait for subscriber for given time,
         // + publisher will store message in memory and publish when connection came back

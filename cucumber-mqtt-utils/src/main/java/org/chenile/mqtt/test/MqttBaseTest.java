@@ -11,17 +11,20 @@ public class MqttBaseTest {
     @ClassRule
     public static HiveMQContainer hivemq
             = new HiveMQContainer(DockerImageName.parse("hivemq/hivemq-ce:latest"));
+    static {
+        if (!hivemq.isRunning())
+            hivemq.start();
+    }
 
     static class HostProvider {
-        public String getServerURI() {
+        public static String getServerURI() {
             return "tcp://" + hivemq.getHost() + ":" + hivemq.getMqttPort();
         }
     }
-    static HostProvider hostProvider = new HostProvider();
 
     @DynamicPropertySource
     static void mqttProperties(DynamicPropertyRegistry registry){
-        registry.add("mqtt.connection.ServerURIs",hostProvider::getServerURI);
+        registry.add("mqtt.connection.ServerURIs",HostProvider::getServerURI);
     }
 
 }

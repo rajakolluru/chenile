@@ -1,8 +1,5 @@
 package org.chenile.scheduler.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
@@ -18,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.*;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SpringConfig.class)
@@ -29,9 +28,10 @@ public class TestChenileScheduler {
     public static CountDownLatch latch = new CountDownLatch(1);
     public static CountDownLatch latch1 = new CountDownLatch(1);
 	public static CountDownLatch postLatch = new CountDownLatch(1);
-    public static String expectedIndex = "286";
+    public static int expectedIndex = 286;
     public static int actualIndex;
-	public static String string;
+	public static final String expectedString = "fooString";
+	public static String actualString;
       
     @Test public void testIt() throws Exception {
 		assertTrue("Failed: timed out in 10 seconds without executing the test",
@@ -43,7 +43,10 @@ public class TestChenileScheduler {
 	private void testPost() throws Exception {
 		assertTrue("Failed: timed out in 10 seconds without executing the test",
 				postLatch.await(10, TimeUnit.SECONDS));
-		assertEquals(23,actualIndex);
+		assertEquals(expectedIndex,actualIndex);
+		assertNotNull(fooModel);
+		assertEquals("value-of-x",fooModel.x);
+		assertEquals("value-of-y",fooModel.y);
 	}
 
 	private void testManuallyConfiguredGet() throws Exception{
@@ -56,14 +59,14 @@ public class TestChenileScheduler {
 		schedulerInfo.setTriggerGroup("grp1");
 		schedulerInfo.setTriggerName("name1");
 		Map<String,Object> map = new HashMap<>();
-		map.put("x", "y");
+		map.put("x", expectedString);
 		map.put("index", expectedIndex);
 		schedulerInfo.setHeaders(map);
 		schedulerBuilder.scheduleJob(schedulerInfo);
 		assertTrue("Failed: timed out in 10 seconds without executing the test - second",
 				latch1.await(10, TimeUnit.SECONDS));
-		assertEquals(expectedIndex, actualIndex + "");
-		assertEquals("y",string);
+		assertEquals(expectedIndex, actualIndex );
+		assertEquals(expectedString, actualString);
     }
     
     

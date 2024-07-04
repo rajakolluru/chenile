@@ -1,6 +1,9 @@
 
 chenile:
   security:
+    client:
+      id: "authz-servlet"
+      secret: "secret"
     keycloak:
       host: "localhost"
       port: 8180

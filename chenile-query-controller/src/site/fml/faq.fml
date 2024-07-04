@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faqs title="Frequently Asked Questions">
+  <part id="General">
+    <faq id="chenile-query-intro">
+      <question>What does using chenile-query buy me?</question>
+      <answer>
+        <p>
+				The chenile-query offers an enriched querying API. It can be used for various operations based on reading data. Ibatis is recommended and used for default implementation. For example:
+				<li>Searching Utilities</li>
+				<li>Paging Utilities</li>
+        </p>
+				<source>
+					TODO dependency snippet to include in pom.xml
+				</source>
+      </answer>
+    </faq>
+  </part>
+</faqs>

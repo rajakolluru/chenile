@@ -1,7 +1,7 @@
 {
   "serviceName": "fooService",
   "operationName": "schedule",
-  "cronSchedule": "0/5 * * * * ? *",
+  "cronSchedule": "0/1 * * * * ? *",
   "jobName": "Test_Job",
   "jobDescription": "Test_Job_Description",
   "triggerGroup": "Test trigger group1",

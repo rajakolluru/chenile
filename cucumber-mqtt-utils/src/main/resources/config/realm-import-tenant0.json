@@ -1,0 +1,123 @@
+{
+  "realm": "tenant0",
+  "enabled": true,
+  "requiredCredentials": [
+    "password"
+  ],
+  "users": [
+    {
+      "username": "t0-normal",
+      "firstName": "Alice",
+      "lastName": "Wonderland",
+      "email": "alice@keycloak.org",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "t0-normal"
+        }
+      ],
+      "realmRoles": [
+        "user"
+      ]
+    },
+    {
+      "username": "t0-premium",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "jdoe@keycloak.org",
+      "enabled": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "t0-premium"
+        }
+      ],
+      "realmRoles": [
+        "user",
+        "user_premium"
+      ]
+    },
+    {
+      "username": "service-account-authz-servlet",
+      "enabled": true,
+      "serviceAccountClientId": "authz-servlet",
+      "clientRoles": {
+        "authz-servlet" : ["uma_protection"]
+      }
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "user",
+        "description": "User privileges"
+      },
+      {
+        "name": "user_premium",
+        "description": "User Premium privileges"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "authz-servlet",
+      "enabled": true,
+      "bearerOnly": false,
+      "redirectUris": [
+        "http://localhost:8080/login/oauth2/code/authz_servlet"
+      ],
+      "secret": "secret",
+      "authorizationServicesEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "test.normal",
+        "roles",
+        "profile",
+        "test.premium",
+        "email"
+      ]
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "test.premium",
+      "description": "Enhanced test scope for premium users",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "gui.order": "",
+        "consent.screen.text": ""
+      }
+    },
+    {
+      "name": "test.normal",
+      "description": "Normal test scope for all users",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "true",
+        "display.on.consent.screen": "true",
+        "gui.order": "",
+        "consent.screen.text": ""
+      }
+    }
+  ],
+  "scopeMappings": [
+    {
+      "clientScope": "test.normal",
+      "roles": [
+        "user_premium",
+        "user"
+      ]
+    },
+    {
+      "clientScope": "test.premium",
+      "roles": [
+        "user_premium"
+      ]
+    }
+  ]
+}

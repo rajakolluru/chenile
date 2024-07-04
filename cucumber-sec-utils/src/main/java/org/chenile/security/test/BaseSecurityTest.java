@@ -2,6 +2,7 @@ package org.chenile.security.test;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
+import org.chenile.cucumber.mqtt.rest.RestCukesSecSteps;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,7 +20,7 @@ import java.util.Collections;
  * <ul>
  * <li>As a super class for your test case.</li>
  * <li>As a utility class that can be called.</li>
- * <li>Packaged within Cucumber. See {@link org.chenile.cucumber.security.rest.RestCukesSecSteps}</li>
+ * <li>Packaged within Cucumber. See {@link RestCukesSecSteps}</li>
  * </ul>
  * Its main purpose is to generate authorization tokens that can be injected into requests to test
  * secure services. Without these tokens, the requests will be rejected by the Chenile security
