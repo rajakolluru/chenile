@@ -18,6 +18,6 @@ public class CapacityController extends ControllerSupport {
     @PostMapping("/add-capacity")
     public ResponseEntity<GenericResponse<Capacity>> addCapacity(
             HttpServletRequest request, @ChenileParamType (Vehicle.class) @RequestBody String vehicle) {
-        return process("addCapacity",request,vehicle);
+        return process(request,vehicle);
     }
 }

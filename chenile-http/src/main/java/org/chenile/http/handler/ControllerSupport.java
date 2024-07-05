@@ -52,6 +52,12 @@ public class ControllerSupport {
 		enhanceBodyWithWarnings(bodyBuilder,chenileExchange);
 		return bodyBuilder.body(response);	
 	}
+
+	protected<T> ResponseEntity<T> process(HttpServletRequest request,Object...args ) {
+		StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+		assert ste.length >= 3;
+		return process(ste[2].getMethodName(), request,args);
+	}
 	
 	private void enhanceBodyWithWarnings(BodyBuilder bodyBuilder, ChenileExchange chenileExchange) {
 		List<ResponseMessage>x =  chenileExchange.getResponseMessages();
