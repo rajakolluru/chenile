@@ -48,7 +48,7 @@ public class SubclassRegistry {
      * @param superClass the superClass hierarchy to look at to determine the correct subclass.
      * @return the correct subclass if it exists in the registry
      */
-    public Class<?> determineSubClass(String jsonString, Class<TypedSuperClass> superClass)
+    public Class<?> determineSubClass(String jsonString, Class<?> superClass)
             throws Exception {
         if (registry.get(superClass) == null) return null;
         Map<String,Class<?>> map = registry.get(superClass);

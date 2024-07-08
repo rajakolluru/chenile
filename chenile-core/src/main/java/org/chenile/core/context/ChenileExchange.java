@@ -11,8 +11,13 @@ import org.chenile.base.exception.ServerException;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.base.response.WarningAware;
 import org.chenile.core.errorcodes.ErrorCodes;
+import org.chenile.core.interceptors.ConstructServiceReference;
+import org.chenile.core.interceptors.ServiceInvoker;
 import org.chenile.core.model.ChenileServiceDefinition;
+import org.chenile.core.model.LogWriter;
 import org.chenile.core.model.OperationDefinition;
+import org.chenile.core.util.MethodUtils;
+import org.chenile.owiz.Command;
 import org.chenile.owiz.impl.ChainContext;
 import org.chenile.owiz.impl.ChainContextContainer;
 import org.springframework.core.ParameterizedTypeReference;
@@ -55,13 +60,13 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	/**
 	 * bodyType is populated by the Chenile Transformation framework. The bodyType might vary depending on the
 	 * URL of the incoming request and also some headers. A body type selector is a special
-	 * {@link org.chenile.owiz.Command<ChenileExchange>} that determines the body type depending on the
+	 * {@link Command<ChenileExchange>} that determines the body type depending on the
 	 * context of the request. (like headers, URL , locale etc.)
 	 * All incoming JSONs (and other type of strings) are converted into the body type specified here
 	 */
 	private TypeReference<?> bodyType;
 	/**
-	 * An object internally used by {@link org.chenile.core.interceptors.ServiceInvoker} to invoke the API.
+	 * An object internally used by {@link ServiceInvoker} to invoke the API.
 	 */
 	private List<Object> apiInvocation;
 	/**
@@ -74,6 +79,7 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	 */ 
 	private OperationDefinition operationDefinition;
 	private ChenileServiceDefinition serviceDefinition;
+	private LogWriter logWriter;
 
 	public String getOriginalSourceReference() {
 		return originalSourceReference;
@@ -139,10 +145,10 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 	private boolean invokeMock;
 	/**
 	 * the service which will be invoked. This would be
-	 * populated by the {@link org.chenile.core.interceptors.ConstructServiceReference} interceptor
-	 * and invoked by {@link org.chenile.core.interceptors.ServiceInvoker}.
+	 * populated by the {@link ConstructServiceReference} interceptor
+	 * and invoked by {@link ServiceInvoker}.
 	 * By switching the serviceReference, any interceptor can change the target service that will be
-	 * invoked. But please be sure to recompute the method by calling {@link org.chenile.core.util.MethodUtils}
+	 * invoked. But please be sure to recompute the method by calling {@link MethodUtils}
 	 */
 	private Object serviceReference;
 	/**
@@ -442,5 +448,13 @@ public class ChenileExchange implements Serializable, ChainContextContainer<Chen
 			ret = this.getServiceDefinition().getExtensionAsAnnotation(klass);
 		}
 		return ret;
+	}
+
+	public LogWriter getLogWriter() {
+		return logWriter;
+	}
+
+	public void setLogWriter(LogWriter logWriter) {
+		this.logWriter = logWriter;
 	}
 }

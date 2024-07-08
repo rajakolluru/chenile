@@ -27,6 +27,7 @@ import org.chenile.core.model.ChenileConfiguration;
 import org.chenile.core.service.ChenileInfoService;
 import org.chenile.core.service.ChenileInfoServiceImpl;
 import org.chenile.core.service.InfoHealthChecker;
+import org.chenile.core.transform.SubclassBodyTypeSelector;
 import org.chenile.core.transform.SubclassRegistry;
 import org.chenile.core.transform.TransformationClassSelector;
 import org.chenile.core.transform.Transformer;
@@ -242,5 +243,10 @@ public class ChenileCoreConfiguration {
 	@Bean public SubclassRegistry subclassRegistry(){
 		return new SubclassRegistry();
 	}
-
+	@Bean public SubclassBodyTypeSelector subclassBodyTypeSelector(){
+		return new SubclassBodyTypeSelector();
+	}
+	@Bean public LogOutput logOutput(){
+		return new LogOutput();
+	}
 }

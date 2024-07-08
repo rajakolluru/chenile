@@ -2,7 +2,9 @@ package org.chenile.security.interceptor;
 
 import org.chenile.base.exception.ErrorNumException;
 import org.chenile.core.context.ChenileExchange;
+import org.chenile.core.context.HeaderUtils;
 import org.chenile.core.interceptors.BaseChenileInterceptor;
+import org.chenile.http.Constants;
 import org.chenile.security.AuthoritiesSupplier;
 import org.chenile.security.SecurityConfig;
 import org.chenile.security.errorcodes.ErrorCodes;
@@ -107,6 +109,7 @@ public class SecurityInterceptor extends BaseChenileInterceptor {
 			logger.info("Did not find authentication in security context");
 			return null;
 		}
+
 		Object principal = authentication.getPrincipal();
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<GrantedAuthority> auths = new ArrayList<>(authorities);
@@ -131,11 +134,15 @@ public class SecurityInterceptor extends BaseChenileInterceptor {
 	/**
 	 * This bypasses the logic only if the security config is configured to be unprotected or
 	 * if the security config does not exist at all.<br/>
+	 * Also, we will only enforce it in the HTTP end point. We assume that all the other end points
+	 * are secured <br/>
 	 * @param exchange the exchange
 	 * @return true if the SecurityConfig is configured to be UNPROTECTED or if config is missing
 	 */
 	@Override
 	protected boolean bypassInterception(ChenileExchange exchange) {
+		String entryPoint = exchange.getHeader(HeaderUtils.ENTRY_POINT,String.class);
+		if (!entryPoint.equals(Constants.HTTP_ENTRY_POINT)) return true;
 		SecurityConfig config = getExtensionByAnnotation(SecurityConfig.class,exchange);
         return config == null || config.value() == SecurityConfig.ProtectionStatus.UNPROTECTED;
     }

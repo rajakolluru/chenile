@@ -68,12 +68,14 @@ public class StateEntityServiceImpl<T extends AbstractStateEntity> implements St
 
 	/**
 	 * An implementation of the create method that delegates to the entity store after filling up
-	 * the mandatory attributes
+	 * the mandatory attributes. It makes sure that it empties out the state if state has been
+	 * supplied because we want STM to supply the initial state.<br/>
 	 * @param entity the state entity that needs to be created.
 	 * @return the entity with the allowed actions
 	 */
 	@Override
 	public StateEntityServiceResponse<T> create(T entity) {
+		entity.setCurrentState(null);
 		T ret = processEntity(entity,null,null);
 		return makeStateEntityResponse(ret);
 	}

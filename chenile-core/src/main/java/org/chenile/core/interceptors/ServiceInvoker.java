@@ -28,19 +28,26 @@ public class ServiceInvoker implements Command<ChenileExchange>{
     @Override
 	public void execute(ChenileExchange chenileExchange) {
 		Throwable retException = null;
+		String serviceOp = chenileExchange.getServiceDefinition().getName() + "." +
+				chenileExchange.getOperationDefinition().getName();
 		try {
 			constructApiInvocation(chenileExchange);
 			invokeApi(chenileExchange);
 		} catch (InvocationTargetException e) {
-			LOG.error("Error while executing service",e);
 			retException = e.getCause();
+			logError(serviceOp, retException.getMessage(), retException.getClass().getName());
 		} catch(Throwable e) {
-			LOG.error("Error while executing service",e);
+			logError(serviceOp,e.getMessage(), e.getClass().getName());
 			retException = e;
 		}
 		if (retException != null){
 			chenileExchange.setException(surroundExceptionIfRequired(retException));
 		}
+	}
+
+	private void logError(String serviceOp,String message, String className){
+		LOG.info("Error while executing service {}. Message = {} (type = {})",serviceOp,
+				message, className);
 	}
 
 	private ErrorNumException surroundExceptionIfRequired(Throwable e){

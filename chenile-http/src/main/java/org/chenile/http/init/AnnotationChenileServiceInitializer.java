@@ -21,6 +21,9 @@ import org.chenile.http.init.od.GetMappingProducer;
 import org.chenile.http.init.od.PatchMappingProducer;
 import org.chenile.http.init.od.PostMappingProducer;
 import org.chenile.http.init.od.PutMappingProducer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
@@ -39,6 +42,7 @@ import org.springframework.web.bind.annotation.PutMapping;
  * The controller must extend from ControllerSupport.
  */
 public class AnnotationChenileServiceInitializer extends AbstractServiceInitializer{
+	private final Logger logger = LoggerFactory.getLogger(AnnotationChenileServiceInitializer.class);
 	@Autowired ApplicationContext applicationContext;
 	@Autowired ChenileConfiguration chenileConfiguration;
 	
@@ -72,31 +76,34 @@ public class AnnotationChenileServiceInitializer extends AbstractServiceInitiali
 			if (name.isEmpty()) {
 				name = "_" + id + "_";
 			}
+
 			Object serviceRef = lookup(name);
 			if (serviceRef != null) {
 				csd.setName(name);
 				csd.setServiceReference(serviceRef);
 			}else {
-				throw new ServerException(ErrorCodes.MISSING_SERVICE_REFERENCE.getSubError(), new Object[]{id});
+				throw new ServerException(ErrorCodes.MISSING_SERVICE_REFERENCE.getSubError(),
+						new Object[]{id});
 			}
+
 			String healthCheckerName = chenileController.healthCheckerName();
 			if (healthCheckerName.isEmpty())
 				healthCheckerName = id + "HealthChecker";
-			
+
 			Object hcref = lookup(healthCheckerName);
-			if (hcref != null) {
+			if (hcref != null){
 				csd.setHealthCheckerName(healthCheckerName);
-				csd.setHealthChecker((HealthChecker)hcref);
+				csd.setHealthChecker((HealthChecker) hcref);
 			}
 			String mockName = chenileController.mockName();
 			if (mockName.isEmpty())
 				mockName = id + "Mock";
+
 			Object mockRef = lookup(mockName);
 			if (mockRef != null) {
 				csd.setMockName(mockName);
 				csd.setMockServiceReference(mockRef);
 			}
-			
 			csd.setOperations(new ArrayList<>());
 			collectChenileAnnotations(bean,csd);
 			configureOperations(bean.getClass(),csd);
@@ -143,8 +150,8 @@ public class AnnotationChenileServiceInitializer extends AbstractServiceInitiali
 
 	private Object lookup(String name) {
 		try {
-			return applicationContext.getBean(name);	
-		}catch(Throwable t) {
+			return applicationContext.getBean(name);
+		}catch (NoSuchBeanDefinitionException exception){
 			return null;
 		}
 	}

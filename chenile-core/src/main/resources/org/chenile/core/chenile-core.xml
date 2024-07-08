@@ -4,6 +4,8 @@
 	<flow id='chenile-highway' defaultFlow="true">
 		<chenile-highway first="true">
 			<chenile-interceptor-chain>
+				<!-- A post processor that logs the output of the invocation if a logWriter is specified in the chenile exchange -->
+				<log-output/>
 				<!--  This is used only in the return path. This surrounds the return value from the service with a generic response -->
 				<generic-response-builder/>
 				<!--  Invoke the exception handler that has been configured -->

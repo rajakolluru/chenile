@@ -4,6 +4,7 @@ import org.chenile.base.response.GenericResponse;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.HeaderUtils;
 import org.chenile.core.context.LogRecord;
+import org.chenile.core.model.LogWriter;
 
 /**
  * Logs the output from the response object. This is required if the service is asynchronous i.e. its
@@ -19,20 +20,29 @@ public class LogOutput extends BaseChenileInterceptor {
 	protected void doPostProcessing(ChenileExchange chenileExchange) {
 		LogRecord record = makeLogRecord(chenileExchange);
 		// execute registered loggers
+		LogWriter logWriter = chenileExchange.getLogWriter();
+		logWriter.write(record);
 	}
 
 	private LogRecord makeLogRecord(ChenileExchange exchange) {
 		LogRecord record = new LogRecord();
-		GenericResponse<?> resp = (GenericResponse<?>)exchange.getResponse();
-		record.success = resp.isSuccess();
-		record.responseMessages = resp.getErrors();
+		try {
+			GenericResponse<?> resp = (GenericResponse<?>) exchange.getResponse();
+			record.success = resp.isSuccess();
+			record.response = resp;
+			record.responseMessages = resp.getErrors();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
 		record.serviceName = exchange.getServiceDefinition().getName();
 		record.moduleName = exchange.getServiceDefinition().getModuleName();
 		record.operationName = exchange.getOperationDefinition().getName();
-		record.response = exchange.getResponse();
+
 		record.request = exchange.getBody();
 		record.originalSource = exchange.getHeader(HeaderUtils.ENTRY_POINT,String.class);
 		record.originalSourceReference = exchange.getOriginalSourceReference();
+		record.exception = exchange.getException();
 		copyParamHeaders(record,exchange);
 		return record;
 	}
@@ -50,6 +60,6 @@ public class LogOutput extends BaseChenileInterceptor {
 
 	@Override
 	protected boolean bypassInterception(ChenileExchange exchange) {
-       return !exchange.getHeader(HeaderUtils.LOG_OUTPUT, Boolean.class);
+        return exchange.getLogWriter() == null;
     }
 }

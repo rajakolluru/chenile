@@ -1,5 +1,6 @@
 package org.chenile.core.context;
 
+import org.chenile.base.exception.ErrorNumException;
 import org.chenile.base.response.GenericResponse;
 import org.chenile.base.response.ResponseMessage;
 
@@ -21,7 +22,7 @@ public class LogRecord {
     public String moduleName;
     public Map<String,Object> headers = new HashMap<>();
     public Object request;
-    public Object response;
+    public GenericResponse<?> response;
     /**
      * Indicates what is the original Source of this request. This will be the same as the
      * entry point of this request.
@@ -33,4 +34,5 @@ public class LogRecord {
      * topic name etc.)
      */
     public String originalSourceReference;
- }
+    public ErrorNumException exception;
+}

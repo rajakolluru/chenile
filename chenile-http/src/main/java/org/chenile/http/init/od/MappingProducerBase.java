@@ -85,14 +85,26 @@ public abstract class MappingProducerBase {
 			}
 		}
 	}
-	
+
+	/**
+	 * The paramClass Annotation tells Chenile that the actual signature of the service's operation
+	 * is different from the one that is defined in the controller.If the parameter is of type
+	 * String then the Chenile Param type will override it. Else, the actual type is preserved.
+	 * @param od the operation definition
+	 * @param pd the param definition that might have been annotated with ChenileParamType
+	 * @param param the parameter defined by the Java reflection API
+	 */
 	protected void processParamClassType(OperationDefinition od, ParamDefinition pd,Parameter param) {
 		if(param.isAnnotationPresent(ChenileParamType.class)) {
 			ChenileParamType co = param.getAnnotation(ChenileParamType.class);
 			if (co.value() != null) {
 				pd.setParamClass(co.value());
+				Class<?> clazz = od.getInput();
 				// reflect the correct param class type in the OperationDefinition as well.
-				od.setInput(co.value());
+				// do this only if the od.getInput() is of type String. Else leave it alone
+				if (clazz.equals(String.class)){
+					od.setInput(co.value());
+				}
 			}
 		}
 	}
