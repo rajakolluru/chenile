@@ -15,6 +15,7 @@ import org.chenile.owiz.Command;
 import org.chenile.proxy.builder.ProxyBuilder;
 import org.chenile.proxy.errorcodes.ErrorCodes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +31,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Invokes the remote service using HTTP
  */
 public class HttpInvoker implements Command<ChenileExchange>{
-	
+
+	@Value("${server.servlet.context-path:}")
+	private String contextPath;
 	@Autowired RestTemplateBuilder restTemplateBuilder;
 	private ObjectMapper objectMapper = new ObjectMapper();
 	public HttpInvoker() {}	
@@ -49,7 +52,7 @@ public class HttpInvoker implements Command<ChenileExchange>{
 	    RestTemplate restTemplate = getRestTemplate(exchange);
 		try {
 			httpResponse = (ResponseEntity<GenericResponse<?>>)
-					restTemplate.exchange(baseURI + constructUrl(od.getUrl(),exchange),
+					restTemplate.exchange(baseURI + constructUrl(contextPath,od.getUrl(),exchange),
 							httpMethod(od), entity,exchange.getResponseBodyType());
 		} catch (RestClientException e) {
 			Object[] eArgs = new Object[]{baseURI, serviceOpName, e.getMessage()};
@@ -90,13 +93,16 @@ public class HttpInvoker implements Command<ChenileExchange>{
 	 * @param exchange - the chenile exchange
 	 * @return the new URL with paths substituted if required
 	 */
-	private static String constructUrl(String url, ChenileExchange exchange){
+	private static String constructUrl(String contextPath, String url, ChenileExchange exchange){
 		while (url.contains("/{")) {
 			int startIndex = url.indexOf("/{");
 			int endIndex = url.indexOf("}");
 			String pathVarName = url.substring(startIndex+2,endIndex);
 			Object pathValue  = exchange.getHeader(pathVarName);
 			url = url.substring(0,startIndex+1) + pathValue + url.substring(endIndex+1);
+		}
+		if (contextPath != null && !contextPath.isEmpty()){
+			url = contextPath + url;
 		}
 		return url;
 	}

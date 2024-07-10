@@ -3,6 +3,7 @@ package org.chenile.core.context;
 
 import org.springframework.security.core.Authentication;
 
+import java.io.Serial;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,11 +18,16 @@ import java.util.Map;
  * <p>It is important to note that this is stored as a ThreadLocal and hence will not be
  * available in Reactive environments.</p>
  */
-public class ContextContainer {
-	private ThreadLocal<Context> contexts = new ThreadLocal<Context>();
+public enum ContextContainer {
+	CONTEXT_CONTAINER;
+	private static final ThreadLocal<Context> contexts = new ThreadLocal<Context>();
+	public static ContextContainer getInstance(){
+		return CONTEXT_CONTAINER;
+	}
 	
 	private static class Context extends HashMap<String,String>{
 		
+		@Serial
 		private static final long serialVersionUID = -8834996563220573087L;
 		public String userId = "";
 		public String regionId = "";
@@ -38,11 +44,16 @@ public class ContextContainer {
 		public boolean isInternal = false;
 
 		public String trajectory = "";
-		public String userAgent = "";
-		public String batchId = "";
-		private String deviceId = "";
 
 		private Authentication authentication=null;
+	}
+
+	public void setRequestId(String requestId){
+		getContext().put(HeaderUtils.REQUEST_ID, requestId);
+	}
+
+	public String getRequestId(){
+		return getContext().get(HeaderUtils.REQUEST_ID);
 	}
 
 	private Context getContext() {

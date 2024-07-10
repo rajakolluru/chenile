@@ -13,3 +13,6 @@ Let us say new version is a.b.c. Do the following:
 8. make list-origin-tags # ensures that the new tag is there in origin.
 9. Edit chenile-version.txt and pom.xml to reflect the next snapshot
 10. make build once again
+11. Publish the snapshot as well and ask your current developers to rely on the snapshot while your non current developers will rely on the latest published version.
+12. Don't forget to edit the config/setenv.sh in chenile-gen repo.
+13. Finally, if you want you can upgrade the chenile-samples to rely on the latest version of chenile.

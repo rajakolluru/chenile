@@ -142,6 +142,10 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
 		}
 		return commands;
 	}
+
+	private Command<ChenileExchange> constructBodyTypeInterceptorsChain(List<String> bodyTypeInterceptors){
+		return null;
+	}
     
 	@Override
     public void afterPropertiesSet() throws Exception {

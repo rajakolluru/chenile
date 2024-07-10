@@ -111,7 +111,7 @@ public class ChenileCoreConfiguration {
 
 	@Bean
 	ContextContainer  contextContainer(){
-		return new ContextContainer();
+		return ContextContainer.CONTEXT_CONTAINER;
 	}
 
 	@Bean

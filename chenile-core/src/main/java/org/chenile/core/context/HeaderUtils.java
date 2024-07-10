@@ -20,6 +20,7 @@ public class HeaderUtils {
 	public static final String DEVICE_ID = "x-chenile-deviceid";
 	public static final String TENANT_TYPE = "x-chenile-tenanttype";
 	public static final String CHANNEL = "x-chenile-channel";
+	public static final String REQUEST_ID = "x-request-id";
 	/**
 	 * Keeps track of the original entry point (HTTP, MQTT etc.) of Chenile.
 	 */
