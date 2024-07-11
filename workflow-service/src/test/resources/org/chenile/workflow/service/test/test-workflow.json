@@ -44,7 +44,7 @@
 			"consumes": "JSON",
 			"input": "org.chenile.workflow.service.test.issues.Issue",
 			"output": "org.chenile.workflow.dto.StateEntityServiceResponse",
-			"bodyTypeSelectorComponentName": "issueBodyTypeSelector",
+			"bodyTypeSelectorComponentNames": ["issueBodyTypeSelector"],
 			"params": [
 				{
 					"name": "id",

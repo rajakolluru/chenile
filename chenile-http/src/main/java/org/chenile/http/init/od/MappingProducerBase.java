@@ -17,6 +17,7 @@ import org.chenile.base.response.GenericResponse;
 import org.chenile.core.annotation.ChenileAnnotation;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.errorcodes.ErrorCodes;
+import org.chenile.core.init.AbstractServiceInitializer;
 import org.chenile.core.model.ChenileServiceDefinition;
 import org.chenile.core.model.HTTPMethod;
 import org.chenile.core.model.HttpBindingType;
@@ -79,8 +80,9 @@ public abstract class MappingProducerBase {
 		if(method.isAnnotationPresent(BodyTypeSelector.class)) {
 			BodyTypeSelector co = method.getAnnotation(BodyTypeSelector.class);
 			if (co.value() != null) {
-				od.setBodyTypeSelectorComponentName(co.value());
-				Command<ChenileExchange> bts = (Command<ChenileExchange>) applicationContext.getBean(co.value());
+				od.setBodyTypeSelectorComponentNames(co.value());
+				Command<ChenileExchange> bts = AbstractServiceInitializer.constructBodyTypeInterceptorsChain(co.value(),
+						applicationContext);
 				od.setBodyTypeSelector(bts);
 			}
 		}

@@ -17,14 +17,14 @@ import java.lang.annotation.Target;
  * <pre>{@code
  *   public Employee save(Employee employee);
  * }</pre></p>
- * <p></p>The type of employee that needs to be passed depends on the context. This context can only be
+ * <p>The type of employee that needs to be passed depends on the context. This context can only be
  * determined by examining the request context. For example, the request may have a header which
  * specifies the type of employee who needs to be "saved". The bodyTypeSelector helps in determining
  * the specific type of Employee by examining the context of the request. It has the full context of
- * the request since it is passed a {@link org.chenile.core.context.ChenileExchange}
+ * the request since it is passed a {@link org.chenile.core.context.ChenileExchange}</p>
  */
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface BodyTypeSelector {
-	public String value();
+	public String[] value();
 }

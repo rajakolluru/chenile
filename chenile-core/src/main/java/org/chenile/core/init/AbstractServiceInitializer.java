@@ -16,6 +16,7 @@ import org.chenile.core.model.ParamDefinition;
 import org.chenile.core.service.HealthChecker;
 import org.chenile.core.util.MethodUtils;
 import org.chenile.owiz.Command;
+import org.chenile.owiz.impl.Chain;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -76,8 +77,9 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
         	if (od.getClientInterceptorComponentNames() != null ) {
             	od.setClientInterceptorCommands(initInterceptors(od.getClientInterceptorComponentNames()));
             }
-        	if(od.getBodyTypeSelectorComponentName() != null) {
-            	od.setBodyTypeSelector((Command<ChenileExchange>)applicationContext.getBean(od.getBodyTypeSelectorComponentName()));
+        	if(od.getBodyTypeSelectorComponentNames() != null) {
+            	od.setBodyTypeSelector(constructBodyTypeInterceptorsChain(od.getBodyTypeSelectorComponentNames(),
+						applicationContext));
             }
         }       
         validate(csd);
@@ -113,7 +115,8 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
     	}
     	for (ParamDefinition pd: od.getParams()) {
     		if (pd.getType() == HttpBindingType.BODY) {
-    			if (od.getInput() == null && od.getBodyTypeSelectorComponentName() == null) {
+    			if (od.getInput() == null && (od.getBodyTypeSelectorComponentNames() == null ||
+						od.getBodyTypeSelectorComponentNames().length == 0)) {
     				throw new ServerException(MISSING_INPUT_TYPE.getSubError(), new Object[]{csd.getId(), od.getName(),pd.getName()});
     			}
     			if (pd.getParamClass() == null) {
@@ -143,8 +146,29 @@ public abstract class AbstractServiceInitializer implements InitializingBean {
 		return commands;
 	}
 
-	private Command<ChenileExchange> constructBodyTypeInterceptorsChain(List<String> bodyTypeInterceptors){
-		return null;
+	public static class InterceptorChain implements Command<ChenileExchange>{
+		private final List<Command<ChenileExchange>> commandList;
+
+		public InterceptorChain(List<Command<ChenileExchange>> commandList){
+			this.commandList = commandList;
+		}
+		@Override
+		public void execute(ChenileExchange exchange) throws Exception {
+			for(Command<ChenileExchange> cmd: commandList){
+				cmd.execute(exchange);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Command<ChenileExchange> constructBodyTypeInterceptorsChain(String[] bodyTypeInterceptors,
+										  ApplicationContext applicationContext){
+		if(bodyTypeInterceptors == null) return null;
+		List<Command<ChenileExchange>> cmdList = new ArrayList<>();
+		for(String bti: bodyTypeInterceptors){
+			cmdList.add((Command<ChenileExchange>)applicationContext.getBean(bti));
+		}
+		return new InterceptorChain(cmdList);
 	}
     
 	@Override

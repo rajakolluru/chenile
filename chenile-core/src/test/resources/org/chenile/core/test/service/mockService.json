@@ -118,7 +118,7 @@
     "secure":false,
     "output": "",
     "input": "",
-    "bodyTypeSelectorComponentName": "s6BodyTypeSelector",
+    "bodyTypeSelectorComponentNames": ["s6BodyTypeSelector"],
     "params":
     [
       {

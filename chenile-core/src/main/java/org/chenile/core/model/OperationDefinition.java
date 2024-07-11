@@ -141,14 +141,14 @@ public class OperationDefinition {
 	 * this class would be invoked to select the correct body type (i.e. output) class. 
 	 */
 	protected Command<ChenileExchange> bodyTypeSelector;
-	protected String bodyTypeSelectorComponentName;
+	protected String[] bodyTypeSelectorComponentNames;
 	
-	public String getBodyTypeSelectorComponentName() {
-		return bodyTypeSelectorComponentName;
+	public String[] getBodyTypeSelectorComponentNames() {
+		return bodyTypeSelectorComponentNames;
 	}
 
-	public void setBodyTypeSelectorComponentName(String componentName) {
-		this.bodyTypeSelectorComponentName = componentName;
+	public void setBodyTypeSelectorComponentNames(String[] componentName) {
+		this.bodyTypeSelectorComponentNames = componentName;
 	}
 	
 	public void setBodyTypeSelector(Command<ChenileExchange> command) {
