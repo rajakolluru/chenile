@@ -1,9 +1,9 @@
 package org.chenile.workflow.service.stmcmds;
 
+import org.chenile.stm.StateEntity;
 import org.chenile.stm.action.STMAction;
-import org.chenile.workflow.model.AbstractStateEntity;
 
-public class GenericExitAction<T extends AbstractStateEntity> implements STMAction<T> {
+public class GenericExitAction<T extends StateEntity> implements STMAction<T> {
 //	@Autowired
 //	private AuditLogger auditLogger ;
 

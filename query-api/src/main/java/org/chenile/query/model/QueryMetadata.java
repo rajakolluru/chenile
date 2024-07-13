@@ -2,7 +2,7 @@ package org.chenile.query.model;
 
 import java.util.Map;
 
-import org.chenile.utils.entity.model.Entity;
+import org.chenile.utils.entity.model.BaseEntity;
 
 /**
  * 
@@ -10,7 +10,7 @@ import org.chenile.utils.entity.model.Entity;
  * All queries in the system must be configured with this information
  */
 
-public class QueryMetadata extends Entity {
+public class QueryMetadata extends BaseEntity {
 	/**
 	 * 
 	 */

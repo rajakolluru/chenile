@@ -3,6 +3,7 @@
  */
 package org.chenile.workflow.param;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,6 +15,7 @@ public class MinimalPayload implements Serializable {
 	/**
 	 * 
 	 */
+	@Serial
 	private static final long serialVersionUID = -2314712304952305692L;
 	private String comment;
 

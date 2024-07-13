@@ -1,9 +1,9 @@
 package org.chenile.query.model;
 
 
-import org.chenile.utils.entity.model.Entity;
+import org.chenile.utils.entity.model.BaseEntity;
 
-public class CannedReport extends Entity {
+public class CannedReport extends BaseEntity {
 	/**
 	 * 
 	 */

@@ -17,29 +17,30 @@ import java.util.Map;
  * JPA \@PrePersist and \@PreUpdate methods.
  */
 public abstract class IDGenerator {
-    private static final ThreadLocal<Map<String,Integer>> mapThreadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Map<String, Integer>> mapThreadLocal = new ThreadLocal<>();
 
     /**
      * This method generates a new unique ID for the given prefix. The ID is based out
      * of request ID. A counter is added in case multiple IDs are required for the same
      * entity.
+     *
      * @param prefix Prefix that needs to be used. Typically, each entity will have its own prefix.
      * @return the ID that can be used to generate new records for the given entity.
      */
-    public static String generateID(String prefix){
+    public static String generateID(String prefix) {
         ContextContainer contextContainer = ContextContainer.CONTEXT_CONTAINER;
         String requestId = contextContainer.getRequestId();
-        return String.format("%s %s %4d",prefix,requestId, obtainCounter(prefix));
+        return String.format("%s-%s-%0,4d", prefix, requestId, obtainCounter(prefix));
     }
 
-    private static int obtainCounter(String prefix){
-        int counter = obtainIdMap().computeIfAbsent(prefix, (pfx)-> 0);
-        obtainIdMap().put(prefix,++counter);
+    private static int obtainCounter(String prefix) {
+        int counter = obtainIdMap().computeIfAbsent(prefix, (pfx) -> 0);
+        obtainIdMap().put(prefix, ++counter);
         return counter;
     }
 
-    private static Map<String,Integer> obtainIdMap(){
-        Map<String,Integer> idMap = mapThreadLocal.get();
+    private static Map<String, Integer> obtainIdMap() {
+        Map<String, Integer> idMap = mapThreadLocal.get();
         if (idMap == null) {
             idMap = new HashMap<>();
             mapThreadLocal.set(idMap);

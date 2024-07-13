@@ -32,7 +32,7 @@
 					"name": "entity",
 					"type": "BODY",
 					"description": "The entity that needs to be created",
-					"paramClass": "org.chenile.workflow.model.AbstractStateEntity"
+					"paramClass": "org.chenile.stm.StateEntity"
 				}
 			]
 		},

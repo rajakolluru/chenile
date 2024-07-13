@@ -1,8 +1,5 @@
 package org.chenile.workflow.service.stmcmds;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.chenile.owiz.BeanFactoryAdapter;
 import org.chenile.owiz.Command;
 import org.chenile.owiz.OrchExecutor;
@@ -10,14 +7,17 @@ import org.chenile.owiz.config.impl.XmlOrchConfigurator;
 import org.chenile.owiz.impl.OrchExecutorImpl;
 import org.chenile.stm.STMInternalTransitionInvoker;
 import org.chenile.stm.State;
+import org.chenile.stm.StateEntity;
 import org.chenile.stm.action.STMTransitionAction;
 import org.chenile.stm.model.Transition;
-import org.chenile.workflow.model.AbstractStateEntity;
 import org.chenile.workflow.service.stmcmds.dto.TransitionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
-public class BaseTransitionAction<T extends AbstractStateEntity> implements STMTransitionAction<T> {
+import java.util.HashMap;
+import java.util.Map;
+
+public class BaseTransitionAction<T extends StateEntity> implements STMTransitionAction<T> {
 	//@Autowired
 	//private AuditLogger auditLogger ;
 	@Autowired

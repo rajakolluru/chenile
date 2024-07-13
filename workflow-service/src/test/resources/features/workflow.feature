@@ -1,4 +1,4 @@
-Feature: Tests the Aurora Workflow Service using a REST client. An issue service exists and is under test.
+Feature: Tests the Chenile Workflow Service using a REST client. An issue service exists and is under test.
 It helps to create an issue and manages the state of the issue as follows:
 OPENED -(assign) -> ASSIGNED -(resolve) -> RESOLVED -(close) -> CLOSED
  

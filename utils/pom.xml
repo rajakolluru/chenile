@@ -20,5 +20,9 @@
 			<groupId>org.chenile</groupId>
       <artifactId>chenile-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.chenile</groupId>
+			<artifactId>stm</artifactId>
+		</dependency>
 	</dependencies>
 </project>

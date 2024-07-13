@@ -12,11 +12,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.jayway.jsonpath.JsonPath;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import org.apache.commons.text.StringSubstitutor;
 import org.chenile.base.response.GenericResponse;
 import org.chenile.base.response.ResponseMessage;
 import org.chenile.cucumber.CukesContext;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import static org.hamcrest.Matchers.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
@@ -177,6 +181,15 @@ public class RestCukesSteps {
         ResultActions response = (ResultActions) context.get("actions");
         response.andExpect(jsonPath("$.payload." + key).
                 value(substituteVariables(value)));
+    }
+
+
+    @And("the REST response key {string} contains string {string}")
+    public void theRESTResponseKeyContainsString(String key, String value) throws Exception {
+        ResultActions response = (ResultActions) context.get("actions");
+        response.andExpect(jsonPath("$.payload." + key).value(containsString(
+                substituteVariables(value)
+        )));
     }
 
     @Then("the REST response does not contain key {string}")

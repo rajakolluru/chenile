@@ -1,11 +1,12 @@
 package org.chenile.workflow.api;
 
+import org.chenile.stm.State;
+import org.chenile.stm.StateEntity;
+import org.chenile.utils.entity.model.ExtendedStateEntity;
+import org.chenile.workflow.dto.StateEntityServiceResponse;
+
 import java.util.List;
 import java.util.Map;
-
-import org.chenile.stm.State;
-import org.chenile.workflow.dto.StateEntityServiceResponse;
-import org.chenile.workflow.model.AbstractStateEntity;
 
 /**
  * All workflow entities (aka State entities) are managed using this interface.<br/>
@@ -15,7 +16,7 @@ import org.chenile.workflow.model.AbstractStateEntity;
  * State Transition Diagram. Read more about state machines <a href="https://chenile.org/chenile-stm.html">here.</a>
  * @param <T> the actual state entity
  */
-public interface StateEntityService<T extends AbstractStateEntity> {
+public interface StateEntityService<T extends StateEntity> {
 	/**
 	 * 
 	 * @param entity the entity on which the event has happened

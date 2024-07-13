@@ -1,15 +1,14 @@
 package org.chenile.workflow.stmcmds.test;
 
+import org.chenile.utils.entity.model.AbstractExtendedStateEntity;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.chenile.workflow.model.AbstractStateEntity;
 
-
-public class SomeEntity extends AbstractStateEntity{
-	/**
-	 * 
-	 */
+public class SomeEntity extends AbstractExtendedStateEntity {
+	@Serial
 	private static final long serialVersionUID = 3341478906527940984L;
 	private List<String> listOfStrings = new ArrayList<String>();
 	private String tenantId;

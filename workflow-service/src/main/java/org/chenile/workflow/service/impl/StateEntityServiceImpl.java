@@ -1,18 +1,19 @@
 package org.chenile.workflow.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.chenile.base.exception.ErrorNumException;
 import org.chenile.base.exception.NotFoundException;
 import org.chenile.stm.STM;
 import org.chenile.stm.State;
+import org.chenile.stm.StateEntity;
 import org.chenile.stm.exception.STMException;
 import org.chenile.stm.impl.STMActionsInfoProvider;
 import org.chenile.utils.entity.service.EntityStore;
 import org.chenile.workflow.api.StateEntityService;
 import org.chenile.workflow.dto.StateEntityServiceResponse;
-import org.chenile.workflow.model.AbstractStateEntity;
+
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A generic implementation of the {@link StateEntityService} for all state entities. <br/>
@@ -24,11 +25,10 @@ import org.chenile.workflow.model.AbstractStateEntity;
  * about how to generate a project that uses this state machine.
  * @param <T>
  */
-public class StateEntityServiceImpl<T extends AbstractStateEntity> implements StateEntityService<T> {
-	
-	private STM<T> stm;
-	protected EntityStore<T> entityStore;
-	private STMActionsInfoProvider stmActionsInfoProvider;
+public class StateEntityServiceImpl<T extends StateEntity> implements StateEntityService<T> {
+	private final STM<T> stm;
+	protected final EntityStore<T> entityStore;
+	private final STMActionsInfoProvider stmActionsInfoProvider;
 
 	/**
 	 *
@@ -134,9 +134,6 @@ public class StateEntityServiceImpl<T extends AbstractStateEntity> implements St
 		sesr.setMutatedEntity(entity);
 		State state = entity.getCurrentState();
 		sesr.setAllowedActionsAndMetadata(getAllowedActionsAndMetadata(state));
-		
-		sesr.setSlaGettingLateInHours(StateEntityHelper.getGettingLateTimeInHours(stmActionsInfoProvider,state));
-		sesr.setSlaLateInHours(StateEntityHelper.getLateTimeInHours(stmActionsInfoProvider,state));
 		return sesr;
 	}
 	
@@ -148,6 +145,4 @@ public class StateEntityServiceImpl<T extends AbstractStateEntity> implements St
 		}
 		return makeStateEntityResponse(entity);
 	}
-
-	
 }
