@@ -15,6 +15,7 @@ org.chenile.configuration.controller
 org.chenile.configuration.core
 org.chenile.configuration.http
 org.chenile.configuration.http.controller
+org.chenile.configuration.jpautils
 org.chenile.configuration.mqtt
 org.chenile.configuration.proxy
 org.chenile.configuration.query.service
@@ -44,6 +45,7 @@ org.chenile.http.annotation
 org.chenile.http.handler
 org.chenile.http.init
 org.chenile.http.init.od
+org.chenile.jpautils.entity
 org.chenile.mqtt
 org.chenile.mqtt.entry
 org.chenile.mqtt.errorcodes
@@ -102,7 +104,6 @@ org.chenile.utils.tenancy
 org.chenile.utils.tenant.commands
 org.chenile.workflow.api
 org.chenile.workflow.dto
-org.chenile.workflow.model
 org.chenile.workflow.param
 org.chenile.workflow.service.impl
 org.chenile.workflow.service.stmcmds
