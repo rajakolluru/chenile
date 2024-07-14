@@ -1,6 +1,8 @@
 package org.chenile.jpautils.entity;
 
 import jakarta.persistence.*;
+import org.chenile.core.context.ContextContainer;
+import org.chenile.core.context.HeaderUtils;
 import org.chenile.utils.entity.model.ChenileEntity;
 import org.chenile.utils.entity.service.IDGenerator;
 
@@ -77,14 +79,22 @@ public  class BaseJpaEntity implements ChenileEntity {
     public void setVersion(Long version) {
         this.version = version;
     }
-
     @Version  public long version;
     @PrePersist
     @PreUpdate
-    void setIdIfMissing() {
+    void initializeIfRequired() {
+        ContextContainer contextContainer = ContextContainer.CONTEXT_CONTAINER;
         if (getId() == null) {
             setId( IDGenerator.generateID(getPrefix()));
         }
+        if (this.createdTime == null){
+            this.createdTime = new Date();
+        }
+
+        this.lastModifiedTime = new Date();
+        this.lastModifiedBy = contextContainer.get(HeaderUtils.EMPLOYEE_ID_KEY);
+        this.createdBy = contextContainer.get(HeaderUtils.EMPLOYEE_ID_KEY);
+        this.tenant = contextContainer.get(HeaderUtils.TENANT_ID_KEY);
     }
 
 }
