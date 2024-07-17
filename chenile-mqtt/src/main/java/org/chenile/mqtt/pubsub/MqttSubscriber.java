@@ -40,6 +40,7 @@ public class MqttSubscriber implements MqttCallback {
 
     private void log(String message){
         logger.info(message);
+        System.out.println(message);
     }
     @Override
     public void disconnected(MqttDisconnectResponse disconnectResponse) {

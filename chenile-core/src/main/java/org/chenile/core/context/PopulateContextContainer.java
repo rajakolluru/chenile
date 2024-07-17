@@ -16,8 +16,13 @@ public class PopulateContextContainer extends BaseChenileInterceptor implements 
 		// populate the context container from ChenileExchange
 		populateContextFromChenileExchange(exchange,contextContainer);
 	}
-	
-	public static void populateContextFromChenileExchange(ChenileExchange exchange,ContextContainer contextContainer) {
+
+	@Override
+	protected void doPostProcessing(ChenileExchange exchange) {
+		contextContainer.clear();
+	}
+
+	public static void populateContextFromChenileExchange(ChenileExchange exchange, ContextContainer contextContainer) {
 			contextContainer.fromSimpleMap(new ContextContainer.SimpleMap() {
 				public String getValue(String key) {
 					return exchange.getHeader(key,String.class);

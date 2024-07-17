@@ -17,8 +17,7 @@ import java.util.Map;
  * JPA \@PrePersist and \@PreUpdate methods.
  */
 public abstract class IDGenerator {
-    private static final ThreadLocal<Map<String, Integer>> mapThreadLocal = new ThreadLocal<>();
-
+    private static final String ID_MAP = "__ID_MAP__";
     /**
      * This method generates a new unique ID for the given prefix. The ID is based out
      * of request ID. A counter is added in case multiple IDs are required for the same
@@ -38,12 +37,12 @@ public abstract class IDGenerator {
         obtainIdMap().put(prefix, ++counter);
         return counter;
     }
-
+    @SuppressWarnings("unchecked")
     private static Map<String, Integer> obtainIdMap() {
-        Map<String, Integer> idMap = mapThreadLocal.get();
+        Map<String, Integer> idMap = (Map<String, Integer>) ContextContainer.getExtension(ID_MAP);
         if (idMap == null) {
             idMap = new HashMap<>();
-            mapThreadLocal.set(idMap);
+            ContextContainer.putExtension(ID_MAP,idMap);
         }
         return idMap;
     }

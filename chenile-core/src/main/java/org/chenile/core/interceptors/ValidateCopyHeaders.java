@@ -43,6 +43,9 @@ public class ValidateCopyHeaders extends BaseChenileInterceptor{
 			}
 		}
 	}
-	
 
+	@Override
+	protected void doPostProcessing(ChenileExchange exchange) {
+		contextContainer.clear();
+	}
 }

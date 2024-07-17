@@ -9,7 +9,6 @@ import org.chenile.utils.entity.model.ExtendedStateEntity;
 
 @MappedSuperclass
 public abstract class AbstractJpaStateEntity extends BaseJpaEntity implements ExtendedStateEntity {
-	private State state;
 	private Date stateEntryTime;
 	private int slaTendingLate = 0;
 	private int slaLate = 0;
@@ -19,10 +18,7 @@ public abstract class AbstractJpaStateEntity extends BaseJpaEntity implements Ex
 			@AttributeOverride(name="flowId", column=@Column(name = "flowId")),
 			@AttributeOverride(name="stateId", column=@Column(name = "stateId"))
 	})
-	public State currentState;
-	public AbstractJpaStateEntity() {
-		
-	}
+	private State state;
 	
 	@Override
 	public void setCurrentState(State currentState) {

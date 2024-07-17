@@ -22,7 +22,7 @@ public class TestController extends ControllerSupport{
 	@InterceptedBy("cloudEdgeSwitch")
 	@CloudEdgeSwitchConfig
 	ResponseEntity<GenericResponse<Map<String, Object>>> f1(HttpServletRequest request){
-		return process("f1",request);
+		return process(request);
 	}
 
 	@PostMapping("/f2/{c}")
@@ -31,6 +31,6 @@ public class TestController extends ControllerSupport{
 	ResponseEntity<GenericResponse<Map<String, Object>>> f2(HttpServletRequest request,
 														   @PathVariable("c") String c,
 														  @RequestBody ExamplePayload param2){
-		return process("f2",request,c,param2);
+		return process(request,c,param2);
 	}
 }

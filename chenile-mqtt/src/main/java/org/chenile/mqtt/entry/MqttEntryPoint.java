@@ -57,6 +57,8 @@ public class MqttEntryPoint {
 		 Object response = exchange.getResponse();
 		 logger.info("Received message " + messageContent + " and handled it. Response = "
 					 + objectMapper.writeValueAsString(response));
+		 System.out.println("Received message " + messageContent + " and handled it. Response = "
+				 + objectMapper.writeValueAsString(response));
 
 	}
 

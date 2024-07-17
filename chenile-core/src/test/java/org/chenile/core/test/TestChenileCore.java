@@ -15,6 +15,8 @@ import org.chenile.core.service.HealthCheckInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -69,15 +71,16 @@ public class TestChenileCore {
 		ChenileExchange exchange = makeExchange("mockService","s2");
 		exchange.setHeader("x-p-id","123");
 		chenileEntryPoint.execute(exchange);
-		assertTrue(exchange.getException() instanceof ErrorNumException);
+		ErrorNumException ene = exchange.getException();
+		assertEquals(ene.getErrorNum(), HttpStatus.FORBIDDEN.value());
 	}
 
-	@Test public void testValidateCopyHeadersforX() throws Exception{
+	@Test public void testValidateCopyHeadersforXClears() throws Exception{
 		ChenileExchange exchange = makeExchange("mockService","s2");
 		exchange.setHeader("x-id","123");
 
 		chenileEntryPoint.execute(exchange);
-		assertEquals("context container does not contain x-id", "123", contextContainer.get("x-id"));
+		assertNull("context container must not contain x-id on return", contextContainer.get("x-id"));
 	}
 	
 	@SuppressWarnings("unchecked")

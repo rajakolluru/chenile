@@ -21,12 +21,9 @@ import java.util.Map;
 public enum ContextContainer {
 	CONTEXT_CONTAINER;
 	private static final ThreadLocal<Context> contexts = new ThreadLocal<Context>();
-	public static ContextContainer getInstance(){
-		return CONTEXT_CONTAINER;
-	}
+
 	
-	private static class Context extends HashMap<String,String>{
-		
+	public static class Context extends HashMap<String,String>{
 		@Serial
 		private static final long serialVersionUID = -8834996563220573087L;
 		public String userId = "";
@@ -46,6 +43,28 @@ public enum ContextContainer {
 		public String trajectory = "";
 
 		private Authentication authentication=null;
+		public Map<String, Object> extensions = new HashMap<>();
+	}
+
+	public static ContextContainer getInstance(){
+		return CONTEXT_CONTAINER;
+	}
+
+	public static Object getExtension(String key){
+		return getContextExtensions().get(key);
+	}
+
+	public static Object putExtension(String key, Object value){
+		return getContextExtensions().put(key,value);
+	}
+
+	/**
+	 * If anyone needs a thread local they should use this. This will get cleared at the
+	 * end of each request and hence behaves predictably.
+	 * @return a map where the caller can store its info
+	 */
+	public static Map<String,Object> getContextExtensions(){
+		return getInstance().getContext().extensions;
 	}
 
 	public void setRequestId(String requestId){
@@ -56,13 +75,17 @@ public enum ContextContainer {
 		return getContext().get(HeaderUtils.REQUEST_ID);
 	}
 
-	private Context getContext() {
+	public Context getContext() {
 		Context context = contexts.get();
 		if (context == null) {
 			context = new Context();
 			contexts.set(context);
 		}
 		return context;
+	}
+
+	public void clear(){
+		contexts.remove();
 	}
 
 	public void setAuthentication(Authentication authenticationContext){
