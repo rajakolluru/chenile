@@ -8,14 +8,14 @@ chenile:
       host: "localhost"
       port: 8180
       base:
-        realm: quickstart
+        realm: tenant0
 
 spring:
   security:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8180/realms/#tenantId#/protocol/openid-connect/certs
+          jwk-set-uri: http://localhost:8180/realms/tenant0/protocol/openid-connect/certs
 
 logging:
   level:

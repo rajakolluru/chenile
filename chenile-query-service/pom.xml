@@ -32,10 +32,7 @@
 			<groupId>org.chenile</groupId>
 			<artifactId>query-api</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.chenile</groupId>
-			<artifactId>security-api</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.chenile</groupId>
 			<artifactId>workflow-api</artifactId>

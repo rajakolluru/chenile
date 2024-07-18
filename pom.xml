@@ -28,8 +28,8 @@
         <module>workflow-api</module>
         <module>workflow-service</module>
         <module>query-api</module>
-        <module>security-api</module>
-        <module>security-service</module>
+        <module>chenile-security-api</module>
+        <!-- module>security-service</module -->
         <module>chenile-query-service</module>
         <module>chenile-query-controller</module>
         <module>cucumber-mqtt-utils</module>
@@ -103,6 +103,11 @@
             <dependency>
                 <groupId>org.chenile</groupId>
                 <artifactId>jpa-utils</artifactId>
+                <version>${chenile.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.chenile</groupId>
+                <artifactId>chenile-security-api</artifactId>
                 <version>${chenile.version}</version>
             </dependency>
             <dependency>

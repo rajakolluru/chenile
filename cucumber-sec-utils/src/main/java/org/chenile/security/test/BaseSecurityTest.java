@@ -3,6 +3,7 @@ package org.chenile.security.test;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import org.chenile.cucumber.mqtt.rest.RestCukesSecSteps;
+import org.junit.ClassRule;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -46,28 +47,46 @@ import java.util.Collections;
  */
 public class BaseSecurityTest {
 
-    public static KeycloakContainer keycloak =
+   @ClassRule
+   public static KeycloakContainer keycloak =
          new KeycloakContainer()
                 .withRealmImportFiles("config/realm-import-tenant0.json",
                 "config/realm-import-tenant1.json")
                 ;
     static{
         keycloak.start();
+        connDetails = new ConnDetails(keycloak.getHost(),keycloak.getHttpPort(),
+                "tenant0");
     }
-
+    public static ConnDetails connDetails;
     public static String getHost(){
         return keycloak.getHost();
     }
-
     public static int getHttpPort(){
         return keycloak.getHttpPort();
+    }
+    public static class ConnDetails{
+        public String host;
+        public int port;
+        public String tenant;
+        public ConnDetails(String host, int port, String tenant) {
+            this.host = host; this.port = port; this.tenant = tenant;
+        }
+        public String getHost(){ return this.host;}
+        public int getPort(){ return this.port;}
+        public String getJwkSetUri() {
+            return "http://" + host + ":" + port + "/realms/" + tenant +
+                    "/protocol/openid-connect/certs";
+        }
     }
 
 
     @DynamicPropertySource
     public static void keycloakProperties(DynamicPropertyRegistry registry) {
-        registry.add("chenile.security.keycloak.host", keycloak::getHost);
-        registry.add("chenile.security.keycloak.port", keycloak::getHttpPort);
+        registry.add("chenile.security.keycloak.host", connDetails::getHost);
+        registry.add("chenile.security.keycloak.port", connDetails::getPort);
+        registry.add("spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
+                connDetails::getJwkSetUri);
     }
 
     public static String getToken(String realm, String user, String password) {
