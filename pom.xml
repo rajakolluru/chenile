@@ -48,7 +48,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <revision>1.3.2</revision>
+        <revision>1.3.3</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cucumber.version>4.3.1</cucumber.version>
         <jacoco.version>0.8.11</jacoco.version>
