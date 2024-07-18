@@ -21,7 +21,6 @@ org.chenile.configuration.proxy
 org.chenile.configuration.query.service
 org.chenile.configuration.scheduler
 org.chenile.configuration.security
-org.chenile.configuration.security.service
 org.chenile.configuration.utils
 org.chenile.core.annotation
 org.chenile.core.context
@@ -83,7 +82,6 @@ org.chenile.security.interceptor
 org.chenile.security.model
 org.chenile.security.service
 org.chenile.security.service.impl
-org.chenile.security.stmutils
 org.chenile.security.test
 org.chenile.stm
 org.chenile.stm.action
