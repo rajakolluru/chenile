@@ -59,6 +59,7 @@ public class SecurityServiceImpl implements SecurityService {
         List<String> authorities =
         Objects.requireNonNull(getAuthorities()).stream().map(GrantedAuthority::getAuthority).toList();
         String[] s = new String[authorities.size()];
+        logger.debug("Current Authorities are : {}", authorities);
         return authorities.toArray(s);
     }
 
@@ -68,10 +69,14 @@ public class SecurityServiceImpl implements SecurityService {
         if(guardingAuthorities == null)
             return true;
         String[] currentAuthorities = getCurrentAuthorities();
-        logger.debug("Current Authorities are : {}", Arrays.toString(currentAuthorities));
         if(currentAuthorities == null)
             throw new ErrorNumException(HttpStatus.UNAUTHORIZED.value(),10000,new Object[]{});
         return guardingAuthoritiesFoundInCurrentAuthorities(guardingAuthorities,currentAuthorities);
+    }
+
+    public boolean doesCurrentUserHaveGuardingAuthorities(String...acls){
+        String[] currentAuthorities = getCurrentAuthorities();
+        return guardingAuthoritiesFoundInCurrentAuthorities(acls,currentAuthorities);
     }
 
     private static boolean guardingAuthoritiesFoundInCurrentAuthorities(String[] guardingAuthorities, String[] currentAuthorities) {

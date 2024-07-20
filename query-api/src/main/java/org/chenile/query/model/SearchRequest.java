@@ -14,6 +14,16 @@ public class SearchRequest<FilterType> {
 	String queryName;
 	String cannedReportName;
 	List<String> fields;
+
+	public boolean isToDoList() {
+		return toDoList;
+	}
+
+	public void setToDoList(boolean toDoList) {
+		this.toDoList = toDoList;
+	}
+
+	boolean toDoList = false;
 	
 	public List<String> getFields() {
 		return fields;

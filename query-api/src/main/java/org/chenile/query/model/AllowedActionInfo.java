@@ -1,5 +1,7 @@
 package org.chenile.query.model;
 
+import java.util.HashMap;
+
 /**
  * Specifies the metadata for the actions that are allowed for this entity. <br/>
  * For example, label represents the english label for the action that can be displayed in the front end<br/>
@@ -11,7 +13,7 @@ package org.chenile.query.model;
  * But the Order entity may have an edit action that is not combinable. It wont be possible to
  * edit multiple orders at the same time. <br/>
  */
-public class AllowedActionInfo {
+public class AllowedActionInfo extends HashMap<String,String> {
 	public String label;
 	public String link;
 	public String name;

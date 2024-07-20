@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<states>
+	<event-information eventId="close" meta-acls="finance-user"
+			meta-xxx="yyy"/>
+	<flow id='cart-flow' default='true'>
+		<security-strategy componentName="org.chenile.stm.test.actionInfoProvider.MockSS"/>
+
+		<manual-state id='CREATED' initialState='true'>
+			<on eventId='close' newStateId='CLOSED'/>
+			<on eventId='initiatePayment' newStateId='PAYMENT_INITIATED' />
+		</manual-state>
+
+		<manual-state id='PAYMENT_INITIATED'>
+			<on eventId="confirmPayment" newStateId='PAYMENT_CONFIRMED' />
+		</manual-state>
+
+		<manual-state id='PAYMENT_CONFIRMED'>
+			<on eventId="close" newStateId="CLOSED"/>
+		</manual-state>
+		<manual-state id='CLOSED'/>
+	</flow>
+	
+</states>

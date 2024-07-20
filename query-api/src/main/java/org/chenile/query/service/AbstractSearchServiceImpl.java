@@ -1,26 +1,19 @@
 package org.chenile.query.service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
 import org.chenile.base.exception.NotFoundException;
 import org.chenile.base.exception.ServerException;
 import org.chenile.core.context.ContextContainer;
-import org.chenile.query.model.ColumnMetadata;
+import org.chenile.query.model.*;
 import org.chenile.query.model.ColumnMetadata.ColumnType;
-import org.chenile.query.model.QueryMetadata;
-import org.chenile.query.model.SearchRequest;
-import org.chenile.query.model.SearchResponse;
-import org.chenile.query.model.SortCriterion;
 import org.chenile.query.service.error.ErrorCodes;
 import org.chenile.stm.State;
 import org.chenile.stm.StateEntity;
+import org.chenile.stm.impl.STMActionsInfoProvider;
+import org.chenile.workflow.api.WorkflowRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,12 +54,6 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 
 		// construct enhanced search request
 		EnhancedSearchRequest esr = new EnhancedSearchRequest(searchRequest);
-		if (queryMetadata.getAcls() != null && queryMetadata.getAcls().length > 0) {
-			// if (!securityService.isAllowed(contextContainer.getUser(),
-			// queryMetadata.getAcls()))
-			// throw new RuntimeException("User " + contextContainer.getUser() + " not
-			// authorized to execute query " + searchRequest.getQueryName());
-		}
 
 		enhanceFiltersUsingMetadata(esr, queryMetadata);
 
@@ -95,6 +82,20 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 				} else {
 					searchInput.enhancedFilters.put(name, value);
 				}
+			}
+		}
+
+		if (searchInput.originalSearchRequest.isToDoList()){
+			if (!queryMetadata.isToDoList() ){
+				logger.warn("QueryName: {}. Search specifies todoList but query is not configured to support toDoList",
+						queryMetadata.getName());
+			}
+			else if (queryMetadata.getWorkflowName() == null){
+				logger.warn("QueryName: {}. Workflow name is null but it is specified as a toDoList",
+						queryMetadata.getName());
+			}else {
+				Collection<String> states = getAllowedStatesForCurrentUser(queryMetadata.getWorkflowName());
+				constructContainsQuery(searchInput.enhancedFilters, queryMetadata.getStateColumn(), states);
 			}
 		}
 
@@ -178,7 +179,7 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 	}
 
 	protected void constructContainsQuery(Map<String, Object> enhancedFilters, String name, Object value) {
-		if (value instanceof List || value instanceof String[]) {
+		if ( value instanceof String[] || value instanceof Collection<?>) {
 			enhancedFilters.put(name, value);
 			return;
 		}
@@ -252,23 +253,53 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		this.contextContainer = contextContainer;
 	}
 
-	protected List<String> getAllowedActionsForWorkflowEntity(Object obj) {
+	protected List<Map<String,String>> getAllowedActionsForWorkflowEntity(String workflowName, Object obj,
+												  String stateColumn, String flowColumn) {
 		if (obj == null)
 			return null;
-		State state = extractStateFromObject(obj);
-		if (state == null)
+		State state = extractStateFromObject(obj, stateColumn, flowColumn);
+		if (state == null) {
+			logger.warn("State for object of type {} is null.", workflowName);
+			System.err.println("State for object of type " + workflowName + " is null");
 			return null;
-		return null;
-		// return stmActionsInfoProvider.getAllowedActions(state);
+		}
+		List<Map<String,String>> ret = new ArrayList<>();
+		STMActionsInfoProvider provider = WorkflowRegistry.getSTMActionInfoProvider(workflowName);
+		if(provider == null) {
+			logger.warn("provider for workflow {} is null.", workflowName);
+			System.err.println("provider for object of type " + workflowName + " is null");
+			return null;
+		}
+		List<Map<String, String>> listOfMaps = provider.getAllowedActionsAndMetadata(state);
+		if (listOfMaps == null){
+			logger.warn("return value from state info provider for workflow {} is null.", workflowName);
+			System.err.println("return value from state info provider of type " + workflowName + " is null");
+			return null;
+		}
+		/*for (Map<String,String> map: listOfMaps){
+			HashMap<String,String> allowedActionInfo = new HashMap<>();
+			for (Entry<String,String> e: map.entrySet()){
+				if (e.getKey().startsWith("ui-")){
+					allowedActionInfo.put(e.getKey().substring(3),e.getValue());
+				}
+			}
+			ret.add(allowedActionInfo);
+		}*/
+		return listOfMaps;
 	}
 
-	protected State extractStateFromObject(Object obj) {
+	protected Collection<String> getAllowedStatesForCurrentUser(String workflowName){
+		STMActionsInfoProvider provider = WorkflowRegistry.getSTMActionInfoProvider(workflowName);
+		return provider.getStatesAllowedForCurrentUser();
+	}
+
+	protected State extractStateFromObject(Object obj, String stateColumn, String flowColumn) {
 		if (obj instanceof StateEntity) {
 			return ((StateEntity) obj).getCurrentState();
 		} else if (obj instanceof Map<?, ?>) {
 			Map<String, Object> map = (Map<String, Object>) obj;
-			String flowId = (String) map.get("FLOWID");
-			String stateId = (String) map.get("STATEID");
+			String flowId = (String) map.get(flowColumn);
+			String stateId = (String) map.get(stateColumn);
 			return new State(stateId, flowId);
 		}
 		return null;

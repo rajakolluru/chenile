@@ -2,6 +2,7 @@ package org.chenile.query.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class ResponseRow implements Serializable {
 	/**
@@ -24,16 +25,16 @@ public class ResponseRow implements Serializable {
 	/**
 	 * @return the allowedActions
 	 */
-	public List<AllowedActionInfo> getAllowedActions() {
+	public List<Map<String,String>> getAllowedActions() {
 		return allowedActions;
 	}
 	/**
 	 * @param allowedActions the allowedActions to set
 	 */
-	public void setAllowedActions(List<AllowedActionInfo> allowedActions) {
+	public void setAllowedActions(List<Map<String,String>> allowedActions) {
 		this.allowedActions = allowedActions;
 	}
-	private List<AllowedActionInfo> allowedActions;
+	private List<Map<String,String>> allowedActions;
 	
 	@Override
 	public String toString() {

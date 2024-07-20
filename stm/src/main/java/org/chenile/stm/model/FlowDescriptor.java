@@ -134,7 +134,6 @@ public class FlowDescriptor implements TransientActionsAwareDescriptor{
 		return this;
 	}
 
-
 	public void setInitialState(String initialState) {
 		this.initialState = initialState;
 	}
@@ -155,13 +154,8 @@ public class FlowDescriptor implements TransientActionsAwareDescriptor{
 		for ( StateDescriptor sd : states.values()){
 			sd.validate();
 		}
-		
 	}
 
-	
-	
-	
-	
 	@Override
 	public String toString() {
 		return "FlowDescriptor [id=" + id + ", isDefault=" + isDefault + ", states=" + states + ", initialState="

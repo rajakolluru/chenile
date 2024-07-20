@@ -1,4 +1,4 @@
-package org.chenile.cucumber.mqtt.rest;
+package org.chenile.cucumber.security.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;

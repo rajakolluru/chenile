@@ -12,6 +12,10 @@ public class Transition extends EventInformation {
 		this.eventId = eventInformation.eventId;
 		this.metadata = eventInformation.metadata;
 		this.transitionAction = eventInformation.transitionAction;
+		if (eventInformation.metadata.get("acls") != null){
+			String acls = eventInformation.metadata.get("acls");
+			setAclString(acls);
+		}
 		return this;
 	}
 	
@@ -105,7 +109,12 @@ public class Transition extends EventInformation {
 		if (acl == null) return;
 		setAcls(acl.split(","));
 	}
-	
+
+	/**
+	 * This is to support fluent API.
+	 * @param acl the acls which are comma separated
+	 * @return the Transition
+	 */
 	public Transition acl(String acl){
 		if (acl == null) return this;
 		setAcls(acl.split(","));

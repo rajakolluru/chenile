@@ -2,7 +2,7 @@ package org.chenile.security.test;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
-import org.chenile.cucumber.mqtt.rest.RestCukesSecSteps;
+import org.chenile.cucumber.security.rest.RestCukesSecSteps;
 import org.junit.ClassRule;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

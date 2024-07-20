@@ -2,6 +2,7 @@
 
 <states>
 	<event-information eventId='close' componentName='org.chenile.stm.test.basicflow.CloseCart'/>
+	<event-information eventId="userLogin" meta-acls="USER_MUST_BE_ABLE_TO_LOGIN,USER_CAN_ACCESS_SYSTEM"/>
 	<flow id='cart-flow' default='true'>
 		<security-strategy componentName="org.chenile.stm.test.basicflow.MockSecurityStrategy"/>
 		<entry-action componentName="org.chenile.stm.test.basicflow.EntryAction" />
@@ -11,7 +12,7 @@
 			<on eventId='close' newStateId='CLOSED'
 			    invokableOnlyFromStm='true'/>
 			<on eventId='addItem' componentName='org.chenile.stm.test.basicflow.AddItem' />
-			<on eventId='userLogin' acls="USER_MUST_BE_ABLE_TO_LOGIN,USER_CAN_ACCESS_SYSTEM" componentName='org.chenile.stm.test.basicflow.UserLogin' />
+			<on eventId='userLogin' componentName='org.chenile.stm.test.basicflow.UserLogin' />
 			<on eventId='initiatePayment' componentName='org.chenile.stm.test.basicflow.InitiatePayment'
 				newStateId='PAYMENT_INITIATED' />
 		</manual-state>

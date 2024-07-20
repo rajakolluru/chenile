@@ -1,121 +1,145 @@
 package org.chenile.query.model;
 
-import java.util.Map;
-
 import org.chenile.utils.entity.model.BaseEntity;
 
+import java.util.Map;
+
 /**
- * 
  * @author Raja Shankar Kolluru
  * All queries in the system must be configured with this information
  */
 
 public class QueryMetadata extends BaseEntity {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5311145579935980818L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = -5311145579935980818L;
 
-	private String id;
-	private String name; // the externally visible name for this query
-	
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
+    private String id;
+    private String name; // the externally visible name for this query
+    private String flowColumn = "flowId";
+    private String stateColumn = "stateId";
+    /**
+     *  Denotes if the output of the query is associated with a workflow
+     *  this is used to determine the applicable actions.
+     */
+    private String workflowName;
+    private boolean toDoList = false;
+    private boolean flexiblePropnames = false;
+    private boolean paginated = false;
+    private String[] acls = {};
+    private Map<String, ColumnMetadata> columnMetadata = null;
+    private boolean sortable;
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+    public String getStateColumn() {
+        return stateColumn;
+    }
 
-	/**
-	 * @return the workflowName
-	 */
-	public String getWorkflowName() {
-		return workflowName;
-	}
+    public void setStateColumn(String stateColumn) {
+        this.stateColumn = stateColumn;
+    }
 
-	/**
-	 * @param workflowName the workflowName to set
-	 */
-	public void setWorkflowName(String workflowName) {
-		this.workflowName = workflowName;
-	}
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
 
-	/**
-	 * @return the flexiblePropnames
-	 */
-	public boolean isFlexiblePropnames() {
-		return flexiblePropnames;
-	}
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	/**
-	 * @param flexiblePropnames the flexiblePropnames to set
-	 */
-	public void setFlexiblePropnames(boolean flexiblePropnames) {
-		this.flexiblePropnames = flexiblePropnames;
-	}
+    /**
+     * @return the workflowName
+     */
+    public String getWorkflowName() {
+        return workflowName;
+    }
 
-	public boolean isPaginated() {
-		return paginated;
-	}
+    /**
+     * @param workflowName the workflowName to set
+     */
+    public void setWorkflowName(String workflowName) {
+        this.workflowName = workflowName;
+    }
 
-	public void setPaginated(boolean paginated) {
-		this.paginated = paginated;
-	}
+    /**
+     * @return the flexiblePropnames
+     */
+    public boolean isFlexiblePropnames() {
+        return flexiblePropnames;
+    }
 
-	public String[] getAcls() {
-		return acls;
-	}
+    /**
+     * @param flexiblePropnames the flexiblePropnames to set
+     */
+    public void setFlexiblePropnames(boolean flexiblePropnames) {
+        this.flexiblePropnames = flexiblePropnames;
+    }
 
-	public void setAcls(String[] acls) {
-		this.acls = acls;
-	}
-	
-	/**
-	 * @return the columnMetadata
-	 */
-	public Map<String, ColumnMetadata> getColumnMetadata() {
-		return columnMetadata;
-	}
+    public boolean isPaginated() {
+        return paginated;
+    }
 
-	/**
-	 * @param columnMetadata the columnMetadata to set
-	 */
-	public void setColumnMetadata(Map<String, ColumnMetadata> columnMetadata) {
-		this.columnMetadata = columnMetadata;
-	}
+    public void setPaginated(boolean paginated) {
+        this.paginated = paginated;
+    }
 
-	// Denotes if the output of the query is associated with a workflow
-	// this is used to determine the applicable actions.
-	private String workflowName ;
-	
-	private boolean flexiblePropnames = false;
-	private boolean paginated = false;
-	private String[] acls = {};
-	private Map<String, ColumnMetadata> columnMetadata = null;
-	private boolean sortable;
+    public String[] getAcls() {
+        return acls;
+    }
 
-	public boolean isSortable() {
-		return this.sortable;
-	}
+    public void setAcls(String[] acls) {
+        this.acls = acls;
+    }
 
-	public void setSortable(boolean sortable) {
-		this.sortable = sortable;
-	}
+    /**
+     * @return the columnMetadata
+     */
+    public Map<String, ColumnMetadata> getColumnMetadata() {
+        return columnMetadata;
+    }
 
-	public String getName() {
-		return name;
-	}
+    /**
+     * @param columnMetadata the columnMetadata to set
+     */
+    public void setColumnMetadata(Map<String, ColumnMetadata> columnMetadata) {
+        this.columnMetadata = columnMetadata;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public boolean isSortable() {
+        return this.sortable;
+    }
 
-	
+    public void setSortable(boolean sortable) {
+        this.sortable = sortable;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isToDoList() {
+        return toDoList;
+    }
+
+    public void setToDoList(boolean toDoList) {
+        this.toDoList = toDoList;
+    }
+
+    public String getFlowColumn() {
+        return this.flowColumn;
+    }
+
+    public void setFlowColumn(String flowColumn) {
+        this.flowColumn = flowColumn;
+    }
 }

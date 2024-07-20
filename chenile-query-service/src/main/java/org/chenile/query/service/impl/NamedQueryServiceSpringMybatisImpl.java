@@ -66,7 +66,8 @@ public class NamedQueryServiceSpringMybatisImpl extends AbstractSearchServiceImp
 				ResponseRow row = new ResponseRow();
 				row.setRow(o);
 
-				// row.setAllowedActions(getAllowedActionsForWorkflowEntity(queryMetadata.getWorkflowName(),o));
+				row.setAllowedActions(getAllowedActionsForWorkflowEntity(queryMetadata.getWorkflowName(),o,
+						queryMetadata.getStateColumn(),queryMetadata.getFlowColumn()));
 				responseList.add(row);
 			}
 		}

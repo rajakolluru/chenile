@@ -1,8 +1,6 @@
 package org.chenile.stm.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -324,17 +322,6 @@ public class STMFlowStoreImpl implements STMFlowStore, TransientActionsAwareDesc
 		return defFlow.getRetrievalStrategy();
 	}
 
-	public List<Map<String, Object>> getStatesInfoForFlow(String flowId) {
-		FlowDescriptor fd = flows.get(flowId);
-		if (fd == null)
-			return null;
-		return fd.getStatesInfo();
-	}
-
-	public List<Map<String, Object>> getStatesInfoForFlow() {
-		return getStatesInfoForFlow(defaultFlowId);
-	}
-
 	@Override
 	public STMSecurityStrategy getSecurityStrategy(String flowId) {
 		FlowDescriptor fd = flows.get(flowId);
@@ -356,5 +343,16 @@ public class STMFlowStoreImpl implements STMFlowStore, TransientActionsAwareDesc
 	public EventInformation getEventInformation(String eventId) {
 		return eventInfos.get(eventId);
 	}
+
+	@Override
+	public Collection<StateDescriptor> getAllStates() {
+		return getFlowInfo().getStates().values();
+	}
+
+	@Override
+	public String getDefaultFlow(){
+		return defaultFlowId;
+	}
+
 
 }

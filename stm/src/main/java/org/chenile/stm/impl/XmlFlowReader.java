@@ -231,7 +231,7 @@ public class XmlFlowReader extends FlowReaderBase {
 			transition.setEventId(eventId);
 			transition.setNewFlowId(attributes.getValue("newFlowId"));
 			transition.setNewStateId(attributes.getValue("newStateId"));
-			transition.setAclString(attributes.getValue("acls"));
+			// transition.setAclString(attributes.getValue("acls"));
 			String invokableOnlyFromStm = attributes.getValue("invokableOnlyFromStm");
 			if (invokableOnlyFromStm != null)
 				transition.setInvokableOnlyFromStm(Boolean.parseBoolean(invokableOnlyFromStm));
