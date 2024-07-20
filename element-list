@@ -36,9 +36,9 @@ org.chenile.core.service
 org.chenile.core.transform
 org.chenile.core.util
 org.chenile.cucumber
-org.chenile.cucumber.mqtt.rest
 org.chenile.cucumber.nonrest
 org.chenile.cucumber.rest
+org.chenile.cucumber.security.rest
 org.chenile.http
 org.chenile.http.annotation
 org.chenile.http.handler
