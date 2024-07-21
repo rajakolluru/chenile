@@ -10,6 +10,23 @@ import org.chenile.utils.entity.model.ExtendedStateEntity;
 @MappedSuperclass
 public abstract class AbstractJpaStateEntity extends BaseJpaEntity implements ExtendedStateEntity {
 	private Date stateEntryTime;
+	/**
+	 * Time after which the SLA for this state entity is deemed as YELLOW (tending late)
+	 */
+	private Date slaYellowDate;
+
+	public Date getSlaRedDate() {
+		return slaRedDate;
+	}
+
+	public void setSlaRedDate(Date slaRedDate) {
+		this.slaRedDate = slaRedDate;
+	}
+
+	/**
+	 * Time after which the SLA for this state entity is deemed as RED (late)
+	 */
+	private Date slaRedDate;
 	private int slaTendingLate = 0;
 	private int slaLate = 0;
 
