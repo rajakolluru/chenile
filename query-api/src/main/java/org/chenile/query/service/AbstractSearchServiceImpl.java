@@ -17,6 +17,7 @@ import org.chenile.workflow.api.WorkflowRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 
 @SuppressWarnings("unchecked")
 public abstract class AbstractSearchServiceImpl implements SearchService<Map<String, Object>> {
@@ -96,6 +97,22 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 			}else {
 				Collection<String> states = getAllowedStatesForCurrentUser(queryMetadata.getWorkflowName());
 				constructContainsQuery(searchInput.enhancedFilters, queryMetadata.getStateColumn(), states);
+				List<SortCriterion> sortCriteria = new ArrayList<>();
+				if (queryMetadata.getLateColumn() != null){
+					SortCriterion sc  = new SortCriterion();
+					sc.setName(queryMetadata.getLateColumn());
+					sc.setAscendingOrder(true);
+					sortCriteria.add(sc);
+				}
+				if (queryMetadata.getTendingLateColumn() != null){
+					SortCriterion sc  = new SortCriterion();
+					sc.setName(queryMetadata.getTendingLateColumn());
+					sc.setAscendingOrder(true);
+					sortCriteria.add(sc);
+				}
+				if (!sortCriteria.isEmpty()){
+					searchInput.originalSearchRequest.setSortCriteria(sortCriteria);
+				}
 			}
 		}
 
@@ -260,20 +277,17 @@ public abstract class AbstractSearchServiceImpl implements SearchService<Map<Str
 		State state = extractStateFromObject(obj, stateColumn, flowColumn);
 		if (state == null) {
 			logger.warn("State for object of type {} is null.", workflowName);
-			System.err.println("State for object of type " + workflowName + " is null");
 			return null;
 		}
 		List<Map<String,String>> ret = new ArrayList<>();
 		STMActionsInfoProvider provider = WorkflowRegistry.getSTMActionInfoProvider(workflowName);
 		if(provider == null) {
 			logger.warn("provider for workflow {} is null.", workflowName);
-			System.err.println("provider for object of type " + workflowName + " is null");
 			return null;
 		}
 		List<Map<String, String>> listOfMaps = provider.getAllowedActionsAndMetadata(state);
 		if (listOfMaps == null){
 			logger.warn("return value from state info provider for workflow {} is null.", workflowName);
-			System.err.println("return value from state info provider of type " + workflowName + " is null");
 			return null;
 		}
 		/*for (Map<String,String> map: listOfMaps){

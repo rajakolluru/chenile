@@ -19,6 +19,8 @@ public class QueryMetadata extends BaseEntity {
     private String name; // the externally visible name for this query
     private String flowColumn = "flowId";
     private String stateColumn = "stateId";
+    private String lateColumn = null;
+    private String tendingLateColumn = null;
     /**
      *  Denotes if the output of the query is associated with a workflow
      *  this is used to determine the applicable actions.
@@ -141,5 +143,21 @@ public class QueryMetadata extends BaseEntity {
 
     public void setFlowColumn(String flowColumn) {
         this.flowColumn = flowColumn;
+    }
+
+    public String getLateColumn() {
+        return this.lateColumn;
+    }
+
+    public String getTendingLateColumn() {
+        return tendingLateColumn;
+    }
+
+    public void setTendingLateColumn(String tendingLateColumn) {
+        this.tendingLateColumn = tendingLateColumn;
+    }
+
+    public void setLateColumn(String lateColumn) {
+        this.lateColumn = lateColumn;
     }
 }

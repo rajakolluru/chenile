@@ -46,9 +46,9 @@ public class ChenileSecurityConfiguration {
     private final Logger logger = LoggerFactory.getLogger(ChenileSecurityConfiguration.class);
     @Autowired
     KeycloakConnectionDetails connectionDetails;
-    @Value("${chenile.security.client.id")
+    @Value("${chenile.security.client.id}")
     String clientId;
-    @Value("${chenile.security.client.secret")
+    @Value("${chenile.security.client.secret}")
     String clientSecret;
 
     @Bean
@@ -72,7 +72,8 @@ public class ChenileSecurityConfiguration {
             @Override
             public OAuth2AuthorizationRequest resolve(HttpServletRequest request) {
                 String tenantId = request.getHeader(HeaderUtils.TENANT_ID_KEY);
-                String authBaseUri = "http://" + connectionDetails.host + ":" + connectionDetails.httpPort +
+               String authBaseUri = "http://" + connectionDetails.host + ":" + connectionDetails.httpPort +
+                //String authBaseUri = connectionDetails.host +
                         "/realms" + tenantId + "/protocol/openid-connect/auth";
                 DefaultOAuth2AuthorizationRequestResolver resolver = new
                         DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository(tenantId), authBaseUri);
@@ -171,10 +172,12 @@ public class ChenileSecurityConfiguration {
 
     private String keycloakBaseUrl(String realm) {
         return "http://" + connectionDetails.host + ":" + connectionDetails.httpPort + "/realms/" + realm + "/";
+       // return connectionDetails.host  + "/realms/" + realm;
     }
 
     private String keycloakOpenIdUrl(String realm) {
-        return keycloakBaseUrl(realm) + "protocol/openid-connect/";
+        //return keycloakBaseUrl(realm) + "/protocol/openid-connect/";
+       return keycloakBaseUrl(realm) + "protocol/openid-connect/";
     }
 
     Map<String, JwtDecoder> jwtDecoderMap = new HashMap<>();
