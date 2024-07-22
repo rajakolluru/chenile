@@ -72,6 +72,7 @@ public class BaseSecurityTest {
         public ConnDetails(String host, int port, String tenant) {
             this.host = host; this.port = port; this.tenant = tenant;
         }
+        public String getUrl(){ return "http://" + host + ":" + port;}
         public String getHost(){ return this.host;}
         public int getPort(){ return this.port;}
         public String getJwkSetUri() {
@@ -83,7 +84,8 @@ public class BaseSecurityTest {
 
     @DynamicPropertySource
     public static void keycloakProperties(DynamicPropertyRegistry registry) {
-        registry.add("chenile.security.keycloak.host", connDetails::getHost);
+        //registry.add("chenile.security.keycloak.host", connDetails::getHost);
+        registry.add("chenile.security.keycloak.host", connDetails::getUrl);
         registry.add("chenile.security.keycloak.port", connDetails::getPort);
         registry.add("spring.security.oauth2.resourceserver.jwt.jwk-set-uri",
                 connDetails::getJwkSetUri);

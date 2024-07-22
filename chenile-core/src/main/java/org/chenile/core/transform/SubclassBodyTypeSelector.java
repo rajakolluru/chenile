@@ -19,6 +19,10 @@ public class SubclassBodyTypeSelector implements Command<ChenileExchange> {
     public void execute(ChenileExchange exchange) throws Exception {
         OperationDefinition od = exchange.getOperationDefinition();
         Class<?> bodyType = od.getInput();
+        if (exchange.getBodyType() != null){
+            TypeReference<?> ref = exchange.getBodyType();
+            bodyType = (Class<?>)ref.getType();
+        }
         if (!(exchange.getBody() instanceof String body)) return;
 
         try {
