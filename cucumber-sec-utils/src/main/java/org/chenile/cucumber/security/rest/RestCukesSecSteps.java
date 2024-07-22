@@ -31,7 +31,7 @@ public class RestCukesSecSteps {
     CukesContext context = CukesContext.CONTEXT;
 
     @Before public void before(){
-        connectionDetails.host = BaseSecurityTest.getHost();
+        connectionDetails.host = BaseSecurityTest.getUrl();
         connectionDetails.httpPort = BaseSecurityTest.getHttpPort();
     }
     @When("I construct a REST request with authorization header in realm {string} for user {string} and password {string}")

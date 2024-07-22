@@ -6,10 +6,7 @@ import org.chenile.http.test.service.JsonInterceptor;
 import org.chenile.http.test.service.JsonInterceptor1;
 import org.chenile.http.test.service.JsonService;
 import org.chenile.http.test.service.JsonServiceImpl;
-import org.chenile.http.test.subclass.CapacityService;
-import org.chenile.http.test.subclass.Car;
-import org.chenile.http.test.subclass.Truck;
-import org.chenile.http.test.subclass.Vehicle;
+import org.chenile.http.test.subclass.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -45,6 +42,10 @@ public class TestChenileHttp extends SpringBootServletInitializer{
 	}
 	@Bean public CapacityService capacityService() {
 		return new CapacityService();
+	}
+
+	@Bean public RoomVehicleBodyTypeSelector roomVehicleBodyTypeSelector(){
+		return new RoomVehicleBodyTypeSelector();
 	}
 
 	@PostConstruct public void postConstruct(){

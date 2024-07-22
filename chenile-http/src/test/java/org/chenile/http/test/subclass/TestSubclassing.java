@@ -63,4 +63,34 @@ public class TestSubclassing {
                 .andExpect(jsonPath("$.payload.weightCarryingCapacityInKgs").value(5));
 
     }
+    @Test
+    @DisplayName("Test bodyTypeSelector chaining - class Car")
+    public void testChaining() throws Exception {
+        Car car = new Car("123",5);
+        mvc.perform( MockMvcRequestBuilders
+                .post("/add-capacity-generic/vehicle")
+                .content(TestUtil.asJsonString(car))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.payload.numPassengers").value(5))
+                .andExpect(jsonPath("$.payload.weightCarryingCapacityInKgs").value(0));
+    }
+
+    @Test
+    @DisplayName("Test bodyTypeSelector chaining - No need to use the subclass selector ")
+    public void testChainingWithNoNeedForSubclassing() throws Exception {
+        Room room = new Room(10,20,10) ;
+        mvc.perform( MockMvcRequestBuilders
+                .post("/add-capacity-generic/room")
+                .content(TestUtil.asJsonString(room))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.payload.volume").value(2000))
+                .andExpect(jsonPath("$.payload.numPassengers").value(0))
+                .andExpect(jsonPath("$.payload.weightCarryingCapacityInKgs").value(0));
+    }
 }

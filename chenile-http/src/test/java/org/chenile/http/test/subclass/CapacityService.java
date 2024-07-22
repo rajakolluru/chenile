@@ -10,4 +10,20 @@ public class CapacityService {
         vehicle.addCapacity(capacity);
         return capacity;
     }
+
+    public Capacity addCapacityGeneric(String type, Object object){
+            Capacity capacity = new Capacity();
+            switch(type){
+                case "room":
+                    Room room = (Room) object;
+                    room.addCapacity(capacity);
+                    return capacity;
+                case "vehicle":
+                    Vehicle vehicle = (Vehicle) object;
+                    vehicle.addCapacity(capacity);
+                    return capacity;
+                default:
+                    return null;
+            }
+    }
 }

@@ -62,6 +62,9 @@ public class BaseSecurityTest {
     public static String getHost(){
         return keycloak.getHost();
     }
+    public static String getUrl(){
+        return connDetails.getUrl();
+    }
     public static int getHttpPort(){
         return keycloak.getHttpPort();
     }

@@ -171,13 +171,11 @@ public class ChenileSecurityConfiguration {
     }
 
     private String keycloakBaseUrl(String realm) {
-        // return "http://" + connectionDetails.host + ":" + connectionDetails.httpPort + "/realms/" + realm + "/";
        return connectionDetails.host  + "/realms/" + realm;
     }
 
     private String keycloakOpenIdUrl(String realm) {
         return keycloakBaseUrl(realm) + "/protocol/openid-connect/";
-        // return keycloakBaseUrl(realm) + "protocol/openid-connect/";
     }
 
     Map<String, JwtDecoder> jwtDecoderMap = new HashMap<>();
