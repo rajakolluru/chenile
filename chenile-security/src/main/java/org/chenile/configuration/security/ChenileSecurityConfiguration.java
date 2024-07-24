@@ -37,6 +37,7 @@ import org.springframework.security.oauth2.server.resource.InvalidBearerTokenExc
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
 import org.springframework.security.oauth2.server.resource.authentication.JwtBearerTokenAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -50,14 +51,23 @@ public class ChenileSecurityConfiguration {
     String clientId;
     @Value("${chenile.security.client.secret}")
     String clientSecret;
+    @Value("${chenile.security.login.success.url:/}")
+    String loginSuccessUrl;
+    @Value("${chenile.security.login.failure.url:/}")
+    String loginFailureUrl;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(
+        http.csrf().disable().
+                authorizeHttpRequests(
                         (authorize) -> authorize.anyRequest().authenticated())
                 .oauth2Login(auth -> {
                     // auth.clientRegistrationRepository(httpRequest-> client(httpRequest));
                     auth.authorizationEndpoint().authorizationRequestResolver(resolver());
+                    if(loginSuccessUrl != null)
+                         auth.defaultSuccessUrl(loginSuccessUrl);
+                    if(loginFailureUrl != null)
+                        auth.failureHandler(new SimpleUrlAuthenticationFailureHandler(loginFailureUrl));
                 })
                 .oauth2Client(Customizer.withDefaults())
                 .oauth2ResourceServer((oauth2) ->
