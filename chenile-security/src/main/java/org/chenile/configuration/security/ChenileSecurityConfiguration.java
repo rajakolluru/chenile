@@ -55,9 +55,13 @@ public class ChenileSecurityConfiguration {
     String loginSuccessUrl;
     @Value("${chenile.security.login.failure.url:/}")
     String loginFailureUrl;
+    @Value("${chenile.security.ignore:false}")
+    boolean ignoreSecurity;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        if (ignoreSecurity)
+            return http.build();
         http.csrf().disable().
                 authorizeHttpRequests(
                         (authorize) -> authorize.anyRequest().authenticated())
