@@ -1,5 +1,7 @@
 package org.chenile.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.chenile.base.exception.ErrorNumException;
 import org.chenile.core.context.ChenileExchange;
 import org.chenile.security.service.SecurityConfigService;
@@ -12,8 +14,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 
+import java.time.Instant;
 import java.util.*;
 
 public class SecurityServiceImpl implements SecurityService {
@@ -37,21 +43,78 @@ public class SecurityServiceImpl implements SecurityService {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         List<GrantedAuthority> auths = new ArrayList<>(authorities);
 
-        logger.debug("=============== start of security context holder");
-        logger.debug("User name is " + authentication.getName() );
-        logger.debug("Principal class is " + principal.getClass().getName());
+        debug("=============== start of security context holder");
+        debug("User name is " + toS(authentication.getName()) );
+        debug("Principal class is " + toS(principal.getClass().getName()));
 
         if (principal instanceof DefaultOidcUser oidcUser) {
             auths.addAll(oidcUser.getAuthorities());
+            debug("User info = " + toS(oidcUser.getUserInfo()));
+            debug("claims = " + toS(oidcUser.getClaims()));
+        }
+        if (principal instanceof DefaultOAuth2AuthenticatedPrincipal p){
+            debug("name = " + p.getName());
+            for(Map.Entry<String,Object> entry: p.getAttributes().entrySet()){
+                if (!entry.getKey().equals("exp"))
+                    debug ("Attribute:" + entry.getKey() + "=" +  entry.getValue());
+            }
+
         }
 
-        logger.debug("Principal is " + principal);
-
-        logger.debug("authorities = " + auths );
-        logger.debug("details = " + authentication.getDetails() );
-        logger.debug("credentials = " + authentication.getCredentials() );
-        logger.debug("=============== end of security context holder");
+        debug("Principal is " + toS(principal));
+        debug("authorities = " + toS(auths) );
+        debug("details = " + toS(authentication.getDetails()) );
+        debug("credentials = " + toS(authentication.getCredentials()) );
+        debug("=============== end of security context holder");
         return auths;
+    }
+
+    private static class X {
+        @JsonIgnore
+        public Instant issuedAt;
+        @JsonIgnore
+        public Instant expiresAt;
+        @JsonIgnore
+        public Map<?,?> attributes;
+    }
+
+    public static Optional<Object> getCurrentUserLogin() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return Optional.ofNullable(extractPrincipal(securityContext.getAuthentication()));
+    }
+
+    private static Object extractPrincipal(Authentication authentication) {
+        if (authentication == null) {
+            return null;
+        } else if (authentication.getPrincipal() instanceof DefaultOidcUser oUser) {
+            return oUser.getUserInfo();
+        } else if (authentication.getPrincipal() instanceof UserDetails springSecurityUser) {
+            return springSecurityUser.getUsername();
+        } else if (authentication.getPrincipal() instanceof Jwt jwt) {
+            return jwt.getSubject();
+        } else if (authentication.getPrincipal() instanceof String s) {
+            return s;
+        }
+        return null;
+    }
+    private String toS(Object object){
+        if (object == null)return "null";
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.addMixIn(org.springframework.security.oauth2.core.OAuth2AccessToken.class,
+                X.class);
+        mapper.addMixIn(org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal.class,
+               X.class);
+        try {
+            return mapper.writeValueAsString(object);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            return object.toString();
+        }
+    }
+
+    private void debug(String s){
+        System.out.println(s);
+        logger.debug(s);
     }
 
     @Override

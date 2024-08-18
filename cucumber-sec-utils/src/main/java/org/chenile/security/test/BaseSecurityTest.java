@@ -13,7 +13,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * A security test container initiating class. Initiates a keycloak container to test security roles.
@@ -103,6 +105,9 @@ public class BaseSecurityTest {
         map.put("grant_type", Collections.singletonList("password"));
         map.put("client_id", Collections.singletonList("authz-servlet"));
         map.put("client_secret", Collections.singletonList("secret"));
+        /*List<String> list = new ArrayList<>();
+        list.add("profile"); list.add("openid"); list.add("email");
+        map.put("scope", list);*/
         map.put("username", Collections.singletonList(user));
         map.put("password", Collections.singletonList(password));
 
