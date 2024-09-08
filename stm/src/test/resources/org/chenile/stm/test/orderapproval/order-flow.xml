@@ -10,11 +10,11 @@
 		<if id='new' initialState='true'
 			condition='numItems == 1 &amp;&amp; itemNames[0] != "foo"' then='valid'
 			else='invalid'>
-			<on eventId='valid' newStateId='valid' />
+			<on eventId='valid' newStateId='approvalCheck' />
 			<on eventId='invalid' newFlowId='invalidOrder' newStateId='invalid' />
 		</if>
 
-		<if id='valid' condition='orderTotal &lt;= 10000' then='autoApproval'
+		<if id='approvalCheck' condition='orderTotal &lt;= 10000' then='autoApproval'
 			else='requiresApproval'>
 			<on eventId='autoApproval' newStateId='fulfilled' />
 			<on eventId='requiresApproval' newStateId='pendingApproval' />

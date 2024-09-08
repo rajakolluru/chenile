@@ -11,6 +11,7 @@ import org.chenile.stm.action.STMAction;
 import org.chenile.stm.exception.STMException;
 import org.chenile.stm.impl.STMFlowStoreImpl;
 import org.chenile.stm.impl.STMImpl;
+import org.chenile.stm.impl.STMPlantUmlSDGenerator;
 import org.chenile.stm.impl.XmlFlowReader;
 
 import junit.framework.TestCase;
@@ -31,6 +32,7 @@ import junit.framework.TestCase;
 public class TestOrderFlow extends TestCase {
 	private static final String FLOW_DEFINITION_FILE = "org/chenile/stm/test/orderapproval/order-flow.xml";
 	private STM<Order> stm ;
+	private STMPlantUmlSDGenerator generator;
 	private Map<String, Object> compMap = new HashMap<String, Object>();
 	public static final String ORDER_APPROVAL_FLOW = "orderApproval";
 	public static final String INVALID_ORDER_FLOW = "invalidOrder";
@@ -72,6 +74,7 @@ public class TestOrderFlow extends TestCase {
 		XmlFlowReader xfr = new XmlFlowReader(stmFlowStoreImpl);
 		xfr.setFilename(FLOW_DEFINITION_FILE);
 		stm.setStmFlowStore(stmFlowStoreImpl);
+		generator = new STMPlantUmlSDGenerator(stmFlowStoreImpl);
 	}
 	
 	public void testValidAutoApprovedFlow()  throws Exception{
@@ -247,6 +250,15 @@ public class TestOrderFlow extends TestCase {
 		
 		assertEquals(MANUAL_CORRECTION_STATE,order.getExitStates().get(0));
 		assertEquals(DISCARDED_STATE,order.getExitStates().get(1));
+	}
+
+	public void testSDGenerator() throws Exception{
+		String s = generator.toStateDiagram();
+		assertNotNull(s);
+		// difficult to evaluate the validity of the state diagram
+		// unless we run it through the plant uml parser. We will suffice
+		// with a null check for now
+		// System.out.println(s);
 	}
 
 }
