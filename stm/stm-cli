@@ -1,0 +1,4 @@
+dir=$(which $0)
+echo $dir
+dir=${dir%/*}
+java -jar ${dir}/target/stm-*-jar-with-dependencies.jar $*

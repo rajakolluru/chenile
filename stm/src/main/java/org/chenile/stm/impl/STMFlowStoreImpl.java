@@ -130,6 +130,11 @@ public class STMFlowStoreImpl implements STMFlowStore, TransientActionsAwareDesc
 		return bean;
 	}
 
+	public Object makeTransitionAction(String componentName,boolean enableInlineScriptsInProperties)
+			throws STMException {
+		return makeAction(componentName,enableInlineScriptsInProperties);
+	}
+
 	public Object makeAction(String componentName, boolean enableInlineScriptsInProperties) 
 			throws STMException {
 		Object stmaction = makeComponent(componentName); 
@@ -144,6 +149,11 @@ public class STMFlowStoreImpl implements STMFlowStore, TransientActionsAwareDesc
 			cpa.setEnableInlineScriptsInProperties(enableInlineScriptsInProperties);
 		}
 		return stmaction;
+	}
+
+	public Object makeAutomaticStateComputation(String componentName, boolean enableInlineScriptsInProperties)
+				throws STMException{
+		return makeAction(componentName,enableInlineScriptsInProperties);
 	}
 
 	/**
@@ -194,12 +204,16 @@ public class STMFlowStoreImpl implements STMFlowStore, TransientActionsAwareDesc
 	 * @param componentName
 	 */
 	public void setScriptingStrategy(String componentName) throws STMException{
-		this.scriptingStrategy = (ScriptingStrategy) makeComponent(componentName);
+		this.scriptingStrategy = (ScriptingStrategy) makeScriptingStrategy(componentName);
 		componentPropertiesHelper = new ComponentPropertiesHelper();
 		componentPropertiesHelper.setScriptingStrategy(scriptingStrategy);
 		componentPropertiesHelper.setFlowConfigurator(this);
 	}
-	
+
+	public Object makeScriptingStrategy(String componentName) throws STMException {
+		return makeComponent(componentName);
+	}
+
 	public void setScriptingStrategy(ScriptingStrategy scriptingStrategy) {
 		this.scriptingStrategy = scriptingStrategy;
 		componentPropertiesHelper = new ComponentPropertiesHelper();

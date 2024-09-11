@@ -187,7 +187,7 @@ public class XmlFlowReader extends FlowReaderBase {
 		protected void processTransitionAction(EventInformation eventInformation, Attributes attributes) throws Exception {
 			if (attributes.getValue(COMPONENT_NAME) == null) return;
 			eventInformation.setTransitionAction((STMTransitionAction<?>) stmFlowStoreImpl.
-					                 makeAction(attributes.getValue(COMPONENT_NAME),true));
+					                 makeTransitionAction(attributes.getValue(COMPONENT_NAME),true));
 		}
 
 		protected void processMetaAttributes(EventInformation eventInformation,
@@ -322,7 +322,7 @@ public class XmlFlowReader extends FlowReaderBase {
 
 			asd.setComponentName(componentName);
 			asd.setComponent((STMAutomaticStateComputation<?>) stmFlowStoreImpl
-					.makeAction(asd.getComponentName(), enable));
+					.makeAutomaticStateComputation(asd.getComponentName(), enable));
 
 			// add the rest of the attributes to the componentProperties
 			for (int i = 0; i < attributes.getLength(); i++) {

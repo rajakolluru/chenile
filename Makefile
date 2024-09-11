@@ -25,6 +25,11 @@ export version := $(shell cat chenile-version.txt)
 build:
 	mvn  -Drevision=$(version) install 
 
+## assembly: Build the command line assembly for specific projects (STM) 
+.PHONY: assembly
+assembly:
+	cd stm; mvn -Drevision=$(version) compile assembly:single
+
 ## javadoc: Build the aggregated javadocs web site 
 .PHONY: javadoc
 javadoc:
