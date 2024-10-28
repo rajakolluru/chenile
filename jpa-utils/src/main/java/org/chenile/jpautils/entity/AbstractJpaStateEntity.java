@@ -2,6 +2,7 @@ package org.chenile.jpautils.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.chenile.stm.State;
 import org.chenile.stm.StateEntity;
@@ -9,12 +10,15 @@ import org.chenile.utils.entity.model.ExtendedStateEntity;
 
 @MappedSuperclass
 public abstract class AbstractJpaStateEntity extends BaseJpaEntity implements ExtendedStateEntity {
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
 	private Date stateEntryTime;
 	/**
 	 * Time after which the SLA for this state entity is deemed as YELLOW (tending late)
 	 */
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
 	private Date slaYellowDate;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
 	public Date getSlaRedDate() {
 		return slaRedDate;
 	}
@@ -26,6 +30,7 @@ public abstract class AbstractJpaStateEntity extends BaseJpaEntity implements Ex
 	/**
 	 * Time after which the SLA for this state entity is deemed as RED (late)
 	 */
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
 	private Date slaRedDate;
 	private int slaTendingLate = 0;
 	private int slaLate = 0;
@@ -47,6 +52,7 @@ public abstract class AbstractJpaStateEntity extends BaseJpaEntity implements Ex
 		return state;
 	}
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
 	public Date getStateEntryTime() {
 		return stateEntryTime;
 	}

@@ -8,6 +8,8 @@ public class DummyStore extends STMFlowStoreImpl {
     DummyAction dummyAction = new DummyAction();
     DummyScriptingStrategy dummyScriptingStrategy = new DummyScriptingStrategy();
     DummyAutomaticStateComputation dummyAutomaticStateComputation = new DummyAutomaticStateComputation();
+    DummySecurityStrategy dummySecurityStrategy = new DummySecurityStrategy();
+    DummyRetrievalStrategy dummyRetrievalStrategy = new DummyRetrievalStrategy();
     @Override
     public Object makeTransitionAction(String componentName,boolean enable) throws STMException {
         return  dummyTransitionAction;
@@ -26,5 +28,15 @@ public class DummyStore extends STMFlowStoreImpl {
     @Override
     public Object makeScriptingStrategy(String componentName) throws STMException {
         return dummyScriptingStrategy;
+    }
+
+    @Override
+    public Object makeRetrievalStrategy(String componentName) throws STMException {
+        return dummyRetrievalStrategy;
+    }
+
+    @Override
+    public Object makeSecurityStrategy(String componentName) throws STMException {
+        return dummySecurityStrategy;
     }
 }

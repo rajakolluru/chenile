@@ -230,6 +230,26 @@ public enum ContextContainer {
 		getContext().isActive = isActive;
 	}
 
+	public void setTestMode(String testMode) {
+		if (testMode == null || testMode.isEmpty()){
+			put(HeaderUtils.TEST_MODE,"false");
+			return;
+		}
+		boolean t = false;
+		try {
+			t = Boolean.parseBoolean(testMode);
+		}catch(Exception e){
+			t = false;
+		}
+		put(HeaderUtils.TEST_MODE,"" + t);
+	}
+
+	public boolean isTestMode() {
+		String x = get(HeaderUtils.TEST_MODE);
+		if(x == null || x.isEmpty()) return false;
+		return Boolean.parseBoolean(x);
+	}
+
 	/**
 	 * @return the isVerified
 	 */

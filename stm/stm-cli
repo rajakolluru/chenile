@@ -1,4 +1,13 @@
 dir=$(which $0)
-echo $dir
 dir=${dir%/*}
-java -jar ${dir}/target/stm-*-jar-with-dependencies.jar $*
+ls ${dir}/stm-*-jar-with-dependencies.jar > /dev/null 2>&1  && jarfile=${dir}/stm-*-jar-with-dependencies.jar
+ls ${dir}/target/stm-*-jar-with-dependencies.jar > /dev/null 2>&1 && jarfile=${dir}/target/stm-*-jar-with-dependencies.jar
+
+if [[ -z ${jarfile} ]] 
+then
+	echo "Missing JAR file. Please check if you downloaded correctly"
+	exit 1 
+fi
+
+java -jar ${jarfile} $*
+exit $?

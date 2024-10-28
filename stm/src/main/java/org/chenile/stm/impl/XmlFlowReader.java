@@ -386,7 +386,7 @@ public class XmlFlowReader extends FlowReaderBase {
 
 			@SuppressWarnings("unchecked")
 			StateEntityRetrievalStrategy<StateEntity> retrievalStrategy = (StateEntityRetrievalStrategy<StateEntity>) stmFlowStoreImpl
-					.makeComponent(componentName);
+					.makeRetrievalStrategy(componentName);
 			fd.setRetrievalStrategy(retrievalStrategy);
 		}
 	}
@@ -406,7 +406,7 @@ public class XmlFlowReader extends FlowReaderBase {
 			String componentName = attributes.getValue(COMPONENT_NAME);
 
 			STMSecurityStrategy securityStrategy = (STMSecurityStrategy) stmFlowStoreImpl
-					.makeComponent(componentName);
+					.makeSecurityStrategy(componentName);
 			fd.setStmSecurityStrategy(securityStrategy);
 		}
 	}

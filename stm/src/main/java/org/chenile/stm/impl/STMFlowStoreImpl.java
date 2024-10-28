@@ -188,7 +188,7 @@ public class STMFlowStoreImpl implements STMFlowStore, TransientActionsAwareDesc
 	
 	public void setDefaultTransitionAction(String componentName) 
 			throws STMException {
-			this.defaultTransitionAction = (STMTransitionAction<?>) makeAction(componentName, false);
+			this.defaultTransitionAction = (STMTransitionAction<?>) makeTransitionAction(componentName, false);
 	}
 
 	public String getDefaultFlowId() {
@@ -211,6 +211,14 @@ public class STMFlowStoreImpl implements STMFlowStore, TransientActionsAwareDesc
 	}
 
 	public Object makeScriptingStrategy(String componentName) throws STMException {
+		return makeComponent(componentName);
+	}
+
+	public Object makeSecurityStrategy(String componentName) throws STMException {
+		return makeComponent(componentName);
+	}
+
+	public Object makeRetrievalStrategy(String componentName) throws STMException {
 		return makeComponent(componentName);
 	}
 

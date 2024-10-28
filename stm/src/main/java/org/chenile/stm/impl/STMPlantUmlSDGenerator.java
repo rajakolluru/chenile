@@ -28,10 +28,8 @@ public class STMPlantUmlSDGenerator {
 
     public String toStateDiagram(){
         StringBuilder stringBuilder = new StringBuilder(STARTUML);
+        printStyles(stringBuilder);
 
-        stringBuilder.append("skinparam state {\n").
-            append("BackgroundColor<<orphaned>> Orange\n").
-            append("}\n");
         for(StateDescriptor sd: stmFlowStore.getAllStates()) {
             stringBuilder.append(STATE).append(sd.getId());
             if (!notOrphaned.get(sd.getId())){
@@ -63,7 +61,7 @@ public class STMPlantUmlSDGenerator {
             StringBuilder selfNote = new StringBuilder();
             for(Transition t: sd.getTransitions().values()){
                 if(t.getNewStateId().equals(sd.getId())){
-                    selfNote.append(t.getEventId()).append("\\n");
+                    selfNote.append(t.getEventId()).append("\n");
                 }else {
                     stringBuilder.append(sd.getId()).append(" --> ").
                             append(t.getNewStateId())
@@ -74,9 +72,10 @@ public class STMPlantUmlSDGenerator {
             }
             if (!selfNote.isEmpty()){
                 stringBuilder.append(sd.getId()).append(" --> ").append(sd.getId()).append("\n");
-                stringBuilder.append("note on link : ").append(selfNote.toString()).append("\n");
+                stringBuilder.append("note on link #LightBlue\n").append(selfNote.toString()).append("end note\n");
             }
         }
+        printLegend(stringBuilder);
         stringBuilder.append(ENDUML);
         return stringBuilder.toString();
     }
@@ -99,6 +98,21 @@ public class STMPlantUmlSDGenerator {
         }
     }
 
+    private void printStyles(StringBuilder stringBuilder){
+        stringBuilder.append("""
+                skinparam state {
+                BackgroundColor<<orphaned>> Orange
+                }
+                <style>
+                    diamond {
+                    BackgroundColor #palegreen
+                    LineColor #green
+                    LineThickness 2.5
+                    }
+                 </style>
+                """);
+    }
+
     private void printComponentProperties(StringBuilder stringBuilder, StateDescriptor sd){
         if( sd instanceof AutomaticStateDescriptor asd){
             Map<String, Object> props = asd.getComponentProperties();
@@ -106,5 +120,16 @@ public class STMPlantUmlSDGenerator {
                 stringBuilder.append("\\n**").append(prop.getKey()).append(":**").append(prop.getValue());
             }
         }
+    }
+
+    private void printLegend(StringBuilder stringBuilder){
+        stringBuilder.append("""
+                legend right
+                <#GhostWhite,#GhostWhite>|        |= __Legend__ |
+                |<#orange>   | Orphaned State|
+                |<#LightBlue> |Transitions without state change|
+                |<#PaleGreen> |Automatic State Computations|
+                endlegend
+                """);
     }
 }

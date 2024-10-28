@@ -1,5 +1,6 @@
 package org.chenile.jpautils.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.chenile.core.context.ContextContainer;
 import org.chenile.core.context.HeaderUtils;
@@ -11,7 +12,9 @@ import java.util.Date;
 @MappedSuperclass
 public  class BaseJpaEntity implements ChenileEntity {
     @Id @Column(name = "id") public String id;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
     public Date createdTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
     private Date lastModifiedTime;
     private String lastModifiedBy;
 
@@ -21,6 +24,7 @@ public  class BaseJpaEntity implements ChenileEntity {
 
     public String tenant;
     public String createdBy;
+    public boolean testEntity = false;
 
     public String getId(){
         return this.id;
@@ -41,6 +45,7 @@ public  class BaseJpaEntity implements ChenileEntity {
     }
 
     @Override
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
     public Date getLastModifiedTime() {
         return this.lastModifiedTime;
     }
@@ -51,6 +56,7 @@ public  class BaseJpaEntity implements ChenileEntity {
     }
 
     @Override
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm a z")
     public String getLastModifiedBy() {
         return this.lastModifiedBy;
     }
@@ -95,6 +101,7 @@ public  class BaseJpaEntity implements ChenileEntity {
         this.lastModifiedBy = contextContainer.get(HeaderUtils.EMPLOYEE_ID_KEY);
         this.createdBy = contextContainer.get(HeaderUtils.EMPLOYEE_ID_KEY);
         this.tenant = contextContainer.get(HeaderUtils.TENANT_ID_KEY);
+        this.testEntity = contextContainer.isTestMode();
     }
 
 }
