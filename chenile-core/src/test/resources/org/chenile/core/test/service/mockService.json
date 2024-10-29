@@ -149,6 +149,24 @@
         "paramClass": "java.util.Map",
         "description": "headers"
       }
+    ]},{
+    "name": "s8",
+    "url": "/s8",
+    "eventSubscribedTo": ["foo"],
+    "httpMethod": "POST",
+    "produces": "JSON",
+    "consumes": "JSON",
+    "secure":false,
+    "output": "org.chenile.core.test.Foo",
+    "input": "org.chenile.core.test.Foo",
+    "params":
+    [
+      {
+        "name": "foo",
+        "type": "BODY",
+        "paramClass": "org.chenile.core.test.Foo",
+        "description": "body"
+      }
     ]}
   ]
 }

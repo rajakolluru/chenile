@@ -1,0 +1,5 @@
+{
+  "id": "event1",
+  "topic": "event1",
+  "type": "org.chenile.http.test.service.JsonData"
+}

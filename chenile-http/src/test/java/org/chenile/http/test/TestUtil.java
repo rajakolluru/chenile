@@ -7,8 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.chenile.core.event.EventProcessor;
 import org.chenile.http.test.service.JsonData;
 import org.chenile.http.test.service.JsonInterceptor;
+import org.chenile.http.test.service.JsonServiceImpl;
+import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestUtil {
    @Autowired private MockMvc mvc;
-   
+   @Autowired private EventProcessor eventProcessor;
     public void testService(String url) throws Exception {
 	   String id = "myid";
 	   String headerValue = "my.value";
@@ -174,6 +177,14 @@ public class TestUtil {
             .andExpect(jsonPath("$.errors[1].subErrorCode").value(errorNum))
             .andExpect(jsonPath("$.errors[1].description").value(exceptionMessage));
         assertErrors(actions,501,errorNum + 1,exceptionMessage + "1");
+    }
+
+    public void testEvent(String url) throws Exception {
+        String id = "foo";
+        String name = "bar";
+        JsonData jsondata = new JsonData(id, name);
+        eventProcessor.handleEvent("event1",jsondata);
+        Assert.assertEquals("bar", JsonServiceImpl.data);
     }
    
     public static String asJsonString(final Object obj) {

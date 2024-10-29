@@ -1,0 +1,5 @@
+{
+  "id": "foo",
+  "topic": "/foo",
+  "type": "org.chenile.core.test.Foo"
+}

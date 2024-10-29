@@ -64,4 +64,10 @@ public class TestHttpHandlers {
     public void testDoubleInterceptorException() throws Exception {
         testUtil.testDoubleInterceptorException("/ping");
     }
+
+    @Test @Order(9)
+    @DisplayName("Tests if events trigger a call to the method.")
+    public void testEvent() throws Exception {
+        testUtil.testEvent("/c/save");
+    }
 }

@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import org.chenile.base.response.GenericResponse;
 import org.chenile.http.annotation.ChenileController;
+import org.chenile.http.annotation.EventsSubscribedTo;
 import org.chenile.http.annotation.InterceptedBy;
 import org.chenile.http.handler.ControllerSupport;
 import org.chenile.http.test.service.JsonData;
@@ -26,6 +27,7 @@ public class JsonController extends ControllerSupport{
 	 
 	 @PostMapping("/c/save")
 	 @InterceptedBy("jsonInterceptor")
+	 @EventsSubscribedTo("event1")
 	 public ResponseEntity<GenericResponse<JsonData>> save(
 			 HttpServletRequest request, @RequestBody JsonData jsonData) {
 		 return process("save",request,jsonData);

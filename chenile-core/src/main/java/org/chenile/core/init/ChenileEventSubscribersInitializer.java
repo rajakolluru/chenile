@@ -13,6 +13,7 @@ import org.chenile.core.model.OperationDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.core.annotation.Order;
 
 /**
  * Runs after all the events and services are registered in Chenile.
@@ -23,8 +24,9 @@ import org.springframework.context.event.EventListener;
  */
 public class ChenileEventSubscribersInitializer {
 	@Autowired ChenileConfiguration chenileConfiguration;
-	
+
 	@EventListener(ApplicationReadyEvent.class)
+	@Order(20)
 	public void init() {
 		for (ChenileServiceDefinition s : chenileConfiguration.getServices().values()) {
 			// ignore if the service does not belong to the current module.
@@ -51,11 +53,11 @@ public class ChenileEventSubscribersInitializer {
 					operationDefinition.getName(),eventId, ced.getType(),
 					operationDefinition.getInput()});
 		}
-		Method method = operationDefinition.getMethod();
+		/*Method method = operationDefinition.getMethod();
 		if (!EventLog.class.isAssignableFrom(method.getReturnType())) {
 			throw new ServerException(ErrorCodes.EVENT_RETURN_TYPE_MISMATCH.getSubError(),
 					new Object[]{s.getId(),operationDefinition.getName()});
-		}
+		}*/
 		ced.addEventSubscriber(s,operationDefinition);
 	}
 

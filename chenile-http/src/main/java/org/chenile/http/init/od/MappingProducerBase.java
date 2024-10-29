@@ -5,10 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -24,10 +21,7 @@ import org.chenile.core.model.HttpBindingType;
 import org.chenile.core.model.MimeType;
 import org.chenile.core.model.OperationDefinition;
 import org.chenile.core.model.ParamDefinition;
-import org.chenile.http.annotation.BodyTypeSelector;
-import org.chenile.http.annotation.ChenileParamType;
-import org.chenile.http.annotation.ChenileResponseCodes;
-import org.chenile.http.annotation.InterceptedBy;
+import org.chenile.http.annotation.*;
 import org.chenile.owiz.Command;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ParameterizedTypeReference;
@@ -47,6 +41,7 @@ public abstract class MappingProducerBase {
 	protected void processChenileOperation(ChenileServiceDefinition csd,Method method, OperationDefinition od) {
 		processInterceptedBy(csd,method,od);
 		processBodyTypeSelector(csd,method,od);
+		processEventsSubscribedTo(csd,method,od);
 		collectChenileAnnotations(method,od);
 		processChenileResponseCodes(method,od);
 	}
@@ -84,6 +79,17 @@ public abstract class MappingProducerBase {
 				Command<ChenileExchange> bts = AbstractServiceInitializer.constructBodyTypeInterceptorsChain(co.value(),
 						applicationContext);
 				od.setBodyTypeSelector(bts);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void processEventsSubscribedTo(ChenileServiceDefinition csd,Method method, OperationDefinition od) {
+		if(method.isAnnotationPresent(EventsSubscribedTo.class)) {
+			EventsSubscribedTo est = method.getAnnotation(EventsSubscribedTo.class);
+			if (est.value() != null) {
+                Set<String> set = new HashSet<>(Arrays.asList(est.value()));
+				od.setEventSubscribedTo(set);
 			}
 		}
 	}

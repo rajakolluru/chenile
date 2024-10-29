@@ -4,7 +4,8 @@ import org.chenile.base.exception.ServerException;
 import org.chenile.base.response.ErrorType;
 import org.chenile.base.response.ResponseMessage;
 public class JsonServiceImpl implements JsonService{
-
+    // this is used to test the event implementation.
+    public static String data;
     @Override
     public JsonData getOne(String id) {
         return new JsonData(id,"Hello");
@@ -12,6 +13,7 @@ public class JsonServiceImpl implements JsonService{
 
     @Override
     public JsonData save(JsonData jsonData) {
+        data = jsonData.getName();
         return jsonData;
     }
     

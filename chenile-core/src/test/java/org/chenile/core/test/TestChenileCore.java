@@ -11,21 +11,30 @@ import org.chenile.core.context.ChenileExchange;
 import org.chenile.core.context.ChenileExchangeBuilder;
 import org.chenile.core.context.ContextContainer;
 import org.chenile.core.entrypoint.ChenileEntryPoint;
+import org.chenile.core.event.EventProcessor;
 import org.chenile.core.service.HealthCheckInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes={SpringTestConfig.class})
+@SpringBootTest(classes = SpringTestConfig.class)
+@ActiveProfiles("unittest")
 public class TestChenileCore {
 
+	@Autowired private EventProcessor eventProcessor;
 	@Autowired private ChenileEntryPoint chenileEntryPoint;
 	@Autowired private ChenileExchangeBuilder chenileExchangeBuilder;
 	@Autowired ContextContainer contextContainer;
@@ -209,5 +218,22 @@ public class TestChenileCore {
 		HealthCheckInfo hci = (HealthCheckInfo)data;
 		assertEquals("Response message for health check did not match", MockHealthChecker.HEALTH_CHECK_MESSAGE,hci.message);
 		assertTrue("Response message for health check is not returning healthy",hci.healthy);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Test public void testSimpleBody(){
+		ChenileExchange exchange = makeExchange("mockService","s8");
+		exchange.setBody("{\"bar\": \"value\"}");
+		chenileEntryPoint.execute(exchange);
+		Foo data = (Foo)((GenericResponse<Object>)exchange.getResponse()).getData();
+		assertEquals("Expected does not match the actual return value","valuemock",data.bar);
+		assertEquals("Expected does not match the actual return value","value",MockService.bar);
+	}
+
+	@Test public void testEvent(){
+		Foo foo = new Foo();
+		foo.bar = "baz";
+		eventProcessor.handleEvent("foo",foo);
+		assertEquals("Expected does not match the actual return value","baz",MockService.bar);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MockService {
+	public static String bar;
 	public List<String> mockMethod(List<String> list) {
 		list.add("actual");
 		return list;
@@ -47,4 +48,11 @@ public class MockService {
 	public String s7(Map<String,Object> headers) {
 		return headers.get("header1").toString();
 	}
+
+	public Foo s8(Foo foo){
+		MockService.bar = foo.bar;
+		foo.bar = foo.bar + "mock";
+		return foo;
+	}
+
 }

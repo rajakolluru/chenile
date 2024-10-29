@@ -35,8 +35,12 @@ public class EventProcessor {
 		if (ced == null) {
 			throw new ServerException(ErrorCodes.UNKNOWN_EVENT.getSubError(), new Object[]{eventId});
 		}
+
 		Set<SubscriberVO> subscribers = ced.getEventSubscribers();
-		if(subscribers == null || subscribers.isEmpty()) return;
+		if(subscribers == null || subscribers.isEmpty()) {
+			System.err.println("Subscribers is null");
+			return;
+		}
 		for(SubscriberVO subscriber: subscribers) {
 			ChenileExchange chenileExchange = new ChenileExchange();
 			chenileExchange.setServiceDefinition(subscriber.serviceDefinition);

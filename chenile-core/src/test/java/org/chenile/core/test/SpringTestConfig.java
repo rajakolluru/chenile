@@ -2,6 +2,7 @@ package org.chenile.core.test;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @Configuration
 @PropertySource("classpath:org/chenile/core/test/TestChenileCore.properties")
-@ComponentScan(basePackages = {"org.chenile.configuration"})
+@SpringBootApplication(scanBasePackages = { "org.chenile.configuration" })
 @ActiveProfiles("unittest")
 public class SpringTestConfig {
 	@Value("${chenile.properties}")
