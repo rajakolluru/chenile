@@ -44,8 +44,10 @@ public class ChenileEventSubscribersInitializer {
 	private void registerSubscriber(ChenileServiceDefinition s, OperationDefinition operationDefinition, String eventId) {
 		ChenileEventDefinition ced = chenileConfiguration.getEvents().get(eventId);
 		if (ced == null) {
-			throw new ServerException(ErrorCodes.UNKNOWN_EVENT_SUBSCRIBED.getSubError(), new Object[]{s.getId(),
-					operationDefinition.getName(),eventId});
+			ced = new ChenileEventDefinition();
+			ced.setId(eventId);
+			ced.setType(operationDefinition.getInput());
+			chenileConfiguration.addEvent(ced);
 		}
 		if (!ced.getType().equals(operationDefinition.getInput())) {
 			throw new ServerException(ErrorCodes.EVENT_TYPE_MISMATCH.getSubError(),
@@ -53,11 +55,7 @@ public class ChenileEventSubscribersInitializer {
 					operationDefinition.getName(),eventId, ced.getType(),
 					operationDefinition.getInput()});
 		}
-		/*Method method = operationDefinition.getMethod();
-		if (!EventLog.class.isAssignableFrom(method.getReturnType())) {
-			throw new ServerException(ErrorCodes.EVENT_RETURN_TYPE_MISMATCH.getSubError(),
-					new Object[]{s.getId(),operationDefinition.getName()});
-		}*/
+
 		ced.addEventSubscriber(s,operationDefinition);
 	}
 
