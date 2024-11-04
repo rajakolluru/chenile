@@ -70,4 +70,10 @@ public class TestHttpHandlers {
     public void testEvent() throws Exception {
         testUtil.testEvent("/c/save");
     }
+
+    @Test @Order(9)
+    @DisplayName("Tests if undefined events trigger a call to the method.")
+    public void testUndefinedEvent() throws Exception {
+        testUtil.testUndefinedEvent("/c/save");
+    }
 }

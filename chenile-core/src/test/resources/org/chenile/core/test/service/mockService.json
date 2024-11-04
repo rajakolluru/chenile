@@ -152,7 +152,7 @@
     ]},{
     "name": "s8",
     "url": "/s8",
-    "eventSubscribedTo": ["foo"],
+    "eventSubscribedTo": ["foo","event1"],
     "httpMethod": "POST",
     "produces": "JSON",
     "consumes": "JSON",

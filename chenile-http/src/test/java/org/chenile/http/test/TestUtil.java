@@ -184,7 +184,15 @@ public class TestUtil {
         String name = "bar";
         JsonData jsondata = new JsonData(id, name);
         eventProcessor.handleEvent("event1",jsondata);
-        Assert.assertEquals("bar", JsonServiceImpl.data);
+        Assert.assertEquals(name, JsonServiceImpl.data);
+    }
+
+    public void testUndefinedEvent(String url) throws Exception {
+        String id = "foo";
+        String name = "undefined-event";
+        JsonData jsondata = new JsonData(id, name);
+        eventProcessor.handleEvent("event2",jsondata);
+        Assert.assertEquals(name, JsonServiceImpl.data);
     }
    
     public static String asJsonString(final Object obj) {

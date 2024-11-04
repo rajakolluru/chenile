@@ -27,7 +27,7 @@ public class JsonController extends ControllerSupport{
 	 
 	 @PostMapping("/c/save")
 	 @InterceptedBy("jsonInterceptor")
-	 @EventsSubscribedTo("event1")
+	 @EventsSubscribedTo({"event1","event2"})
 	 public ResponseEntity<GenericResponse<JsonData>> save(
 			 HttpServletRequest request, @RequestBody JsonData jsonData) {
 		 return process("save",request,jsonData);

@@ -236,4 +236,14 @@ public class TestChenileCore {
 		eventProcessor.handleEvent("foo",foo);
 		assertEquals("Expected does not match the actual return value","baz",MockService.bar);
 	}
+
+	/**
+	 * Test an event that does not have an explicit event definition.
+	 */
+	@Test public void testUndefinedEvent(){
+		Foo foo = new Foo();
+		foo.bar = "event1-test";
+		eventProcessor.handleEvent("event1",foo);
+		assertEquals("Expected does not match the actual return value","event1-test",MockService.bar);
+	}
 }
