@@ -13,6 +13,7 @@ import org.chenile.base.response.ResponseMessage;
 import org.chenile.cucumber.CukesContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -74,47 +75,32 @@ public class RestCukesSteps {
 
     @When("I POST a REST request to URL {string} with payload")
     public void i_POST_REST_request_with_payload(String url, String docString) throws Exception {
-        Map<String, String> headers = context.get("headers");
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .post(substituteVariables(url))
-                .content(substituteVariables(docString))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
-        if (headers != null) {
-            for (Entry<String, String> entry : headers.entrySet()) {
-                request.header(substituteVariables(entry.getKey()), substituteVariables(entry.getValue()));
-            }
-        }
-        ResultActions actions = mvc.perform(request)
-                .andDo(print());
-        context.set("actions", actions);
+        invokeHTTPMethod(HttpMethod.POST,url,docString);
+    }
+
+    @When("I DELETE a REST request to URL {string} with payload")
+    public void i_DELETE_A_REST_Request_To_URL_With_Payload(String url, String docString) throws Exception {
+        invokeHTTPMethod(HttpMethod.DELETE,url,docString);
     }
 
     @When("I GET a REST request to URL {string}")
     public void i_GET_a_REST_request_to_URL(String url) throws Exception {
-        Map<String, String> headers = context.get("headers");
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .get(substituteVariables(url))
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON);
-        if (headers != null) {
-            for (Entry<String, String> entry : headers.entrySet()) {
-                request.header(substituteVariables(entry.getKey()), substituteVariables(entry.getValue()));
-            }
-        }
-        ResultActions actions = mvc.perform(request)
-                .andDo(print());
-        context.set("actions", actions);
+        invokeHTTPMethod(HttpMethod.GET,url,null);
     }
 
     @When("I PUT a REST request to URL {string} with payload")
     public void i_PUT_a_REST_request_to_URL(String url, String docString) throws Exception {
+        invokeHTTPMethod(HttpMethod.PUT,url,docString);
+    }
+
+    private void invokeHTTPMethod(HttpMethod method, String url, String docString) throws Exception {
         Map<String, String> headers = context.get("headers");
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .put(substituteVariables(url))
-                .content(substituteVariables(docString))
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.request(method,substituteVariables(url))
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON);
+
+        if (!method.equals(HttpMethod.GET))
+            request = request.content(substituteVariables(docString));
         if (headers != null) {
             for (Entry<String, String> entry : headers.entrySet()) {
                 request.header(substituteVariables(entry.getKey()), substituteVariables(entry.getValue()));

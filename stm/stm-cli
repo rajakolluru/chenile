@@ -1,7 +1,10 @@
 dir=$(which $0)
 dir=${dir%/*}
-ls ${dir}/stm-*-jar-with-dependencies.jar > /dev/null 2>&1  && jarfile=${dir}/stm-*-jar-with-dependencies.jar
-ls ${dir}/target/stm-*-jar-with-dependencies.jar > /dev/null 2>&1 && jarfile=${dir}/target/stm-*-jar-with-dependencies.jar
+
+if ls ${dir}/target/stm-*-jar-with-dependencies.jar  > /dev/null 2>&1 
+then
+	jarfile=$(ls ${dir}/target/stm-*-jar-with-dependencies.jar | tail -1)
+fi
 
 if [[ -z ${jarfile} ]] 
 then

@@ -52,6 +52,10 @@ public class EventProcessor {
 		}
 	}
 
+	public void handleEventAsync(String eventId, Object eventPayload) {
+
+	}
+
 	public void handleEvent(ChenileEventDefinition ced, ChenileExchange chenileExchange) {
 		Set<SubscriberVO> subscribers = ced.getEventSubscribers();
 		if(subscribers == null || subscribers.isEmpty()) return;

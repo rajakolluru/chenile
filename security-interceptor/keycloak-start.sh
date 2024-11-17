@@ -5,4 +5,4 @@ docker run --name keycloak \
   -p 8180:8180 \
   quay.io/keycloak/keycloak:25.0.1 \
   start-dev \
-  --http-port=8180 --features=organization 
+  --http-port=8180 --features=organization

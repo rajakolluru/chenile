@@ -23,6 +23,7 @@
 			<groupId>org.chenile</groupId>
 			<artifactId>stm</artifactId>
 		</dependency>
-	</dependencies>
+
+    </dependencies>
 
 </project>
