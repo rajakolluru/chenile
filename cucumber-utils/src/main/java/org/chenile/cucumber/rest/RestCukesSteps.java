@@ -93,6 +93,11 @@ public class RestCukesSteps {
         invokeHTTPMethod(HttpMethod.PUT,url,docString);
     }
 
+    @When("I PATCH a REST request to URL {string} with payload")
+    public void i_PATCH_a_REST_request_to_URL(String url, String docString) throws Exception {
+        invokeHTTPMethod(HttpMethod.PATCH,url,docString);
+    }
+
     private void invokeHTTPMethod(HttpMethod method, String url, String docString) throws Exception {
         Map<String, String> headers = context.get("headers");
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.request(method,substituteVariables(url))
