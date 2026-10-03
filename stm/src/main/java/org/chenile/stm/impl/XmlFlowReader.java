@@ -265,16 +265,20 @@ public class XmlFlowReader extends FlowReaderBase {
 		public void begin(String namespace, String xmlElementName,
 				Attributes attributes) throws Exception {
 			FlowDescriptor fd = (FlowDescriptor) digester.peek();
-			StateDescriptor sd;
+			String id = attributes.getValue("id");
+			StateDescriptor sd = fd.getStates().get(id);
+			if (sd == null){
+				sd = stmFlowStoreImpl.actionTagsMap.get(xmlElementName)
+						.getDescriptorClass().getDeclaredConstructor().newInstance();
+			}
 			boolean isManualState = stmFlowStoreImpl.actionTagsMap.get(
 					xmlElementName).isManualState();
-			sd = stmFlowStoreImpl.actionTagsMap.get(xmlElementName)
-					.getDescriptorClass().getDeclaredConstructor().newInstance();
+
 			sd.setManualState(isManualState);
 			digester.push(sd);
 
 			// id and initialState need to be injected into sd as well.
-			String id = attributes.getValue("id");
+
 			sd.setId(id);
 			sd.setFlowId(fd.getId());
 
